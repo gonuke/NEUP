@@ -26,7 +26,7 @@ Error Propagation for Fuel Cycle Calculation}
 
 %can we change the tittle to "Uncertainty propagation for Fuel Cycle Calculation" 
 
-\author{P.P.H. WILSON \& B. MOUGINOT} 
+%\author{P.P.H. WILSON \& B. MOUGINOT} 
 
 \date{\today}
 
@@ -42,103 +42,165 @@ Error Propagation for Fuel Cycle Calculation}
 \textbf{Estimated Cost:} \$800,000\\
 
 
-\section{Proposed Scope Description}
+\section{Proposed Scope/Context Description}
 
-The fuel cycle simulation tool can have a large scope of application, from the study of the behaviour of some type of fuel or reactor inside an existing nuclear fleet to the prospectiv analysis of a complete nuclear transition. Beside the study of fleet evolution it can also been used to assess the possibility of material hijacking in the context of non-proliferation study or policy...\\
-Each application field of the nuclear fuel cycle calculation requires a specific level of confidence, which are up to now very un-precisely assessed, if assessed. There is a real need of validation the those kind of calculation, which can hardly been reached. Indeed, the only existing way to validate any fuel cycle calculation/tool, is the benchmark with other similar tools, or other existing data? When the first is generally conclude with a list of why the different softwares end up with different results (without concluding on the precision of any), the second allow only the validation on existing concept and have no impact on calculation implying the use of new concept. 
-The aim of this project is to add error propagation capability to the CYCLUS fuel cycle simulator [1]. By their usage for predicting the evolution of a large industrial enterprise in an uncertain future, nuclear fuel cycle simulations are generally based on approximations and uncertain input data.  Since validation is largely considered to be impractical, such simulations are seen as indications of future behaviour rather than predictions of that behaviour.  
-Nevertheless, it would be valuable to be able to place some confidence bounds on those indications, both to assess the robustness of conclusions that derive from those indications and to provide information about the sensitivity of those conclusions to the uncertain data and algorithms. 
-Having a broad distribution for each metric calculated in a fuel cycle simulation instead of unique values will allow a better comparison between different fuel cycle scenarios.
-Moreover for some critical analysis such as retrospective non-proliferation analysis, it could be extremely valuable to add some degree of confidence on the simulation performed. This could allow at least to confirm or invalidate the possibility to use those calculation tools for such purpose.
+The fuel cycle simulation tool can have a large scope of application, from the study of the behavior of some type of fuel or reactor inside an existing nuclear fleet to the prospective analysis of a complete nuclear transition. Beside the study of fleet evolution it can also been used to assess the possibility of material hijacking in the context of non-proliferation study or policy...\\
+Each application field of the nuclear fuel cycle calculation requires a specific level of confidence, which are up to now very un-precisely assessed, if assessed. There is a real need of validation the those kind of calculation, which can hardly been reached. Indeed, the only existing way to validate any fuel cycle calculation/tool, is the benchmark with other similar tools, or other existing data... When the first is generally conclude with a list of why the different softwares end up with different results (without concluding on the precision of any), the second allow only the validation on existing concept and have no impact on calculation implying the use of new concept. 
+The aim of this project is to add error propagation capability to the CYCLUS fuel cycle simulator [1]. By their usage for predicting the evolution of a large industrial enterprise in an uncertain future, nuclear fuel cycle simulations are generally based on approximations and uncertain input data.  Since validation is largely considered to be impractical, such simulations are seen as indications of future behavior rather than predictions of that behavior. \\
+Nevertheless, it would be valuable to be able to place some confidence bounds on those indications, both to assess the robustness of conclusions that derive from those indications and to provide information about the sensitivity of those conclusions to the uncertain data and algorithms.\\
+Having a broad distribution for each metric calculated in a fuel cycle simulation instead of unique values will allow a better comparison between different fuel cycle scenarios.\\
+Moreover for some critical analysis such as retrospective non-proliferation analysis, it could be extremely valuable to add some degree of confidence on the simulation performed. This could allow at least to confirm or invalidate the possibility to use those calculation tools for such purpose.\\
 This project will extend the Cyclus concept of resources to include error information and then develop a number of archetypes that can perform operations to propagate that error in a rigorous fashion.  Ultimate calculation of fuel cycle performance metrics will also need to be updated in order to represent final results as distributions rather than single values. 
 
-Logical Path to Work Accomplishment
+\section{Logical Path to Work Accomplishment}
+The goal of this project is to add optional extensions to Cyclus that will allow an assessment of the error as it propagates  through a fuel cycle.  
+\subsection{Brief Project Description}
+Different step have to be followed to accomplish it.
+The first step is to extend the standard resources to contain their own error information and develop methods to propagate the errors as agents operate on those resources. With such an infrastructure in place, specific archetypes will be developed to perform operations that depend on this error information, with a focus on recycled fuel fabrication, advanced fast reactors that consume recycled fuel, and separations facilities. 
+When used as part of an actinide recycle scheme, these facilities will trade in approximations to ideal material compositions and hence introduce errors. 
+Analysis tools that can express the outcomes of this error propagation on fuel cycle performance metrics will also be developed. Demonstration of error capability will begin with once through fuel cycles, followed by a simple MOX-recycle system, and culminating with multi-recycle fast reactor systems.
 
-The following project aims to introduce uncertainty capability to material metrics, or material related metrics such as separation tails, burnup ...  into CYCLUS fuel cycle simulator. Moreover, it could be consider as a base work for the management and the propagation of any metrics in CYCLUS tool.
+	\subsubsection{Update CYCLUS}
+Expressing uncertainty in resources will require a fundamental change to the Cyclus kernel to extend the resource objects to include support for their own error estimates.  Prior examples of this type of capability [e.g. 2] will serve as a guide for implementation in the Cyclus context.  When complete, this capability should allow every resource to carry a measure of its uncertainty.  In addition, all operations that are available to modify resources will be extended to also modify error estimates appropriately. This work will focus on analytical approaches to error propagation,  that can be implemented in a way that reduces to the current behavior in the absence of uncertainty information. This will ensure backward compatibility with existing Cyclus archetypes that may not be aware of uncertainty propagation.
 
+	\subsubsection{Models development}
+	The recipe-based fuel management of Cycamore is not well suited to perform precise error estimation and propagation: by definition, the output fuel composition is precisely defined by the input fuel composition.   By contrast, when exploring recycling in nuclear fuel cycles, it is necessary to introduce archetypes that seek to achieve an integrated performance goal by blending streams of material.  One such algorithm has been developed as part of the French nuclear fuel cycle tool, CLASS [3].  Using either a polynomial regression [4] or a neural network approach [5], two material streams are mixed to achieve a particular neutronics performance, e.g. burnup of PWR MOX fuel.
+	
+	
+Both model, we are proposing using, are based on the neural network prediction. those neural network are priorly trained using on a set of data composed by many differents fuel isotopic composition (between thousand and few thousands depletion calculation). Different exemple have shown the great potential of neural network predicting different neutron spectrum integrated parameter (macroscopic cross section, multiplication neutron factor...) for many types of reactor (PWR, Sodium cooled - FBR,  lead cooled ADS) on many types of fuel, MOX, Pu-MA ADS fuel, UOX...\\
+
+The realization of the Model used to be a many step process. 
+First one need to build the training sample used to feed the different models, used for fuel fabrication and macroscopic cross section prediction.
+This training sample are composed by few thousand different couple of input and output parameters. In our case, the input parameter are the initial fuel composition, and the output parameter are the direct (i.e. macroscopic cross section, $k_{eff}$...) or indirect ( $<k_{eff}>$, maximal burnup accessible...) results of depletion calculation. 
+In any case, one need to use a depletion calculation tool, to populate the training sample. 
+To generate our training sample data we are envisaging using the SERPENT tool as it seems to be the actual best depletion calculation tool available (in term of precision and speed).% this may not be the best thing to write...
+\\
+\textit{Moreover the quality of the the model will depend on the geometrical repartition and density of the data points in the training sample.
+It seems that using a latin hyper square repartition \cite{} is the best to train a neural network model when a square repartition may probably netter for a polynomial models } % interesting ???
+
+Since all the output parameters have been computed, one can train the model. Two different kind of model have to be generated: 
+\begin{itemize}
+\item the fabrication model: allowing to mix $N$ different material streams to build a fuel which will have the correct neutronic/physics properties,
+\item cross section model/depletion model: allowing to determine the isotopic evolution of the fuel during irradiation.
+\end{itemize}
+
+\paragraph{Fuel fabrication Model\\}	
+The fabrication model contain generally one "model" to predict some neutronics/physics parameters from an initial fuel composition and a mixing algorithm used to find the best material stream mix matching the neutronics/physics requirement. \\
+For example, on application of those model for PWR, use an approach based on the linear reactivity model to allow the prediction of the maximal burnup achievable by a fuel from its initial isotopic compositions. In this example, the model are used to predict the point in burnup when the neutrons multiplications parameters reach a threshold level (above it the reactor is supposed to become subcritical, and then can not be operated anymore..).\\
+One other approach, for FBR, is based on the prediction of the neutrons multiplication factor at the beginning of the irradiation (since it is supposed that it has small variation during irradiation...)... 
+
+\paragraph{Cross Section/Depletion Model}
+The cross section model are used to predict the one group cross section evolution as a function of the burnup (or the time) for all reaction and all nuclei that might appear in the fuel during the irradiation.
+Using them it is possible to solve the Bateman equation and then determine the fuel composition evolution as the function of the burnup (or the time).\\
+Instead prediction each different cross sections, it might be able to predict directly, using properly trained neural network, the isotopic fuel composition.\\
+Since both kind of model should be trained on complete depletion calculation, containing both one group cross section evolution and the isotopic composition evolution, it could be very interesting to try both, keeping only the most interesting solution.
+
+
+
+\subsection{Uncertainty}
+\subsection{Source}
+The following project aims to introduce uncertainty capability to material metrics, or material related metrics such as separation tails, burnup...  into CYCLUS fuel cycle simulator. Moreover, it could be consider as a base work for the management and the propagation of any metrics in CYCLUS tool.
 In a fuel cycle calculation, there are three different sources of uncertainty:
-the uncertainty on input parameter, such as the tail enrichment or the separation efficiency,
-the uncertainty introduced by the model used :  either the model is a couple of input and output recipes provided by the users or either it provides algorithms which allows the fabrication of the reprocessed fuel from the used fuel stock or provides way to determine the evolution of such fuel though their irradiation in a reactor
+\begin{itemize}
+\item the uncertainty on input parameter, such as the tail enrichment or the separation efficiency,
+\item the uncertainty introduced by the model used :  either the model is a couple of input and output recipes provided by the users or either it provides algorithms which allows the fabrication of the reprocessed fuel from the used fuel stock or provides way to determine the evolution of such fuel though their irradiation in a reactor
 the possible variation of some cycle parameter accuring in reality which is not possible to model with precision ( such as minor burnup fluctuation, charge factor variation, reactor shutdown )
-In addition of the uncertainty induced by the model itself, the model aims to reproduce computed data, which are subject to imprecision and uncertainty. Indeed, those computed data requiert simplification to be computed and use as input evaluated data with non negligeable uncertainty.
+\item In addition of the uncertainty induced by the model itself, the model aims to reproduce computed data, which are subject to imprecision and uncertainty. Indeed, those computed data requiert simplification to be computed and use as input evaluated data with non negligeable uncertainty.
 The new CYCLUS archetypes developed in a first times be capable to handle error on materials flow, allowing the propagation of the uncertainty on the input materials flow through all the facility process, delivering an material output flow(s) with the corresponding uncertainty.
-
-In the second times, those archetypes will be updated to allows them deal with the uncertainty on metrics related the the flow process itself (separation efficiency, enrichment tails, burnup achievement?). Those uncertainty should be fixed by the user to the appropriate values. Some default values could also been set?
-Even if those uncertainty should have a moderate impact on the full fuel cycle calculation, it should quite simple to implement it? and it could be used as a validation test on the overall uncertainty propagation in the different archetypes comparing the new build-in CYCLUS capacity and some brute force calculation?.
+\end{itemize}
+In the second times, those archetypes will be updated to allows them deal with the uncertainty on metrics related the the flow process itself (separation efficiency, enrichment tails, burnup achievement...). Those uncertainty should be fixed by the user to the appropriate values. Some default values could also been set...\\
+Even if those uncertainty should have a moderate impact on the full fuel cycle calculation, it should quite simple to implement it... and it could be used as a validation test on the overall uncertainty propagation in the different archetypes comparing the new build-in CYCLUS capacity and some brute force calculation...\\
 Although, those uncertain should have a limited impact on the fuel cycle calculation, it is still required to measure it. To do so, it will be interesting to perform a sensitivity analysis on those.
 
+\subsection{Estimation}
+	\subsubsection{input parameter}
+	\subsubsection{Models}
+	
+One also need to perform some literature analysis to determine which neural network library will be the most suitable for the use in a fuel cycle simulation tool. One also can consider using other statistical predictive method as well.
+Finally, one need to assess the precision of the models. This have two main different components: the one directly connected to the prediction capability of the used model, and the uncertainty of the the computed data used as training data for the models.\\
+The computed data correspond to a sample of few thousand of different depletion calculation. Each of the depletion calculation have 3 uncertainty components, a statistical, a nuclear data and a modeling one. \\
+Because we are considering using Monte Carlo base neutron transport solver, one part of the error comes with the statistic we are able to spend on each individual simulation ( depending only on the cpu time spent on each different simulation). Since we have need many different depletion calculation for build a training data set, one have to find a compromise between speed and precision... This could be quickly assessed in the context of this project by recalculating many time (few hundred) some well chosen fuel composition.\\
 
-Model Principle:
-In the following project, we propose to introduce 2 differents kind of models in the CYCLUS tool. Those models allows respectively to prediction how to mix 2 stream of materials to reach some neutronics requirement for the fuel and to predict the evolution of the macroscopic cross section evolution of a fuel (from its initial isotopic composition) during the irradiation process.
-Both model, we are proposing using, are based on the neural network prediction. those neural network are priorly trained using on a set of data composed by many differents fuel isotopic composition (between thousand and few thousands depletion calculation). Different exemple have shown the great potential of neural network predicting different neutron spectrum integrated parameter (macroscopic cross section, multiplication neutron factor?) for many types of reactor (PWR, Sodium cooled - FBR,  lead cooled ADS) on many types of fuel, MOX, Pu-MA ADS fuel, UOX...
-The realisation of the Model will be a three step process. First one need to build the training sample used to feed to both neural networks models, used for fuel fabrication and macroscopic cross section prediction.  Secondly one need to train the neural network itself. One also need to perform some literature analysis to determine which neural network library will be the most suitable for the use in a fuel cycle simulation tool. One also can consider using other statistical predictive method as well.
-Finally, one need to assess the precision of the models. This have two main different components: the one directly connected to the prediction capability of the used model, and the uncertainty of the the computed data used as training data for the models.
-The computed data correspond to a sample of few thousand of different depletion calculation. Each of the depletion calculation have 3 uncertainty components, a statistical, a nuclear data and a modeling one. 
-Because we are considering using Monte Carlo base neutron transport solver, one part of the error comes with the statistic we are able to spend on each individual simulation ( depending only on the cpu time spent on each different simulation). Since we have need many different depletion calculation for build a training data set, one have to find a compromise between speed and precision? This could be quickly assessed in the context of this project by recalculating many time (few hundred) some well chosen fuel composition.
+The data uncertainty is uncontrollable and irreducible since, we have to use evaluated data which include uncertainty. Unfortunately those uncertainty are pretty difficult to compute. \\
+The depletion calculation are also subject to a more tricky one. Indeed the modeling uncertainty come from the different approximation necessary to simulate a full depletion calculation on the geometry (there is a lot of difficulty using Monte Carlo technique on a PWR full core calculation due to source convergence issue) or on the different reactor parameter, such as boron concentration, rod control management, charge factor evolution, neutron leakage...\\
+The study and the propagation of the modeling uncertainty, such as the modeling simplification and the nuclear data uncertainty is way beyond the scope of this project... This require a full dedicated research project (and probably more).  Hopefully there might be some breakthrough during the realisation of this work. If not, one have to roughly estimate it using the state of the art on this field. \\
+Even so the introduction of uncertainty propagation in fuel cycle simulation coupled with sensitivity analysis, will allow to precisely determine what are the required precision of the depletion calculation.\\
 
-The data uncertainty is uncontrollable and irreducible since, we have to use evaluated data which include uncertainty. Unfortunately those uncertainty are pretty difficult to compute.  
-The depletion calculation are also subject to a more tricky one. Indeed the modeling uncertainty come from the different approximation necessary to simulate a full depletion calculation on the geometry (there is a lot of difficulty using Monte Carlo technique on a PWR full core calculation due to source convergence issue) or on the different reactor parameter, such as boron concentration, rod control management, charge factor evolution, neutron leakage? 
-The study and the propagation of the modeling uncertainty, such as the modeling simplification and the nuclear data uncertainty is way beyond the scope of this project... This require a full dedicated research project (and probably more).  Hopefully there might be some breakthrough during the realisation of this work. If not, one have to roughly estimate it using the state of the art on this field. 
-Even so the introduction of uncertainty propagation in fuel cycle simulation coupled with sensitivity analysis, will allow to precisely determine what are the required precision of the depletion calculation.
-
-In addition of those uncertainty, which are present in any fuel cycle calculation, we have to consider other uncertainty. Indeed, those models, as explained later, are trained on a large amount of precalculated depletion calculation. Some study have been done to determine the optimal density of a training sample to train a neural network [B. Leniau private com]. This could be quickly completed in the context of this project allows to assess precisely the variation of the model intrinsic precision according to the training density.
-
-Fuel Fabrication Model
-The Fabrication model is the ability to predict some neutronics parameter, achieved or validated by the fuel as a function of its initial composition. 
-For example, on application of those model for PWR, use an approach based on the linear reactivity model to allow the prediction of the maximal burnup achievable by a fuel from its initial isotopic compositions. In this example, the model are used to predict the point in burnup when the neutrons multiplications parameters reach a threshold level (above it the reactor is supposed to become subcritical, and then can not be operated anymore..).
-One other approach, for FBR, is based on the prediction of the neutrons multiplication factor at the beginning of the irradiation (since it is supposed that it has small variation during irradiation?)... 
+In addition of those uncertainty, which are present in any fuel cycle calculation, we have to consider other uncertainty. Indeed, those models, as explained later, are trained on a large amount of precalculated depletion calculation. Some study have been done to determine the optimal density of a training sample to train a neural network [B. Leniau private com]. This could be quickly completed in the context of this project allows to assess precisely the variation of the model intrinsic precision according to the training density.\\
+	\subsubsection{Depletion : Nuclear Data / Monte Carlo / Modeling}
+\subsection{Propagation} 
+	\subsubsection{input parameter}
+	\subsubsection{Models}
+	\subsubsection{Depletion : Nuclear Data / Monte Carlo / Modeling}
 
 
 
-Cross Section Model uncertainty determination:
-Since the actual cross section model, are able, for a set fuel initial composition, to predict the evolution of the macroscopic cross section along the irradiation. It should be possible to improve them allowing to assess also the uncertainty on those cross sections. Those uncertainty will be calculated by Monte Carlo neutron transport module of SERPENT (the depletion calculation tool). 
 
-After improve the cross section prediction model, it will be possible a any fuel initial composition to predict the evolution of the macroscopic cross section as well as the associated uncertainty.
-Nevertheless, the uncertainty on the initial composition should enlarge those uncertainty accordingly. Theoretically, uncertainty on fuel composition, should impact the neutron spectrum determination... But being able to predict the evolution macroscopic cross sections will allow us to avoid to propagate the cross section uncertainty along the extremely complicated process of the integration of the neutron transport equation? Indeed our model will capable to predict the macroscopic cross section evolution for any composition (and the associated uncertainty), so we can convolute the uncertainty of the macroscopic cross section with those on the composition using our model to predict the cross section evolution (and the uncertainty) for some ideally chosen composition and then recover  (using either a brutal method such as a total monte carlo or a more analytic error combination method?) the reel total uncertainty on the macroscopic cross section.
-After determining the correct cross section uncertainty, one will be able to calculated the uncertainty on the neutron flux, itself normalize on the power of the reactor?
-From that it should be possible use a simplified version the ?Global Perturbation Method? apply on the depletion calculation developed by [Williams, Takeda, Salvatores], allowing the propagation of the different uncertainty across the integration of the Bateman equation.
-One solution that could be investigate, is simply to use a TMC method [TMC] to evaluate the sensitivity to the cross section and initial inventory uncertainty to the final composition. Unfortunately those sensitivity should depends on the composition (for a PWR reactor, the macroscopic cross section accordingly to the shape of the neutron spectrum shape highly depending on the isotopic composition depending of the initial composition). In consequence, using TMC to determine the different sensitivity imply a very high preliminary CPU cost, but should improve the speed on the fuel cycle simulation versus a perturbative propagation of the different uncertainty.
+\subsection{Model Principle:}
+
+
+
+\subsection{Fuel Fabrication Model}
+The Fabrication model is the ability to predict some neutronics parameter, achieved or validated by the fuel as a function of its initial composition.\\s
+
+
+
+
+\subsection{Cross Section Model uncertainty determination:}
+Since the actual cross section model, are able, for a set fuel initial composition, to predict the evolution of the macroscopic cross section along the irradiation. It should be possible to improve them allowing to assess also the uncertainty on those cross sections. Those uncertainty will be calculated by Monte Carlo neutron transport module of SERPENT (the depletion calculation tool). \\
+
+After improve the cross section prediction model, it will be possible a any fuel initial composition to predict the evolution of the macroscopic cross section as well as the associated uncertainty.\\
+Nevertheless, the uncertainty on the initial composition should enlarge those uncertainty accordingly. Theoretically, uncertainty on fuel composition, should impact the neutron spectrum determination... But being able to predict the evolution macroscopic cross sections will allow us to avoid to propagate the cross section uncertainty along the extremely complicated process of the integration of the neutron transport equation... Indeed our model will capable to predict the macroscopic cross section evolution for any composition (and the associated uncertainty), so we can convolute the uncertainty of the macroscopic cross section with those on the composition using our model to predict the cross section evolution (and the uncertainty) for some ideally chosen composition and then recover  (using either a brutal method such as a total Monte Carlo or a more analytic error combination method...) the reel total uncertainty on the macroscopic cross section.\\
+After determining the correct cross section uncertainty, one will be able to calculated the uncertainty on the neutron flux, itself normalize on the power of the reactor...
+From that it should be possible use a simplified version the "Global Perturbation Method"  apply on the depletion calculation developed by [Williams, Takeda, Salvatores], allowing the propagation of the different uncertainty across the integration of the Bateman equation.\\
+One solution that could be investigate, is simply to use a TMC method [TMC] to evaluate the sensitivity to the cross section and initial inventory uncertainty to the final composition. Unfortunately those sensitivity should depends on the composition (for a PWR reactor, the macroscopic cross section accordingly to the shape of the neutron spectrum shape highly depending on the isotopic composition depending of the initial composition). In consequence, using TMC to determine the different sensitivity imply a very high preliminary CPU cost, but should improve the speed on the fuel cycle simulation versus a perturbative propagation of the different uncertainty.\\
   
 
 
 
-Final Phase :
-We imagine 3 step in the final phase. First we would like to step up a testing mechanism, based on simply brute force the uncertainty propagation in the fuel cycle calculation by using some kind of Total monte Carlo, allowing all parameters to fluctuate accordingly to their respective uncertainty on many integration of the same calculation. The result distribution can be read as a direct measure of the uncertainty on the final parameter and will be compared to the direct uncertainty propagation calculation as a validation of all the method previously presented. This method will (turning on the uncertainty on each parameter one by one) to validate the uncertainty propagation on each parameter?
-One need nevertheless keep in mind that everything is never perfect, and one should always try to improve. To do so it is required to identify the most problematic issue and solve it. In this particular case, one need to identify what is the uncertainty gaol depending on the application of the fuel calculation, of course the precision goal is very different when one doing a prospective calculation versus a non-proliferation retrospective analysis? Knowing it, one very important of this project is it could allow through sensitivity analysis to identify the biggest uncertainty source, and help to focus to improve it.
-That is why, in addition of the TMC test tool, I would like to develop a tool/method to systematically allows user to perform sensitivity analysis applied to their calculation allowing us to improve future models dedicated to some precise use of the CYCLUS tool.
+\section{Final Phase :}
+We imagine 3 step in the final phase. First we would like to step up a testing mechanism, based on simply brute force the uncertainty propagation in the fuel cycle calculation by using some kind of Total monte Carlo, allowing all parameters to fluctuate accordingly to their respective uncertainty on many integration of the same calculation. The result distribution can be read as a direct measure of the uncertainty on the final parameter and will be compared to the direct uncertainty propagation calculation as a validation of all the method previously presented. This method will (turning on the uncertainty on each parameter one by one) to validate the uncertainty propagation on each parameter...\\
+One need nevertheless keep in mind that everything is never perfect, and one should always try to improve. To do so it is required to identify the most problematic issue and solve it. In this particular case, one need to identify what is the uncertainty gaol depending on the application of the fuel calculation, of course the precision goal is very different when one doing a prospective calculation versus a non-proliferation retrospective analysis... Knowing it, one very important of this project is it could allow through sensitivity analysis to identify the biggest uncertainty source, and help to focus to improve it.\\
+That is why, in addition of the TMC test tool, I would like to develop a tool/method to systematically allows user to perform sensitivity analysis applied to their calculation allowing us to improve future models dedicated to some precise use of the CYCLUS tool.\\
 
 
 Finally, we would like
 Third step : application to simple case : PWR, transition from PWR to FBR...
-Milestone Task Listing
 
-PHASE 1: CYCLUS update for uncertainty awareness and propagation
+\pagebreak
+\section{Milestone Task Listing}
 
-Task 1: update material classes to handle uncertainty (+ composition ?)
-Task 2: upgrade/develop archetype capable to interact with material uncertainty
-Task 3: develop archetype capable to introduce material related uncertainty
-Task 4: develop/write/implement a Bateman numerical solver in CYCLUS
-Task 5: update post-analysis traitement to deal with uncertainty  
+\textbf{PHASE 1:} CYCLUS update for uncertainty awareness and propagation
+
+\begin{itemize}
+\item Task 1: update material classes to handle uncertainty (+ composition ?)
+\item Task 2: upgrade/develop archetype capable to interact with material uncertainty
+\item Task 3: develop archetype capable to introduce material related uncertainty
+\item Task 4: develop/write/implement a Bateman numerical solver in CYCLUS
+\item Task 5: update post-analysis traitement to deal with uncertainty  
+\end{itemize}
  
-PHASE 2: Developing fuel fabrication model cross section prediction models and uncertainty capabilities. This has to be done for each couple of fuel/reactor: PWR / UOX - MOX (- U Blanket?), FBR / MOX - U-Blanket, (CANDU?)...
-
-Task 1: training Sample generation, generation of set of evolution allowing to train our how models.
+\textbf{PHASE 2:} Developing fuel fabrication model cross section prediction models and uncertainty capabilities. This has to be done for each couple of fuel/reactor: PWR / UOX - MOX (- U Blanket?), FBR / MOX - U-Blanket, (CANDU?)...
+\begin{itemize}
+\item Task 1: training Sample generation, generation of set of evolution allowing to train our how models.
 To do so, one need for each fuel to define the isotopic space we need to sample. 
-Task 2: develop and train the models.
-Task 3: uncertainty assessment in the calculation
-Task 4: uncertainty prediction capabilities for the models
-Task 5: coupling isotopic uncertainty with models uncertainty
-
-PHASE 3: test \& application
-
-Task 1: simple transition calculation, PWR MOX to FBR
-Task 2: brute force validation of the uncertainty propagation :
+\item Task 2: develop and train the models.
+\item Task 3: uncertainty assessment in the calculation
+\item Task 4: uncertainty prediction capabilities for the models
+\item Task 5: coupling isotopic uncertainty with models uncertainty
+\end{itemize}
+ 
+\textbf{PHASE 3:} test \& application
+\begin{itemize}
+\item Task 1: simple transition calculation, PWR MOX to FBR
+\item Task 2: brute force validation of the uncertainty propagation :
 piece by piece validation
 overall validation
-Task 3: sensitivity analysis
+\item Task 3: sensitivity analysis
 
 Task X: comparison with other physic modeling capabilities such as Bright-Lite ?
-
+\end{itemize}
+ 
 
 
 
