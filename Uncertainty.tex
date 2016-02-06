@@ -112,25 +112,24 @@ In a fuel cycle calculation, there are three different sources of uncertainty:
 
 \subsection{Estimation}
 \subsubsection{input parameter}
-In the second times, those archetypes will be updated to allows them deal with the uncertainty on metrics related the the flow process itself (separation efficiency, enrichment tails, burnup achievement...). Those uncertainty should be fixed by the user to the appropriate values. Some default values could also been set...\\
+The CYCLUS archetypes will be updated to allows them deal with the uncertainty on metrics related the the flow process itself (separation efficiency, enrichment tails, burnup achievement...). Those uncertainty should be fixed by the user to the appropriate values. Some default values could also been set...\\
 Even if those uncertainty should have a moderate impact on the full fuel cycle calculation, it should quite simple to implement it... and it could be used as a validation test on the overall uncertainty propagation in the different archetypes comparing the new build-in CYCLUS capacity and some brute force calculation...\\
 Although, those uncertain should have a limited impact on the fuel cycle calculation, it is still required to measure it. To do so, it will be interesting to perform a sensitivity analysis on those.
 
 \subsubsection{Depletion : Nuclear Data / Monte Carlo / Modeling} % This part might not help us to defend our case...
 As explain before, part on the uncertainty, we should consider, come from the training sample used to train the different models. Indeed, generally those training sample are populated using few thousand of depletion calculation.\\
-Those depletion calculation take as input, the nuclear data. Those nuclear data are interpolated/extrapolated from many different experimental measurement using many different models. Therefore the nuclear data contain uncertainty...
+The depletion calculation take as input, the nuclear data. Those nuclear data are interpolated/extrapolated from many different experimental measurement using many different models. Therefore the nuclear data contain uncertainty...
 Those uncertainty are extremely difficult to propagate properly through a full depletion calculation because of the coupling between neutron transport and depletion calculation: the composition of the fuel impact the shape of the neutron spectrum, which impact the reaction rate on the nuclei...\\
-The depletion calculation are also subject to a more tricky one. Indeed the modeling uncertainty come from the different approximation necessary to simulate a full depletion calculation on the geometry (there is a lot of difficulty using Monte Carlo technique on a PWR full core calculation due to source convergence issue) or on the different reactor parameter, such as boron concentration, rod control management, charge factor evolution, neutron leakage...\\
+The depletion calculation are also subject to a more "complicated" uncertainty. Indeed the modeling uncertainty come from the different approximation necessary to simulate a full depletion calculation on the geometry (there is a lot of difficulty using Monte Carlo technique on a PWR full core calculation due to source convergence issue) or on the different reactor parameter, such as boron concentration, rod control management, charge factor evolution, neutron leakage...\\
 The study and the propagation of the modeling uncertainty, such as the modeling simplification and the nuclear data uncertainty is way beyond the scope of this project... This require a full dedicated research project (and probably more).  Hopefully there might be some breakthrough during the realization of this work. If not, one have to roughly estimate it using the state of the art on this field. \\
 In addition of nuclear data uncertainty and modeling uncertainty, because we are considering using Monte Carlo base depletion calculation tool, one also need to consider statistical uncertainty. Hopefully this could be quickly assessed in the context of this project by recalculating many time (few hundred) some well chosen fuel composition.\\
 
 
 
 \subsubsection{Models}
-Those models, as explained previously, are trained on a large amount of pre-calculated depletion calculation. Some study have been done to determine the optimal density of a training sample to train the model [B. Leniau private com?]. This could be quickly completed in the context of this project allows to assess precisely the variation of the model intrinsic precision according to the training density.\\
+Those models, as explained previously, are trained on a large amount of pre-calculated depletion calculation. Some study have been done to determine the optimal density of a training sample to train the model [B. Leniau private com?]. This could be quickly completed in the context of this project, allowing to determine the precision of the model intrinsic precision as a function of the training sample density.\\
 
-One also need to perform some literature analysis to determine which neural network library will be the most suitable for the use in a fuel cycle simulation tool. One also can consider using other statistical predictive method as well.
-Since we have need many different depletion calculation for build a training data set, one have to find a compromise between speed and precision...
+One also need to perform some bibliography to determine which neural network library will be the most suitable for the use in a fuel cycle simulation tool and/or if other statistical predictive method might be interesting as well.
 
 Finally, one need to assess the precision of the models. This have two main different components: the one directly connected to the prediction capability of the used model, and the uncertainty of the the computed data used as training data for the models.\\
 The computed data correspond to a sample of few thousand of different depletion calculation. Each of the depletion calculation have 3 uncertainty components, a statistical, a nuclear data and a modeling one. 
@@ -173,7 +172,7 @@ Third step : application to simple case : PWR, transition from PWR to FBR...
 \pagebreak
 \section{Milestone Task Listing}
 
-\textbf{PHASE 1:} CYCLUS update for uncertainty awareness and propagation
+\noindent\textbf{PHASE 1:} CYCLUS update for uncertainty awareness and propagation
 
 \begin{itemize}
 \item Task 1: update material classes to handle uncertainty (+ composition ?)
@@ -183,7 +182,7 @@ Third step : application to simple case : PWR, transition from PWR to FBR...
 \item Task 5: update post-analysis traitement to deal with uncertainty  
 \end{itemize}
  
-\textbf{PHASE 2:} Developing fuel fabrication model cross section prediction models and uncertainty capabilities. This has to be done for each couple of fuel/reactor: PWR / UOX - MOX (- U Blanket?), FBR / MOX - U-Blanket, (CANDU?)...
+\noindent\textbf{PHASE 2:} Developing fuel fabrication model cross section prediction models and uncertainty capabilities. This has to be done for each couple of fuel/reactor: PWR / UOX - MOX (- U Blanket?), FBR / MOX - U-Blanket, (CANDU?)...
 \begin{itemize}
 \item Task 1: training Sample generation, generation of set of evolution allowing to train our how models.
 To do so, one need for each fuel to define the isotopic space we need to sample. 
@@ -191,9 +190,10 @@ To do so, one need for each fuel to define the isotopic space we need to sample.
 \item Task 3: uncertainty assessment in the calculation
 \item Task 4: uncertainty prediction capabilities for the models
 \item Task 5: coupling isotopic uncertainty with models uncertainty
+\item Task 6: propagation uncertainties along depletion calculation
 \end{itemize}
  
-\textbf{PHASE 3:} test \& application
+\noindent\textbf{PHASE 3:} test \& application
 \begin{itemize}
 \item Task 1: simple transition calculation, PWR MOX to FBR
 \item Task 2: brute force validation of the uncertainty propagation :
