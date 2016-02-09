@@ -53,7 +53,75 @@ Moreover for some critical analysis such as retrospective non-proliferation anal
 This project will extend the Cyclus concept of resources to include error information and then develop a number of archetypes that can perform operations to propagate that error in a rigorous fashion.  Ultimate calculation of fuel cycle performance metrics will also need to be updated in order to represent final results as distributions rather than single values. 
 
 \section{Logical Path to Work Accomplishment}
-The goal of this project is to add optional extensions to Cyclus that will allow an assessment of the error as it propagates  through a fuel cycle.  
+The goal of this project is to add optional extensions to Cyclus that will allow an assessment of the error as it propagates  through a fuel cycle. 
+\subsection{Add uncertainty to ressources}
+
+\subsection{Archetypes uncertainty management}
+In a fuel cycle calculation, there are three different uncertainty/error sources :
+\begin{itemize}
+\item the material uncertainty, $\delta$, which is the input and the output of each archetypes,
+\item the "tolerance", $\tau$,  on the input parameter, which corresponds the possible variation range of a physics parameter,
+\item the error, $\epsilon$, introduce by the archetypes modeling/operation on the material.
+\end{itemize}
+
+\textit{I'll add a schema to illustrate this..}
+
+The work we are proposing to do on this project, is to allows all archetypes of CYCLUS, to combine all those sources and computes the resulting uncertainties on the output materials.
+In the following parts, one will tried to detail the work which need to be done on the different archetypes, we are proposing to update.
+\subsubsection{Enrichment facility}
+The enrichment facility is probably the easiest facility to model, since the only error come from the the enrichment variation on the final product, the tails and the feed stream, and the enrichment process can be linearly models. \textit{Is it true with any enrichment technic ?}\\
+ This can be easily analytically combine and propagate.\\
+\textit{do we want the exact error propagation formula ?}
+
+\subsubsection{Separation}
+As the enrichment process, the separation should be very easy to model including uncertainty. Indeed, the only parameter which can introduce extra variance is the separation efficiency.
+\textit{do we want the exact error propagation formula ?}
+
+\subsubsection{Reactor}
+We are envisaging two version of the reactor, which will be both capable to handle uncertainty.
+The first one which is a very simple one,  will be built as an upgrade of the existing CYCAMORE reactor, making it error aware. The CYCAMORE reactor is a recipe base reactor, in addition of all the classical reactor parameter (batch number, cycle length, power, capacity factor,...) the user provides the input and output fuel recipes. The only requirement is to force user to provide the output recipe with the according uncertainty.\\
+
+The second version of reactor will be able to calculate the evolution of the fuel provided by the fuel fabrication (see \S \ref{sec:fabrication}).
+To do so, we propose investigating two ways, both using pre-trained models, allowing the prediction of key physics parameters needed to compute the evolution of a fuel during the irradiation. It has been proven that from pre-trained neural network models, one can predict the evolution of the one group cross section during the irradiation of the fuel from its initial isotopic composition, and is working for a various range of reactor, from LWR to SFR \cite{Leniau Neural networks, Leniau.PHYSOR.2016}.\\
+The first application using the neural network predictive models, is to train a model to directly predict the composition evolution as the function of the burnup. This application might not work, since the usage of neural network has been proven to predict one group macroscopic cross section.\\
+If the neural network model fail to directly predict the isotopics evolution, one have to consider the second option, which imply to predict the 1 group cross section, then integrate the Bateman equation.\\
+
+
+The main reason leading the try of direct prediction of the isotopic evolution, is the error/uncertainty propagation.
+The determination and the propagation of all uncertainty source is, for this kind of reactor, a complicated matter. Indeed, in addition of the uncertainty of the input fuel material, we need to consider tolerance variation on the input parameter, and the error coming from the computation of the evolution.
+
+The input parameter allows to fluctuate are the power, the capacity factor and the discharge burnup. Since those three parameters will have an impact on the discharge time of the fuel, which will be very complicated to deal, it has been choose to consider them as constant. 
+Nevertheless, a brute force study ( also sometimes called "Total Monte Carlo method") could allow the determine their impact, running many time the same simulation choosing randomly the parameter value at each cycle of the reactor, the distribution of the results will provides a precise measurement of their role.
+
+The error due to the computation of the depletion calculation are wild:
+\begin{itemize}
+\item the error of the neural network predictor, $\epsilon^{nn}_{i}$, with $i\in[0..N]$, $N$ the number of predicted parameter, 
+\item the convolution of the uncertainty on the material composition with the neural network prediction. 
+\item the error on the data sets used to train the neural network,
+\end{itemize}
+
+Part on the error, we should consider, come from the training sample used to train the different models. Indeed, generally those training sample are populated using few thousand of depletion calculation.\\
+The depletion calculation take as input, the nuclear data. Those nuclear data are interpolated/extrapolated from many different experimental measurement using many different models. Therefore the nuclear data contain uncertainty...
+Those uncertainty are extremely difficult to propagate properly through a full depletion calculation because of the coupling between neutron transport and depletion calculation: the composition of the fuel impact the shape of the neutron spectrum, which impact the reaction rate on the nuclei...\\
+The depletion calculation are also subject to a more "complicated" uncertainty. Indeed the modeling uncertainty come from the different approximation necessary to simulate a full depletion calculation on the geometry (there is a lot of difficulty using Monte Carlo technique on a PWR full core calculation due to source convergence issue) or on the different reactor parameter, such as boron concentration, rod control management, charge factor evolution, neutron leakage...The study and the propagation of the modeling uncertainty, such as the modeling simplification and the nuclear data uncertainty is way beyond the scope of this project... This require a full dedicated research project (and probably more).\\
+Those error will then be removed of the equation on the first version of this work. This might need to be reconsidered when the depletion calculation error propagation capacity will have done important progress.\\
+
+
+ Hopefully there might be some breakthrough during the realization of this work. If not, one have to roughly estimate it using the state of the art on this field. \\
+
+
+
+
+  
+%In the next part of this document this reactor will be referred as "Reactor 1".
+
+
+\subsubsection{Fabrication} \label{sec:fabrication}
+
+\subsection{Problems/Applications/Validations}
+
+
+
 \subsection{Brief Project Description}
 Different step have to be followed to accomplish it.
 The first step is to extend the standard resources to contain their own error information and develop methods to propagate the errors as agents operate on those resources. With such an infrastructure in place, specific archetypes will be developed to perform operations that depend on this error information, with a focus on recycled fuel fabrication, advanced fast reactors that consume recycled fuel, and separations facilities. 
@@ -101,12 +169,7 @@ Since both kind of model should be trained on complete depletion calculation, co
 
 \subsection{Uncertainty}
 The following project aims to introduce uncertainty capability to material metrics, or material related metrics such as separation tails, burnup...  into CYCLUS fuel cycle simulator. Moreover, it could be consider as a base work for the management and the propagation of any metrics in CYCLUS tool.
-In a fuel cycle calculation, there are three different sources of uncertainty:
-\begin{itemize}
-\item the uncertainty on input parameter, such as the tail enrichment or the separation efficiency,
-\item the uncertainty introduced by the models used for fuel managment,
-\item uncertainty on the computed data used to train the models, which are subject to imprecision and uncertainty. Indeed, those computed data requiert simplification to be computed and use as input evaluated data with non negligible uncertainty.
-\end{itemize}
+
 
 
 
@@ -116,13 +179,6 @@ The CYCLUS archetypes will be updated to allows them deal with the uncertainty o
 Even if those uncertainty should have a moderate impact on the full fuel cycle calculation, it should quite simple to implement it... and it could be used as a validation test on the overall uncertainty propagation in the different archetypes comparing the new build-in CYCLUS capacity and some brute force calculation...\\
 Although, those uncertain should have a limited impact on the fuel cycle calculation, it is still required to measure it. To do so, it will be interesting to perform a sensitivity analysis on those.
 
-\subsubsection{Depletion : Nuclear Data / Monte Carlo / Modeling} % This part might not help us to defend our case...
-As explain before, part on the uncertainty, we should consider, come from the training sample used to train the different models. Indeed, generally those training sample are populated using few thousand of depletion calculation.\\
-The depletion calculation take as input, the nuclear data. Those nuclear data are interpolated/extrapolated from many different experimental measurement using many different models. Therefore the nuclear data contain uncertainty...
-Those uncertainty are extremely difficult to propagate properly through a full depletion calculation because of the coupling between neutron transport and depletion calculation: the composition of the fuel impact the shape of the neutron spectrum, which impact the reaction rate on the nuclei...\\
-The depletion calculation are also subject to a more "complicated" uncertainty. Indeed the modeling uncertainty come from the different approximation necessary to simulate a full depletion calculation on the geometry (there is a lot of difficulty using Monte Carlo technique on a PWR full core calculation due to source convergence issue) or on the different reactor parameter, such as boron concentration, rod control management, charge factor evolution, neutron leakage...\\
-The study and the propagation of the modeling uncertainty, such as the modeling simplification and the nuclear data uncertainty is way beyond the scope of this project... This require a full dedicated research project (and probably more).  Hopefully there might be some breakthrough during the realization of this work. If not, one have to roughly estimate it using the state of the art on this field. \\
-In addition of nuclear data uncertainty and modeling uncertainty, because we are considering using Monte Carlo base depletion calculation tool, one also need to consider statistical uncertainty. Hopefully this could be quickly assessed in the context of this project by recalculating many time (few hundred) some well chosen fuel composition.\\
 
 
 
