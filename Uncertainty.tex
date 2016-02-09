@@ -66,7 +66,7 @@ In a fuel cycle calculation, there are three different uncertainty/error sources
 
 The uncertainty on the output  material is a function of all those incertainty :
 \begin{equation}
-\delta_{out} = {\cal F}( \delta _{in}, \tau_0,...,\tau_n,\epsilon_{mod})
+\delta_{out} = {\cal F}\{~\delta _{in}~,~\tau_0~,~...~,~\tau_n~,~\epsilon_{mod}~\}
 \end{equation}
 The work we are proposing to do on this project, is to allows all archetypes of CYCLUS, to combine all those sources and computes the resulting uncertainties on the output materials.
 In the following parts, one will tried to detail the work which need to be done on the different archetypes, we are proposing to update.
@@ -89,44 +89,51 @@ As the enrichment process, the separation should be very easy to model including
 \textit{do we want the exact error propagation formula ?}
 
 \subsubsection{Reactor}
-We are envisaging two version of the reactor, which will be both capable to handle uncertainty.
-The first one which is a very simple one,  will be built as an upgrade of the existing CYCAMORE reactor, making it error aware. The CYCAMORE reactor is a recipe base reactor, in addition of all the classical reactor parameter (batch number, cycle length, power, capacity factor,...) the user provides the input and output fuel recipes. The only requirement is to force user to provide the output recipe with the according uncertainty.\\
-This application allows to remove the modeling error
+As all archetypes the reactor, are subject to physical parameter fluctuation.The different parameter one should consider are the discharge burnup, the effective power/capacity factor... Variation consideration on those parameters will affect the discharge time, which should be very difficult to include in the uncertainty calculation. Nevertheless, a brute force study ( also sometimes called "Total Monte Carlo method") could allow the determine their impact, running many time the same simulation choosing randomly the parameter value at each cycle of the reactor, the distribution of the results will provides a precise measurement of the sensivity.\\
+
+We are envisaging two kind of the reactor, which will be both capable to handle uncertainty. The first one will be built as an upgrade of the existing CYCAMORE reactor, making it error aware. The CYCAMORE reactor is a recipe base reactor, in addition of all the classical reactor parameter (batch number, cycle length, power, capacity factor,...) the user provides the input and output fuel recipes. The only requirement is to force user to provide the output recipe with the according sensitivity to input uncertainty. From this sensitivity, one will be able to compute directly the output uncertainty on the output composition from the input one.\\
+
+%\begin{equation}
+%\forall i, \left(\frac{\delta N_{i}}{N_{i}}\right)^{2}_{out} = \left(\frac{\delta N_{i}}{N_{i}}\right)^{2}_{in} +  \left(\frac{\tau s_{eff}}{s_{eff}}\right)^{2} 
+%\end{equation}
 
 The second version of reactor will be able to calculate the evolution of the fuel provided by the fuel fabrication (see \S \ref{sec:fabrication}).
 To do so, we propose investigating two ways, both using pre-trained models, allowing the prediction of key physics parameters needed to compute the evolution of a fuel during the irradiation. It has been proven that from pre-trained neural network models, one can predict the evolution of the one group cross section during the irradiation of the fuel from its initial isotopic composition, and is working for a various range of reactor, from LWR to SFR \cite{Leniau Neural networks, Leniau.PHYSOR.2016}.\\
 The first application using the neural network predictive models, is to train a model to directly predict the composition evolution as the function of the burnup. This application might not work, since the usage of neural network has been proven to predict one group macroscopic cross section.\\
-If the neural network model fail to directly predict the isotopics evolution, one have to consider the second option, which imply to predict the 1 group cross section, then integrate the Bateman equation.\\
+If the neural network model fail to directly predict precisely the isotopic composition evolution, one have to consider the second option, which imply to predict the 1 group cross section, then integrate the Bateman equation.\\
 
-
-The main reason leading the try of direct prediction of the isotopic evolution, is the error/uncertainty propagation.
-The determination and the propagation of all uncertainty source is, for this kind of reactor, a complicated matter. Indeed, in addition of the uncertainty of the input fuel material, we need to consider tolerance variation on the input parameter, and the error coming from the computation of the evolution.
-
-The input parameter allows to fluctuate are the power, the capacity factor and the discharge burnup. Since those three parameters will have an impact on the discharge time of the fuel, which will be very complicated to deal, it has been choose to consider them as constant. 
-Nevertheless, a brute force study ( also sometimes called "Total Monte Carlo method") could allow the determine their impact, running many time the same simulation choosing randomly the parameter value at each cycle of the reactor, the distribution of the results will provides a precise measurement of their role.
-
-The error due to the computation of the depletion calculation are wild:
+The main reason leading the try of direct prediction of the isotopic evolution, is the error/uncertainty propagation. As express prevsiously :\begin{equation}
+\delta_{out} = {\cal F}\{~\delta _{in}~,~\tau_0~,~...~,~\tau_n~,~\epsilon_{mod}~\}
+\end{equation}
+The determination and the propagation of all uncertainty source is, for this kind of reactor, a complicated matter. The error due to the computation of the depletion calculation are wild:
 \begin{itemize}
 \item the error of the neural network predictor, $\epsilon^{nn}_{i}$, with $i\in[0..N]$, $N$ the number of predicted parameter, 
 \item the convolution of the uncertainty on the material composition with the neural network prediction. 
-\item the error on the data sets used to train the neural network,
+\item the calculation error on the data sets used to train the neural network, $\epsilon_{T.D.}$.
 \end{itemize}
+And then can be expressed as :
+\begin{equation}
+\epsilon_{mod} = {\cal G}\{~\delta _{in}~,~\epsilon^{nn}_{0}~,~...~,~\epsilon^{nn}_{n}~,~\epsilon_{T.D.}~\}
+\end{equation}
 
-Part on the error, we should consider, come from the training sample used to train the different models. Indeed, generally those training sample are populated using few thousand of depletion calculation.\\
-The depletion calculation take as input, the nuclear data. Those nuclear data are interpolated/extrapolated from many different experimental measurement using many different models. Therefore the nuclear data contain uncertainty...
-Those uncertainty are extremely difficult to propagate properly through a full depletion calculation because of the coupling between neutron transport and depletion calculation: the composition of the fuel impact the shape of the neutron spectrum, which impact the reaction rate on the nuclei...\\
-The depletion calculation are also subject to a more "complicated" uncertainty. Indeed the modeling uncertainty come from the different approximation necessary to simulate a full depletion calculation on the geometry (there is a lot of difficulty using Monte Carlo technique on a PWR full core calculation due to source convergence issue) or on the different reactor parameter, such as boron concentration, rod control management, charge factor evolution, neutron leakage...The study and the propagation of the modeling uncertainty, such as the modeling simplification and the nuclear data uncertainty is way beyond the scope of this project... This require a full dedicated research project (and probably more).\\
-Those error will not be considered on the first version of this work. This might need to be reconsidered when the depletion calculation error propagation capacity will have done important progress.\\
+Because, the predictive model are trained on sample populated using few thousand of depletion calculation, which are subject to computation error, $\epsilon_{T.D.}$. On one side, a depletion calculation take as input, the nuclear data. Those nuclear data are interpolated/extrapolated from many different experimental measurement using many different models. Therefore the nuclear data contain uncertainty...
+Those uncertainty are extremely difficult to propagate properly through a full depletion calculation because of the coupling between neutron transport and depletion calculation: the composition of the fuel impact the shape of the neutron spectrum, which impact the reaction rate on the nuclei... On the other side, the depletion calculation require different approximation to be completed. There is nearly impossible using Monte Carlo technique on a PWR full core calculation due to source convergence issue. It is also extremely complicate to follow precisely the different reactor parameter, such as boron concentration, rod control management, charge factor evolution, neutron leakage... The study and the propagation of the modeling uncertainty, such as the modeling simplification and the nuclear data uncertainty is way beyond the scope of this project...\\
+ This require a full dedicated research project (and probably more). Therefore, those error, $\epsilon_{T.D.}$, will not be considered on the first version of this work. This might need to be reconsidered when the depletion calculation error propagation capacity will have done important progress.\\
+
+The direct error induced by the use of predictive model, $\epsilon^{nn}_{i}$ on each parameter, $i$, need to be assessed. This could be performed with a mapping the error on the isotopic space populated with the training sample. This will allow to determine the error of the model on each point on the isotopic space populated. We might use then a other neural network, or other interpolation method to predict the error of the prediction as the function of the isotopic composition.\\
+Once we have a working predictive model and a map of the error on the prediction, one need to build the variance-covariance matrix which will allow to convolute the uncertainty on the input material, $\delta _{in}$, with the prediction of the model.\\
 
 
+If the direct prediction of the composition is not precise enough, one have to use solve Bateman equation using predicted one group cross section and then compute the error coming from a numerical resolution of the Bateman equation and propagate the error of the one group cross section. 
+The Bateman equation resolution will be a step by step process. After having discretize the irradiation time (or burnup), one will use the model to predict the cross section at each time step (closer the time step are preciser the calculation will be) and then solve numerically the Bateman equation step after step, ending with the final isotopic composition of the fuel. Because the predictive model will be able to predict the one cross section as the function of time (or burnup), one should be able to propagate those error using sensitivity analysis.
+The time discretization as well as the other approximation require to solve the Bateman equation will also introduce computation error that need to be determined and added to the final uncertainty. This could be made with the comparison of depletion calculation made with those extra approximation with the reference one performed using the same modeling approximation as the training depletion all along the isotopic space.
 
-
-
-  
-%In the next part of this document this reactor will be referred as "Reactor 1".
 
 
 \subsubsection{Fabrication} \label{sec:fabrication}
+
+
+
 
 \subsection{Problems/Applications/Validations}
 
