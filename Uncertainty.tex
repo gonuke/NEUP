@@ -149,44 +149,55 @@ In this case there is no tolerance, since the parameter are goal to achieve, not
 
 \subsection{Problems/Applications/Validations}
 
+\textit{We imagine 3 step in the final phase. First we would like to step up a testing mechanism, based on simply brute force the uncertainty propagation in the fuel cycle calculation by using some kind of Total monte Carlo, allowing all parameters to fluctuate accordingly to their respective uncertainty on many integration of the same calculation. The result distribution can be read as a direct measure of the uncertainty on the final parameter and will be compared to the direct uncertainty propagation calculation as a validation of all the method previously presented. This method will (turning on the uncertainty on each parameter one by one) to validate the uncertainty propagation on each parameter...\\
+One need nevertheless keep in mind that everything is never perfect, and one should always try to improve. To do so it is required to identify the most problematic issue and solve it. In this particular case, one need to identify what is the uncertainty gaol depending on the application of the fuel calculation, of course the precision goal is very different when one doing a prospective calculation versus a non-proliferation retrospective analysis... Knowing it, one very important of this project is it could allow through sensitivity analysis to identify the biggest uncertainty source, and help to focus to improve it.\\
+That is why, in addition of the TMC test tool, I would like to develop a tool/method to systematically allows user to perform sensitivity analysis applied to their calculation allowing us to improve future models dedicated to some precise use of the CYCLUS tool.\\
+Finally, we would like
+Third step : application to simple case : PWR, transition from PWR to FBR...}
 
 \pagebreak
 \section{Milestone Task Listing}
 
-\noindent\textbf{PHASE 1:} CYCLUS update for uncertainty awareness and propagation
-
+\noindent\textbf{TASK 1:} CYCLUS update for uncertainty awareness
 \begin{itemize}
-\item Task 1: update material classes to handle uncertainty (+ composition ?)
-\item Task 2: upgrade/develop archetype capable to interact with material uncertainty
-\item Task 3: develop archetype capable to introduce material related uncertainty
-\item Task 4: develop/write/implement a Bateman numerical solver in CYCLUS
-\item Task 5: update post-analysis traitement to deal with uncertainty  
+\item subtask 1: update material to uncertainty,
+\item subtask 2: validate the backward compatibility, 
+\item subtask 3: Add a default uncertainty behaviour when using both uncertainty aware archetypes and standard one in the same time ?
+\end{itemize}
+
+\noindent\textbf{TASK 2:} Modeling deveopement
+\begin{itemize}
+\item subtask 1: isotopic space definition, training sample realisation
+\item subtask 2: reactor models development: parameter prediction, error analysis
+\item subtask 3: fuel fabrication model development: parameter prediction, error analysis 
+\end{itemize}
+
+
+\noindent\textbf{TASK 3:} Updating the CYCLUS Archetypes to uncertainty managment
+\begin{itemize}
+\item subtask 1: enrichment facility, 
+\item subtask 2: separation facility,
+\item subtask 3: recipe reactor,
+\item subtask 4: reactor archetypes, depletion calculation/prediction, uncertainty propagation,
+\item subtask 5: fuel fab archetypes, mixing calculation/prediction, uncertainty propagation.
 \end{itemize}
  
-\noindent\textbf{PHASE 2:} Developing fuel fabrication model cross section prediction models and uncertainty capabilities. This has to be done for each couple of fuel/reactor: PWR / UOX - MOX (- U Blanket?), FBR / MOX - U-Blanket, (CANDU?)...
+\noindent\textbf{TASK 4:} Validation \& application
 \begin{itemize}
-\item Task 1: training Sample generation, generation of set of evolution allowing to train our how models.
-To do so, one need for each fuel to define the isotopic space we need to sample. 
-\item Task 2: develop and train the models.
-\item Task 3: uncertainty assessment in the calculation
-\item Task 4: uncertainty prediction capabilities for the models
-\item Task 5: coupling isotopic uncertainty with models uncertainty
-\item Task 6: propagation uncertainties along depletion calculation \textit{(task 4 again ?)}
-\end{itemize}
- 
-\noindent\textbf{PHASE 3:} test \& application
-\begin{itemize}
-\item Task 1: simple transition calculation, PWR MOX to FBR
-\item Task 2: brute force validation of the uncertainty propagation :
-piece by piece validation
-overall validation
-\item Task 3: sensitivity analysis
+\item subtask 1: validation of the overall process with simple calculation : enrichment + separation + recipe reactor
+\item subtask 2: validation of modeling capabilities (Fab + reactor)
 
-Task X: comparison with other physic modeling capabilities such as Bright-Lite ?
+\item subtask 3: exemple calculation: PWR, transition from PWR to FBR
+\item subtask 4: full sensitivity analysis
+
+\item subtask 5: time dependent parameters sensitivity analysis (discharge burnup, capacity factor...)
+
+\item subtask X: comparison with other physic modeling capabilities such as Bright-Lite ?
 \end{itemize}
 
 
 \pagebreak
+.
 \pagebreak
 
 
