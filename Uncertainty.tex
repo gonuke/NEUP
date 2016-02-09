@@ -121,7 +121,7 @@ Those uncertainty are extremely difficult to propagate properly through a full d
  This require a full dedicated research project (and probably more). Therefore, those error, $\epsilon_{T.D.}$, will not be considered on the first version of this work. This might need to be reconsidered when the depletion calculation error propagation capacity will have done important progress.\\
 
 The direct error induced by the use of predictive model, $\epsilon^{nn}_{i}$ on each parameter, $i$, need to be assessed. This could be performed with a mapping the error on the isotopic space populated with the training sample. This will allow to determine the error of the model on each point on the isotopic space populated. We might use then a other neural network, or other interpolation method to predict the error of the prediction as the function of the isotopic composition.\\
-Once we have a working predictive model and a map of the error on the prediction, one need to build the variance-covariance matrix which will allow to convolute the uncertainty on the input material, $\delta _{in}$, with the prediction of the model.\\
+Once we have a working predictive model and a map of the error on the prediction, one need to build the covariance matrix which will allow to convolute the uncertainty on the input material, $\delta _{in}$, with the prediction of the model.\\
 
 
 If the direct prediction of the composition is not precise enough, one have to use solve Bateman equation using predicted one group cross section and then compute the error coming from a numerical resolution of the Bateman equation and propagate the error of the one group cross section. 
@@ -131,6 +131,21 @@ The time discretization as well as the other approximation require to solve the 
 
 
 \subsubsection{Fabrication} \label{sec:fabrication}
+The aim of the fuel fabrication is to mix different incoming material streams in order to build a fuel which validate the neutronics/physics requirement of the reactor. Depending of the reactor, the criterium could be various. We are considering in the first time including fabrication model for MOX fuel only, in LWR and SFR, used as burner and breeder for SFR. One will use algorithm building fuel allowing to build fuel reaching the targeted burnup according to either criticality criterium either conversion ratio criterium.  
+Those algorithm will relies on the capabilities of some predictive model to predict the maximal achievable burnup depending on the the criticality or conversion ratio evolution according to burnup.
+The predictive model as the reactor model, will be based on the use of neural network formerly trained on the same set of training depletion calculation used for the reactor models. The capability of the neural network have been proven to predict the evolution of the criticality in PWR reactor using MOX fuel \cite{Leniaux.NN, CLASS UserManual}, as well as the the initial criticality of MOX fuel in SFR \cite{CLASS UserManual} and should be easily extended to conversion ratio evolution.
+
+The error/uncertainty propagation for fuel fabrication should be pretty similar than for reactor. Indeed the uncertainty can be expressed as :
+\begin{equation}
+\delta_{out} = {\cal H}\{~\delta _{in}~,~\epsilon_{mod}~\}.
+\end{equation}
+In this case there is no tolerance, since the parameter are goal to achieve, not physicals characteristics. As well as previously the error of the model can be expressed as :
+\begin{equation}
+\epsilon_{mod} = {\cal K}\{~\delta _{in}~,~\epsilon^{nn}_{0}~,~...~,~\epsilon^{nn}_{n}~,~\epsilon_{T.D.}~\},
+\end{equation}
+ where $\epsilon^{nn}_{i}$ represent the error on the prediction of the parameter $i$ by the neural network predictive model and $\epsilon_{T.D.}$ the error due to the error on the depletion calculation composing the training set, which will be considered as null since we don;t have any way to correctly estimate it.\\
+ 
+ As for the reactor model, the $\epsilon^{nn}_{i}$ component of the error can be determined through a mapping of the error along the isotopic space, and the impact of the material input uncertainty needed the be assessed by the calculation of the covariance matrix which need to be build.
 
 
 
@@ -171,9 +186,7 @@ Since all the output parameters have been computed, one can train the model. Two
 \end{itemize}
 
 \paragraph{Fuel fabrication Model\\}	
-The fabrication model is generally generally the combinaison of a predictor which estimate some neutronics/physics parameters from the initial fuel composition and a mixing algorithm used to find the best material stream mix matching the neutronics/physics requirement. \\
-On application of those applied to PWR MOX fuel, use reactivity criteria to calculate the maximal achievable burnup for a set fuel.
-Then a model is train (either a polynomial regression \cite{Bam_polynomialmodel} , or a neural network \cite{Bal_MLP}) to predict this achievable burnup from the initial composition of a fuel. Applications on FBR MOX fuel allow the estimation the initial $k_{keff}$ \cite{ ?BaL_PHYSOR_2016 ?}...
+
 
 
 \paragraph{Cross Section/Depletion Model\\}
