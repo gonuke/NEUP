@@ -147,10 +147,48 @@ In this case there is no tolerance, since the parameter are goal to achieve, not
  
  As for the reactor model, the $\epsilon^{nn}_{i}$ component of the error can be determined through a mapping of the error along the isotopic space, and the impact of the material input uncertainty needed the be assessed by the calculation of the covariance matrix which need to be build.
 
-
-
-
 \subsection{Problems/Applications/Validations}
+
+
+\pagebreak
+\section{Milestone Task Listing}
+
+\noindent\textbf{PHASE 1:} CYCLUS update for uncertainty awareness and propagation
+
+\begin{itemize}
+\item Task 1: update material classes to handle uncertainty (+ composition ?)
+\item Task 2: upgrade/develop archetype capable to interact with material uncertainty
+\item Task 3: develop archetype capable to introduce material related uncertainty
+\item Task 4: develop/write/implement a Bateman numerical solver in CYCLUS
+\item Task 5: update post-analysis traitement to deal with uncertainty  
+\end{itemize}
+ 
+\noindent\textbf{PHASE 2:} Developing fuel fabrication model cross section prediction models and uncertainty capabilities. This has to be done for each couple of fuel/reactor: PWR / UOX - MOX (- U Blanket?), FBR / MOX - U-Blanket, (CANDU?)...
+\begin{itemize}
+\item Task 1: training Sample generation, generation of set of evolution allowing to train our how models.
+To do so, one need for each fuel to define the isotopic space we need to sample. 
+\item Task 2: develop and train the models.
+\item Task 3: uncertainty assessment in the calculation
+\item Task 4: uncertainty prediction capabilities for the models
+\item Task 5: coupling isotopic uncertainty with models uncertainty
+\item Task 6: propagation uncertainties along depletion calculation \textit{(task 4 again ?)}
+\end{itemize}
+ 
+\noindent\textbf{PHASE 3:} test \& application
+\begin{itemize}
+\item Task 1: simple transition calculation, PWR MOX to FBR
+\item Task 2: brute force validation of the uncertainty propagation :
+piece by piece validation
+overall validation
+\item Task 3: sensitivity analysis
+
+Task X: comparison with other physic modeling capabilities such as Bright-Lite ?
+\end{itemize}
+
+
+\pagebreak
+\pagebreak
+
 
 
 
@@ -255,40 +293,6 @@ That is why, in addition of the TMC test tool, I would like to develop a tool/me
 Finally, we would like
 Third step : application to simple case : PWR, transition from PWR to FBR...
 
-\pagebreak
-\section{Milestone Task Listing}
-
-\noindent\textbf{PHASE 1:} CYCLUS update for uncertainty awareness and propagation
-
-\begin{itemize}
-\item Task 1: update material classes to handle uncertainty (+ composition ?)
-\item Task 2: upgrade/develop archetype capable to interact with material uncertainty
-\item Task 3: develop archetype capable to introduce material related uncertainty
-\item Task 4: develop/write/implement a Bateman numerical solver in CYCLUS
-\item Task 5: update post-analysis traitement to deal with uncertainty  
-\end{itemize}
- 
-\noindent\textbf{PHASE 2:} Developing fuel fabrication model cross section prediction models and uncertainty capabilities. This has to be done for each couple of fuel/reactor: PWR / UOX - MOX (- U Blanket?), FBR / MOX - U-Blanket, (CANDU?)...
-\begin{itemize}
-\item Task 1: training Sample generation, generation of set of evolution allowing to train our how models.
-To do so, one need for each fuel to define the isotopic space we need to sample. 
-\item Task 2: develop and train the models.
-\item Task 3: uncertainty assessment in the calculation
-\item Task 4: uncertainty prediction capabilities for the models
-\item Task 5: coupling isotopic uncertainty with models uncertainty
-\item Task 6: propagation uncertainties along depletion calculation \textit{(task 4 again ?)}
-\end{itemize}
- 
-\noindent\textbf{PHASE 3:} test \& application
-\begin{itemize}
-\item Task 1: simple transition calculation, PWR MOX to FBR
-\item Task 2: brute force validation of the uncertainty propagation :
-piece by piece validation
-overall validation
-\item Task 3: sensitivity analysis
-
-Task X: comparison with other physic modeling capabilities such as Bright-Lite ?
-\end{itemize}
  
 
 
