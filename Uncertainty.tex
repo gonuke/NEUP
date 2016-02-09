@@ -59,27 +59,39 @@ The goal of this project is to add optional extensions to Cyclus that will allow
 \subsection{Archetypes uncertainty management}
 In a fuel cycle calculation, there are three different uncertainty/error sources :
 \begin{itemize}
-\item the material uncertainty, $\delta$, which is the input and the output of each archetypes,
-\item the "tolerance", $\tau$,  on the input parameter, which corresponds the possible variation range of a physics parameter,
-\item the error, $\epsilon$, introduce by the archetypes modeling/operation on the material.
+\item the material uncertainty, $\delta_{in}$, which is the input and the output of each archetypes,
+\item the "tolerance", $\tau_{i}$,  on the input parameter, which corresponds the possible variation range of any physics parameter, $i$,
+\item the error, $\epsilon_{mod}$, introduce by the archetypes modeling/operation on the material.
 \end{itemize}
 
-\textit{I'll add a schema to illustrate this..}
-
+The uncertainty on the output  material is a function of all those incertainty :
+\begin{equation}
+\delta_{out} = {\cal F}( \delta _{in}, \tau_0,...,\tau_n,\epsilon_{mod})
+\end{equation}
 The work we are proposing to do on this project, is to allows all archetypes of CYCLUS, to combine all those sources and computes the resulting uncertainties on the output materials.
 In the following parts, one will tried to detail the work which need to be done on the different archetypes, we are proposing to update.
 \subsubsection{Enrichment facility}
-The enrichment facility is probably the easiest facility to model, since the only error come from the the enrichment variation on the final product, the tails and the feed stream, and the enrichment process can be linearly models. \textit{Is it true with any enrichment technic ?}\\
- This can be easily analytically combine and propagate.\\
+The enrichment facility is probably the easiest facility to model, since the only error come from the tails and feed stream enrichments, the enrichment process could be linearly models. This can be easily analytically combine and propagate.%\footnote{note that in this case the feed stream enrichment can be also see as incoming material uncertainty.}:
+%\begin{equation}
+%\forall i, \left(\frac{\delta N_{i}}{N_{i}}\right)^{2}_{out} = \left(\frac{\delta N_{i}}{N_{i}}\right)^{2}_{in} +  \left(\frac{\tau e_{tails}}{e_{tails}}\right)^{2} 
+%\end{equation}
+
+\textit{Is it true with any enrichment technic ?}
+
 \textit{do we want the exact error propagation formula ?}
 
 \subsubsection{Separation}
-As the enrichment process, the separation should be very easy to model including uncertainty. Indeed, the only parameter which can introduce extra variance is the separation efficiency.
+As the enrichment process, the separation should be very easy to model including uncertainty. Indeed, the only parameter which can introduce extra variance is the separation efficiency, $\tau_{eff}$.% Since the uncertainty on the input material and the tolerance of the efficiency is independent (supposed gaussian) , the resulting uncertainty on the output material composition can express as :
+%\begin{equation}
+%\forall i, \left(\frac{\delta N_{i}}{N_{i}}\right)^{2}_{out} = \left(\frac{\delta N_{i}}{N_{i}}\right)^{2}_{in} +  \left(\frac{\tau s_{eff}}{s_{eff}}\right)^{2} 
+%\end{equation}
+
 \textit{do we want the exact error propagation formula ?}
 
 \subsubsection{Reactor}
 We are envisaging two version of the reactor, which will be both capable to handle uncertainty.
 The first one which is a very simple one,  will be built as an upgrade of the existing CYCAMORE reactor, making it error aware. The CYCAMORE reactor is a recipe base reactor, in addition of all the classical reactor parameter (batch number, cycle length, power, capacity factor,...) the user provides the input and output fuel recipes. The only requirement is to force user to provide the output recipe with the according uncertainty.\\
+This application allows to remove the modeling error
 
 The second version of reactor will be able to calculate the evolution of the fuel provided by the fuel fabrication (see \S \ref{sec:fabrication}).
 To do so, we propose investigating two ways, both using pre-trained models, allowing the prediction of key physics parameters needed to compute the evolution of a fuel during the irradiation. It has been proven that from pre-trained neural network models, one can predict the evolution of the one group cross section during the irradiation of the fuel from its initial isotopic composition, and is working for a various range of reactor, from LWR to SFR \cite{Leniau Neural networks, Leniau.PHYSOR.2016}.\\
@@ -104,10 +116,8 @@ Part on the error, we should consider, come from the training sample used to tra
 The depletion calculation take as input, the nuclear data. Those nuclear data are interpolated/extrapolated from many different experimental measurement using many different models. Therefore the nuclear data contain uncertainty...
 Those uncertainty are extremely difficult to propagate properly through a full depletion calculation because of the coupling between neutron transport and depletion calculation: the composition of the fuel impact the shape of the neutron spectrum, which impact the reaction rate on the nuclei...\\
 The depletion calculation are also subject to a more "complicated" uncertainty. Indeed the modeling uncertainty come from the different approximation necessary to simulate a full depletion calculation on the geometry (there is a lot of difficulty using Monte Carlo technique on a PWR full core calculation due to source convergence issue) or on the different reactor parameter, such as boron concentration, rod control management, charge factor evolution, neutron leakage...The study and the propagation of the modeling uncertainty, such as the modeling simplification and the nuclear data uncertainty is way beyond the scope of this project... This require a full dedicated research project (and probably more).\\
-Those error will then be removed of the equation on the first version of this work. This might need to be reconsidered when the depletion calculation error propagation capacity will have done important progress.\\
+Those error will not be considered on the first version of this work. This might need to be reconsidered when the depletion calculation error propagation capacity will have done important progress.\\
 
-
- Hopefully there might be some breakthrough during the realization of this work. If not, one have to roughly estimate it using the state of the art on this field. \\
 
 
 
