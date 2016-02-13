@@ -22,7 +22,6 @@
 \newcommand{\comment}[1]
 {{\bfseries \color{red} #1}}
 
-
 %----------------------------------------------------------------------------------------
 %	DOCUMENT INFORMATION
 %----------------------------------------------------------------------------------------
@@ -46,11 +45,11 @@ Each use case
 requires a specific level
 of confidence, which are up to now very
 poorly assessed, if assessed at all.
-%PPHW: I'm not sure that validation is even possible
-% There is a
-%real need of validation the those kind of  
-%calculation, which can hardly been
-%reached. 
+%% PPHW: I'm not sure that validation is even possible\\
+%% There is a
+%% real need of validation the those kind of  
+%% calculation, which can hardly been
+%% reached. 
 Indeed, the only existing way to develop confidence in
 any fuel cycle calculation/tool, is to compare
 with other similar tools or historical
@@ -97,7 +96,7 @@ will extend the Cyclus concept of resources to
 include error information and then develop a
 number of archetypes that can perform operations
 to propagate that error in a rigorous fashion.
-%% PPHW: Can we guarantee ``rigor''?
+\comment{PPHW: Can we guarantee ``rigor''?}
 The ultimate calculation of fuel cycle performance
 metrics will also need to be updated in order to
 represent final results as distributions rather
@@ -114,30 +113,37 @@ The first step of this work, is to update the
 principal tracked quantity in CYCLUS, the material and
 associate the isotopic composition, with the concept of
 uncertainty. 
-% PPHW: I don't know what this next sentence means?
+\comment{PPHW: I don't know what this next sentence means?}
 Because for this is the first
 introduction of uncertainty in CYCLUS (or fuel
 cycle calculation tool in general), we will
 consider the uncertainty on the material
 independent of any previous operation on this
 materials.
-%% In general, we need to have more to say here.
-%% How will we represent uncertainty in a
-%%    composition?
-%% We should probably have a specific idea for how
-%%    to do this
-%% To consider: the composition vector in Cyclus
-%%    represents a relative composition.
-%%    Therefore the uncertainty in any single
-%%    nuclide must be related to the uncertainty
-%%    in any other nuclide.
-%% Also more on: how this representation will be
-%%    transparent to archetypes that don't
-%%    implement error propagation Can we make a
-%%    representation that will still be correct!?!
-%%    Perhaps, if we only allow devs to use the
-%%    available methods to operate on material
-%%    objects.
+
+\comment{
+ In general, we need to have more to say here.
+
+ How will we represent uncertainty in a
+    composition?
+
+ We should probably have a specific idea for how
+    to do this
+
+ To consider: the composition vector in Cyclus
+    represents a relative composition.
+    Therefore the uncertainty in any single
+    nuclide must be related to the uncertainty
+    in any other nuclide.
+
+ Also more on: how this representation will be
+    transparent to archetypes that don't
+    implement error propagation Can we make a
+    representation that will still be correct!?!
+    Perhaps, if we only allow devs to use the
+    available methods to operate on material
+    objects.
+}
 
 \subsection{Archetypes uncertainty management}
 When considering a material that is leaving any 
@@ -170,50 +176,87 @@ paramters that define those archetypes.
 
 \subsubsection{Enrichment facility}
 The enrichment facility is probably the 
-%% PPHW: separations may be even easier?!?
+\comment{PPHW: separations may be even easier?!?}
 facility for which it will be easiest to add uncertainty propagation,
 since the only error comes from
 the tails and feed stream enrichments, the
 enrichment process could be linearly models. This
 can be easily analytically combine and propagate.
 
+\comment{PPHW: I'm not sure it's this easy - let's
+  discuss. The relationship between product \&
+  tails assays and quantities and with separative
+  work may have some tolerances.  What if a single
+  centrifuge stops working? or 10, or 10\%.
+
+  Our current enrichment facility really acts
+  almost like a source, except that its capacity
+  is limited by its material buffers via the
+  separation equation.  So the tails enrichment
+  really only impacts the quantity of material we
+  can produce in any timestep.
+
+  }
+
+
 %\footnote{note that in this case the feed stream
 %enrichment can be also see as incoming material
 %uncertainty.}:
 
-%\begin{equation}
-%\forall i, \left(\frac{\delta N_{i}}{N_{i}}\right)^{2}_{out} = \left(\frac{\delta N_{i}}{N_{i}}\right)^{2}_{in} +  \left(\frac{\tau e_{tails}}{e_{tails}}\right)^{2} 
-%\end{equation}
+\comment{PPHW: In each case, I think we need an equation
+  for the model itself to justify the fact that we
+  know the model for uncertainty propagation.}
 
-\textit{Is it true with any enrichment technic ?}
+\begin{equation}
+\forall i, \left(\frac{\delta N_{i}}{N_{i}}\right)^{2}_{out} = \left(\frac{\delta N_{i}}{N_{i}}\right)^{2}_{in} +  \left(\frac{\tau e_{tails}}{e_{tails}}\right)^{2} 
+\end{equation}
 
-\textit{do we want the exact error propagation formula ?}
+\comment{BAM: Is it true with any enrichment technic ?}
+
+\comment{BAM: do we want the exact error propagation formula ?}
 
 \subsubsection{Separation}
-As the enrichment process, the separation should
-be very easy to model including
-uncertainty. Indeed, the only parameter which can
+As with the enrichment process, it should be
+straightforward to include uncertainty in the model 
+for separations. Indeed, the only parameter which can
 introduce extra variance is the separation
-efficiency, $\tau_{eff}$.
+efficiency for nuclide $j$ in output stream $k$, 
+$e_{j,k} \pm \delta e_{j,k}$.
 
-% Since the uncertainty on the input material and
-% the tolerance of the efficiency is independent
-% (supposed gaussian) , the resulting uncertainty
-% on the output material composition can express
-% as :
+Since the uncertainty on the input material and
+the tolerance of the efficiency is independent
+(supposed Gaussian) , the resulting uncertainty
+on the output material composition can express
+as :
 
-%\begin{equation}
-%\forall i, \left(\frac{\delta N_{i}}{N_{i}}\right)^{2}_{out} = \left(\frac{\delta N_{i}}{N_{i}}\right)^{2}_{in} +  \left(\frac{\tau s_{eff}}{s_{eff}}\right)^{2} 
-%\end{equation}
+\begin{equation}
+N_{j,k} = N_{j,in} \cdot s_{j,k}
+\end{equation}
 
-\textit{do we want the exact error propagation formula ?}
+\begin{equation}
+\left(\frac{\delta N_{j}}{N_{j}}\right)^{2}_k = \left(\frac{\delta N_{j}}{N_{j}}\right)^{2}_{in} +  \left(\frac{\delta e_{j}}{e_{j}}\right)^{2}_k 
+\end{equation}
+
+\comment{PPHW: We do need to continue to discuss the
+  interdependence of these uncertainties between
+  different isotopes in the same composition.}
 
 \subsubsection{Reactor}
-As all archetypes the reactor, are subject to
-physical parameter fluctuation.The different
-parameter one should consider are the discharge
-burnup, the effective power/capacity
-factor... Variation consideration on those
+
+\comment{We may want to divide this into 2
+  subsections from the beginngin: one for recipe
+  reactors and one for CLASS reactors.}
+
+As with all archetypes, each reactor is subject to
+physical parameter fluctuations. The different
+parameter that will be considered in this work include:
+\begin{itemize}
+\item one should consider are the discharge
+  burnup, 
+\item the effective power/capacity factor...
+\end{itemize}
+
+Variation consideration on those
 parameters will affect the discharge time, which
 should be very difficult to include in the
 uncertainty calculation. Nevertheless, a brute
