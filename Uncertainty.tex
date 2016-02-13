@@ -22,69 +22,77 @@
 %----------------------------------------------------------------------------------------
 
 \title{2016 RPA Narrative RPA-16-10565\\
-Uncertainty Propagation for Fuel Cycle Calculations}
+Error and Uncertainty Propagation for Fuel Cycle Calculations}
 
 \begin{document}
 \noindent\textbf{Technical Workscope Identifier:} FC-5.1b\\
 \textbf{Time Frame:} 3 years\\
-\textbf{Estimated Cost:} \$800,000\\
+\textbf{Estimated Cost:} \$800,000
 
 
-\section{Proposed Scope/Context Description}
-The fuel cycle simulation tool can have a large
+\section{Introduction \& Proposed Scope}
+Nuclear fuel cycle simulation tools can have a large
 scope of application, from the study of the
-behavior of some type of fuel or reactor inside an
+behavior of a particular type of fuel or reactor inside an
 existing nuclear fleet to the prospective analysis
-of a complete nuclear transition. Beside the study
-of fleet evolution it can also been used to assess
-the possibility of material hijacking in the
-context of non-proliferation study or
-policy...\\ Each application field of the nuclear
-fuel cycle calculation requires a specific level
+of a complete nuclear transition. 
+Each use case
+requires a specific level
 of confidence, which are up to now very
-un-precisely assessed, if assessed. There is a
-real need of validation the those kind of
-calculation, which can hardly been
-reached. Indeed, the only existing way to validate
-any fuel cycle calculation/tool, is the benchmark
-with other similar tools, or other existing
-data... When the first is generally conclude with
-a list of why the different softwares end up with
-different results (without concluding on the
-precision of any), the second allow only the
-validation on existing concept and have no impact
-on calculation implying the use of new
-concept.\\ The aim of this project is to add error
+poorly assessed, if assessed at all.
+%PPHW: I'm not sure that validation is even possible
+% There is a
+%real need of validation the those kind of  
+%calculation, which can hardly been
+%reached. 
+Indeed, the only existing way to develop confidence in
+any fuel cycle calculation/tool, is to compare
+with other similar tools or historical
+data.  For the former, the conclusion if often 
+a list of why the different software gave
+different results with no conclusion on the
+precision of any.  The latter only allows
+validation of existing concepts and has no impact
+on calculations based on the use of new
+concepts.
+
+The aim of this project is to add error
 propagation capability to the CYCLUS fuel cycle
-simulator [1]. By their usage for predicting the
+simulator [1]. Given the use case of predicting the
 evolution of a large industrial enterprise in an
 uncertain future, nuclear fuel cycle simulations
-are generally based on approximations and
-uncertain input data.  Since validation is largely
+are generally based on approximate models and
+uncertain input data.  Since strict validation is largely
 considered to be impractical, such simulations are
-seen as indications of future behavior rather than
-predictions of that behavior. \\ Nevertheless, it
+seen as indications of trends in future behavior rather than
+predictions of that behavior. Nevertheless, it
 would be valuable to be able to place some
 confidence bounds on those indications, both to
 assess the robustness of conclusions that derive
 from those indications and to provide information
 about the sensitivity of those conclusions to the
-uncertain data and algorithms.\\ Having a broad
+uncertain data and algorithms.  Having a broad
 distribution for each metric calculated in a fuel
 cycle simulation instead of unique values will
 allow a better comparison between different fuel
-cycle scenarios.\\ Moreover for some critical
-analysis such as retrospective non-proliferation
-analysis, it could be extremely valuable to add
-some degree of confidence on the simulation
-performed. This could allow at least to confirm or
-invalidate the possibility to use those
-calculation tools for such purpose.\\ This project
+cycle scenarios.  Moreover for some critical
+% PPHW: don't want to focus on non-pro so much
+%    Not focus of NEUP & not confident we can
+%    accomplish enough to make a difference
+%analysis such as retrospective non-proliferation
+use cases, it could be extremely valuable to add
+some degree of confidence on the results of the simulation.
+This could result in confidence in the use of the tool for
+such uses, and confidence in the conclusions that follow
+from those results.
+
+This project
 will extend the Cyclus concept of resources to
 include error information and then develop a
 number of archetypes that can perform operations
 to propagate that error in a rigorous fashion.
-Ultimate calculation of fuel cycle performance
+%% PPHW: Can we guarantee ``rigor''?
+The ultimate calculation of fuel cycle performance
 metrics will also need to be updated in order to
 represent final results as distributions rather
 than single values.
@@ -97,43 +105,68 @@ cycle.
 
 \subsection{Add uncertainty to ressources}
 The first step of this work, is to update the
-principal CYCLUS metric : the material and
-associate the isotopic composition with a
-uncertainty. Because for this is the first
+principal tracked quantity in CYCLUS, the material and
+associate the isotopic composition, with the concept of
+uncertainty. 
+% PPHW: I don't know what this next sentence means?
+Because for this is the first
 introduction of uncertainty in CYCLUS (or fuel
 cycle calculation tool in general), we will
 consider the uncertainty on the material
 independent of any previous operation on this
 materials.
+%% In general, we need to have more to say here.
+%% How will we represent uncertainty in a
+%%    composition?
+%% We should probably have a specific idea for how
+%%    to do this
+%% To consider: the composition vector in Cyclus
+%%    represents a relative composition.
+%%    Therefore the uncertainty in any single
+%%    nuclide must be related to the uncertainty
+%%    in any other nuclide.
+%% Also more on: how this representation will be
+%%    transparent to archetypes that don't
+%%    implement error propagation Can we make a
+%%    representation that will still be correct!?!
+%%    Perhaps, if we only allow devs to use the
+%%    available methods to operate on material
+%%    objects.
+
 \subsection{Archetypes uncertainty management}
-In a fuel cycle calculation, there are three
-different uncertainty/error sources :
+When considering a material that is leaving any 
+given facility,
+ there are three
+different sources of uncertainty or error:
 \begin{itemize}
-\item the material uncertainty,
-  $\delta\vec{N}_{in}$, which is the input and the
-  output of each archetypes,
-\item the "tolerance", $\tau_{i}$, on the input
-  parameter, which corresponds the possible
-  variation range of any physics parameter, $i$,
-\item the error, $\epsilon_{mod}$, introduce by
-  the archetypes modeling/operation on the
-  material.
+\item the uncertainty in the isotopic composition vector
+  of the input material,
+  $\delta\vec{N}_{in}$,
+\item the uncertainty of parameters that define that
+  facility, $\tau_{i}$, 
+  which correspond to the possible
+  variation, or engineering tolerance, in any physics parameter, $i$,
+\item the modeling error, $\epsilon_{mod}$, introduced by
+  the choice of approximate archetypes models.
 \end{itemize}
-The uncertainty on the output material is a
-function of all those uncertainties :
+The uncertainty of the output material composition is a
+function of all those uncertainties:
 \begin{equation}
-\delta \vec{N}_{out} = {\cal F}\{~\delta\vec{N}_{in}~,~\tau_0~,~...~,~\tau_n~,~\epsilon_{mod}~\}
+\delta \vec{N}_{out} = {\cal F}\{~\delta\vec{N}_{in}~,~\tau_0~,~...~,~\tau_n~,~\epsilon_{mod}~\}.
 \end{equation}
-The work we are proposing to do on this project,
-is to allows all archetypes of CYCLUS, to combine
-all those sources and computes the resulting
-uncertainties on the output materials.  In the
-following parts, one will tried to detail the work
-which need to be done on the different archetypes,
-we are proposing to update.
+In this work we propose to introduce archetypes 
+that are able to combine 
+all those sources and compute the resulting
+uncertainties on the output materials.  The
+following sections indicate which specific archetypes
+will be considered with some indication of the uncertain
+paramters that define those archetypes.
+
 \subsubsection{Enrichment facility}
-The enrichment facility is probably the easiest
-facility to model, since the only error come from
+The enrichment facility is probably the 
+%% PPHW: separations may be even easier?!?
+facility for which it will be easiest to add uncertainty propagation,
+since the only error comes from
 the tails and feed stream enrichments, the
 enrichment process could be linearly models. This
 can be easily analytically combine and propagate.
