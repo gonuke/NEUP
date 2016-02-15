@@ -138,10 +138,10 @@ is $m_i$, and its relative abundance is $f_i$,
 then:
 
 \begin{align*}
-  \sum_i m_i &= m_{tot}\\
-  \sum_i \uncsq{m_i} &= \uncsq{m_{tot}}\\
-  f_i &= \frac{m_i}{m_{tot}}\\
-  \uncratiosq{f_i} &= \uncratiosq{m_i} + \uncratiosq{m_{tot}}
+  \sum_i m_i = m_{tot} \qquad\qquad&\qquad\qquad  
+       \sum_i \uncsq{m_i} = \uncsq{m_{tot}}\\
+  f_i = \frac{m_i}{m_{tot}} \qquad\qquad&\qquad\qquad  
+       \uncratiosq{f_i} = \uncratiosq{m_i} + \uncratiosq{m_{tot}}
 \end{align*}
 
 The data structures of a material object will be
@@ -213,8 +213,10 @@ correct implementation of the material object
 operators referred to in the previous section.
 Although further analysis will be necessary to
 confirm it, this simple approach is most likely
-appropriate for the source, sink, and storage
-facility.
+appropriate for the source, sink, fuel fabrication
+and storage facilities.
+
+\subsubsection{Cycamore separations facility}
 
 Some facilities require additional considerations.
 The Cycamore separations facility uses a simple
@@ -248,6 +250,8 @@ described in the previous section.  How to
 incorporate the additional source of uncertainty,
 and its impact on the uncertainty of the total
 mass will be addressed in this task.
+
+\subsubsection{Cycamore enrichment facility}
 
 The existing Cycamore enrichment facility produces
 enriched uranium on demand, matching the
@@ -310,12 +314,29 @@ for enriched material, impacting the feasible set
 of solutions for the network flow problem solved
 in the DRE.
 
-The Cycamore reactor facility implements a simple
-recipe based model for transmutation of material.
-That is, the user provides matched pairs of input
-recipes and output recipes that must correspond to
-other reactor parameters such as cycle length,
-discharge burnup and power level.
+\subsubsection{Cyamore reactor facility}
+
+The reactor archetype included in Cycamore is
+based on fixed matched pairs of recipes for input
+and output materials that are provided by the
+user,in addition of all the classical reactor
+parameter (batch number, cycle length, power,
+capacity factor,...).  Such a model does not allow
+any meaningful way to propagate uncertainty fron
+any input quantities into the output composition.
+Instead, the user will need to provide estimates
+of the sensitivity of the output recipe to
+variations in the input recipe.  In general, each
+output isotope will be sensitive to the
+uncertainty in every input isotope, although in
+practice some of these can be ignored.
+
+\begin{equation}
+\left(\frac{\delta N_j}{N_j}\right)^2 = \sum_i \left(\frac{\delta N_i}{N_i}\right)^2 \sigma_{i,j},
+\end{equation}
+where $\sigma_{i,j}$ describes the relationship
+between the uncertainty in output isotope $j$ and
+uncertainty in input isotope $i$.
 
 
 
@@ -325,32 +346,9 @@ discharge burnup and power level.
 
 
 
-\subsubsection{Cyamore separation facility}
-
-\subsubsection{Cycamore reactor facility}
 
 We are envisaging two kind of the reactor, which
-will be both capable of handling uncertainty.  The
-reactor archetype included in Cycamore is based on
-fixed recipes for input and output materials that
-are provided by the user,in addition of all the
-classical reactor parameter (batch number, cycle
-length, power, capacity factor,...).  Such a model
-does not allow any meaningful way to propagate
-uncertainty fron any input quantities into the
-output composition.  Instead, the user will need
-to provide estimates of the sensitivity of the
-output recipe to variations in the input recipe.
-In general, each output isotope will be sensitive
-to the uncertainty in every input isotope,
-although in practice some of these can be ignored.
-
-\begin{equation}
-\left(\frac{\delta N_j}{N_j}\right)^2 = \sum_i \left(\frac{\delta N_i}{N_i}\right)^2 \sigma_{i,j},
-\end{equation}
-where $\sigma_{i,j}$ describes the relationship
-between the uncertainty in output isotope $j$ and
-uncertainty in input isotope $i$.
+will be both capable of handling uncertainty.  
 
 Variation consideration on those
 parameters will affect the discharge time, which
