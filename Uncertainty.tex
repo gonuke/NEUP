@@ -19,6 +19,18 @@
 \setlength{\topmargin}{0in}
 \setlength{\textheight}{8.5in}
 
+\newcommand{\unc}[1]
+{ \delta #1 }
+
+\newcommand{\uncsq}[1]
+{ \left(\unc{#1}\right)^2 }
+
+\newcommand{\uncratio}[1]
+{ \left(\frac{\unc{#1}}{#1}\right) }
+
+\newcommand{\uncratiosq}[1]
+{ \uncratio{#1}^2 }
+
 \newcommand{\comment}[1]
 {{\bfseries \color{red} #1}}
 
@@ -45,11 +57,6 @@ Each use case
 requires a specific level
 of confidence, which are up to now very
 poorly assessed, if assessed at all.
-%% PPHW: I'm not sure that validation is even possible\\
-%% There is a
-%% real need of validation the those kind of  
-%% calculation, which can hardly been
-%% reached. 
 Indeed, the only existing way to develop confidence in
 any fuel cycle calculation/tool, is to compare
 with other similar tools or historical
@@ -81,10 +88,6 @@ distribution for each metric calculated in a fuel
 cycle simulation instead of unique values will
 allow a better comparison between different fuel
 cycle scenarios.  Moreover for some critical
-% PPHW: don't want to focus on non-pro so much
-%    Not focus of NEUP & not confident we can
-%    accomplish enough to make a difference
-%analysis such as retrospective non-proliferation
 use cases, it could be extremely valuable to add
 some degree of confidence on the results of the simulation.
 This could result in confidence in the use of the tool for
@@ -106,9 +109,66 @@ than single values.
 The goal of this project is to add optional
 extensions to Cyclus that will allow an assessment
 of the error as it propagates through a fuel
-cycle.
+cycle.  Four tasks are identified to accomplish
+this goal.
 
-\subsection{Add uncertainty to ressources}
+\subsection{Task 1: Add uncertainty to resources}
+
+The primary manifestation of uncertainty in a fuel
+cycle simulation is in the composition of material
+objects flowing through the system.  Thus the
+primary task is to extend the standard Cyclus
+material objects to inherently support an
+uncertainty in their composition.  Each Cyclus
+material is composed of both a total mass and a
+vector representing the relative abundance of the
+nuclides that make up that material.  While the
+total mass of a material object may be subject to
+some uncertainty, the composition vector is a more
+interesting case.
+
+Since these relative abundances are normalized,
+the sum of a composition vector must be equal to
+exactly one. Therefore, the uncertainty in the sum
+must be equal to zero, the uncertainty in any one
+nuclide is not independent of the uncertainty in
+other nuclides.  If the relative abundance of each
+nuclide, $i$, is $f_i$, then:
+
+\begin{align*}
+  \sum_i m_i &= m_{tot}\\
+  \sum_i \uncsq{m_i} &= \uncsq{m_{tot}}\\
+  f_i &= \frac{m_i}{m_{tot}}\\
+  \uncratiosq{f_i} &= \uncratiosq{m_i} + \uncratiosq{m_{tot}}
+\end{align*}
+
+The data structures of a material object will be
+extended to track the uncertainty in the
+individual fractional abundances subject to these
+relationships.
+
+Cyclus provides a fixed set of operators for
+creating and modifying material objects, largely
+to ensure conservation of mass.  Most notably,
+those operators include a method to divide a
+material object into two and a method to combine
+two material objects into one.  These operators
+will each be modified to implement an algorithm
+for error propagation that is appropriate to that
+operator and subject to the above relationships.
+
+\subsection{Task 2: Update Cycamore archetypes for simple uncertainty propagation}
+
+A set of standard archetypes are implemented and
+distributed as part of the Cycamore package.
+These archetypes use the simplest possible models
+for each of the facilities that they represent.
+
+
+\subsection{Task 3: Introduce new archetypes for advanced uncertainty propagation}
+
+\subsection{Task 4: Demonstrate uncertainty propagation}
+
 The first step of this work, is to update the
 principal tracked quantity in CYCLUS, the material and
 associate the isotopic composition, with the concept of
