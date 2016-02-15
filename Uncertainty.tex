@@ -304,7 +304,7 @@ used by any given request.
 
 Additional analysis will be necessary to determine
 how the uncertainties in the total feedstocks and
-separative work requirements will the response of
+separative work requirements will alter the response of
 the enrichment facility in the dynamic resource
 exchange (DRE).  The constraints imposed by the
 total available feedstocks and separative work
@@ -374,37 +374,71 @@ calculations.  In addition to a number of ongoing
 efforts to introduce a variety of interpolation
 approaches to Cyclus \cite{britelite, cyborg}, the
 CLASS project has developed a stand-alone approach
-based on neural networks.
+based on neural networks\cite{CLASS}.  The CLASS
+methodology will be incorporated into Cyclus
+modules and extended to include uncertainty
+propagation.
 
 \subsubsection{CLASS-based reactor facility}
 
-The second version of reactor will be able to
-calculate the evolution of the fuel provided by
-the fuel fabrication (see \S
-\ref{sec:fabrication}).  To do so, we propose
-investigating two ways, both using pre-trained
-models, allowing the prediction of key physics
+A new reactor archetype will be introduced 
+using pre-trained
+models to predict key physics
 parameters needed to compute the evolution of a
-fuel during the irradiation. It has been proven
-that from pre-trained neural network models, one
-can predict the evolution of the one group cross
-section during the irradiation of the fuel from
-its initial isotopic composition, and is working
-for a various range of reactor, from LWR to SFR
-\cite{Leniau Neural networks,
-  Leniau.PHYSOR.2016}.\\ 
-The first application using the neural network
-predictive models, is to train a model to directly
-predict the composition evolution as the function
-of the burnup. This application might not work,
-since the usage of neural network has been proven
-to predict one group macroscopic cross
-section.\\ 
-If the neural network model fail to directly
-predict precisely the isotopic composition
-evolution, one have to consider the second option,
-which imply to predict the 1 group cross section,
-then integrate the Bateman equation.\\
+fuel during the irradiation.  It has been demonstrated
+that pre-trained neural network models can be
+used to predict the evolution of the one group cross
+sections (of each nuclide?) during the irradiation 
+of the fuel from its initial isotopic composition
+for a range of reactor concepts, from LWR to SFR
+\cite{Leniau Neural networks, Leniau.PHYSOR.2016}.
+These time-dependent cross sections are then used
+by an ODE solver to determine the composition
+upon discharge of the fuel. Two approaches will 
+be considered for extending this neural network 
+concept to uncertainty propagation.
+
+The first approach will extend this concept of
+predicting one group cross sections to also
+estimate the uncertainty in those cross-sections
+based on the uncertainty of the initial isotopic
+inventory, and possibly other reactor parameters.
+The evolution of the isotopic inventory during
+irradiation will be solved, taking these
+uncertainties into account, and also including
+modeling errors due to the numerical resolution of
+the Bateman solution itself.
+
+Because the predictive model will be able to
+predict the one group cross section as the
+function of time (or burnup), one should be able
+to propagate those error using sensitivity
+analysis.  \comment{PPHW: we need more here - this
+  is the key contribution.}
+
+The time discretization other other approximations
+required to solve the Bateman equation will
+introduce computation error that also needs to be
+incorporated into the final uncertainty. This
+contribution to uncertainty can be characterized
+by a comparison of depletion calculations
+performed with this approach with a reference
+depletion calculation using the same modeling
+approach used in the training depletions, along
+the full isotopic space.
+
+It may also be possible, and preferable, to train
+the neural network to directly predict the final
+isotopic inventory from the initial isotopic
+inventory and other reactor parameters.  Although
+this approach has not been demonstrated, even in
+the absence of uncertainty, it may provide a
+better platform for the propagation of
+uncertainty.
+
+\comment{PPHW: I am not really sure what this
+  looks like, and the following text spends a lot
+  of time discussing what we WON'T do.}
 
 The main reason leading the try of direct
 prediction of the isotopic evolution, is the
@@ -412,7 +446,7 @@ error/uncertainty propagation. As express
 prevsiously :
 
 \begin{equation}
-\delta \vec{N}_{out} = {\cal F}\{~\delta\vec{N}_{in}~,~\tau_0~,~...~,~\tau_n~,~\epsilon_{mod}~\}
+\delta \vec{m}_{out} = {\cal F}\{~\delta\vec{m}_{in}~,~\tau_0~,~...~,~\tau_P~,~\epsilon_{mod}~\}
 \end{equation}
 The determination and the propagation of all
 uncertainty source is, for this kind of reactor, a
@@ -486,42 +520,26 @@ $\delta N_{in}$, with the prediction of the
 model.\\
 
 
-If the direct prediction of the composition is not
-precise enough, one have to use solve Bateman
-equation using predicted one group cross section
-and then compute the error coming from a numerical
-resolution of the Bateman equation and propagate
-the error of the one group cross section.  The
-Bateman equation resolution will be a step by step
-process. After having discretize the irradiation
-time (or burnup), one will use the model to
-predict the cross section at each time step
-(closer the time step are preciser the calculation
-will be) and then solve numerically the Bateman
-equation step after step, ending with the final
-isotopic composition of the fuel. Because the
-predictive model will be able to predict the one
-cross section as the function of time (or burnup),
-one should be able to propagate those error using
-sensitivity analysis.  The time discretization as
-well as the other approximation require to solve
-the Bateman equation will also introduce
-computation error that need to be determined and
-added to the final uncertainty. This could be made
-with the comparison of depletion calculation made
-with those extra approximation with the reference
-one performed using the same modeling
-approximation as the training depletion all along
-the isotopic space.
+\subsubsection{CLASS-based fuel fabrication} \label{sec:fabrication}
 
-
-
-\subsubsection{Fabrication} \label{sec:fabrication}
 The aim of the fuel fabrication is to mix
 different incoming material streams in order to
-build a fuel which validate the neutronics/physics
-requirement of the reactor. Depending of the
-reactor, the criterium could be various. We are
+build a fuel composition that supports the
+neutronics/physics requirement of the reactor. The
+Cycamore fuel fabrication facility mixes two
+streams of material using an equivalence method to
+approximate a desired composition by matching its
+initial reactivity.  \cite{cycamore_fab}
+\comment{PPHW: may need to tweak this wording
+  about Cycamore to be concise and correct.}  By
+contrast, methods implemented in the CLASS project
+have used a similar neural network approach as
+described above to determine how to mix multiple
+streams of material in order to satisfy a number
+of reactor performance goals including initial
+reactivity, burnup and/or conversion ratio.
+
+We are
 considering in the first time including
 fabrication model for MOX fuel only, in LWR and
 SFR, used as burner and breeder for SFR. One will
