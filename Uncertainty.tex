@@ -112,6 +112,7 @@ of the error as it propagates through a fuel
 cycle.  Four tasks are identified to accomplish
 this goal.
 
+
 \subsection{Task 1: Add uncertainty to resources}
 
 The primary manifestation of uncertainty in a fuel
@@ -158,148 +159,64 @@ will each be modified to implement an algorithm
 for error propagation that is appropriate to that
 operator and subject to the above relationships.
 
-\subsection{Task 2: Update Cycamore archetypes for simple uncertainty propagation}
-
-A set of standard archetypes are implemented and
-distributed as part of the Cycamore package.
-These archetypes use the simplest possible models
-for each of the facilities that they represent.
-
-
-\subsection{Task 3: Introduce new archetypes for advanced uncertainty propagation}
-
-\subsection{Task 4: Demonstrate uncertainty propagation}
-
-The first step of this work, is to update the
-principal tracked quantity in CYCLUS, the material and
-associate the isotopic composition, with the concept of
-uncertainty. 
-\comment{PPHW: I don't know what this next sentence means?}
-Because for this is the first
-introduction of uncertainty in CYCLUS (or fuel
-cycle calculation tool in general), we will
-consider the uncertainty on the material
-independent of any previous operation on this
-materials.
-
-\comment{
- In general, we need to have more to say here.
-
- How will we represent uncertainty in a
-    composition?
-
- We should probably have a specific idea for how
-    to do this
-
- To consider: the composition vector in Cyclus
-    represents a relative composition.
-    Therefore the uncertainty in any single
-    nuclide must be related to the uncertainty
-    in any other nuclide.
-
- Also more on: how this representation will be
-    transparent to archetypes that don't
-    implement error propagation Can we make a
-    representation that will still be correct!?!
-    Perhaps, if we only allow devs to use the
-    available methods to operate on material
-    objects.
-}
-
-\subsection{Archetype uncertainty management}
-When considering a material that is leaving any 
-given facility,
- there are three
-different sources of uncertainty or error:
+When considering a material that is leaving any
+given facility, there are three different sources
+of uncertainty or error:
 \begin{itemize}
-\item the uncertainty in the isotopic composition vector
-  of the input material,
-  $\delta\vec{N}_{in}$,
+\item the isotopic inventory vector of the input,
+  $\vec{m}_{in} = m_{tot,in} \cdot \vec{f}_{in}$,
+  has an associated uncertainty $\unc{\vec{m}_{in}}$,
 \item the uncertainty of parameters that define that
   facility, $\tau_{p}$, 
   which correspond to the possible
-  variation, or engineering tolerance, in any physics parameter, $i$,
+  variation, or engineering tolerance, in any physics parameter, $p$,
 \item the modeling error, $\epsilon_{mod}$, introduced by
   the choice of approximate archetypes models.
 \end{itemize}
 The uncertainty of the output material composition is a
 function of all those uncertainties:
 \begin{equation}
-\delta \vec{N}_{out} = {\cal F}\{~\delta\vec{N}_{in}~,~\tau_0~,~...~,~\tau_P~,~\epsilon_{mod}~\}.
+  \delta \vec{m}_{out} = 
+         {\cal F}\{~\unc{\vec{m}_{in}}~,~\tau_0~,~...~,~\tau_P~,~\epsilon_{mod}~\}.
 \end{equation}
-In this work we propose to introduce archetypes 
-that are able to combine 
-all those sources and compute the resulting
-uncertainties on the output materials.  The
-following sections indicate which specific archetypes
-will be considered with some indication of the uncertain
-paramters that define those archetypes.  
-In some cases, these archetypes are modifications
-of those that are already part of the Cycamore set
-of base archetypes.  In other cases, entirely new
-models will be introduced to enable more advanced
-uncertainty propagation.
 
-\subsubsection{Cycamore enrichment facility}
+In this work we propose to introduce archetypes
+that are able to combine all those sources and
+compute the resulting uncertainties on the output
+materials.  The following sections indicate which
+specific archetypes will be considered with some
+indication of the uncertain paramters that define
+those archetypes.  In some cases, these archetypes
+are modifications of those that are already part
+of the Cycamore set of base archetypes.  In other
+cases, entirely new models will be introduced to
+enable more advanced uncertainty propagation.
 
-The existing Cycamore enrichment facility produces
-enriched uranium on demand, matching the
-enrichment of each request, $k$.  Standard models
-for enrichment flow rates and separative work
-requirements are used only to determine the total
-throughput of the facility in any time step as a
-function of the:
-\begin{itemize}
-\item inventory, $F_{tot}$, and composition,
-  $x_f$, of feed material,
-\item assay of the tails stream, $x_w$, and
-\item total separative work, $S_{tot}$.
-\end{itemize}
+\subsection{Task 2: Update Cycamore archetypes for simple uncertainty propagation}
 
-\begin{align*}
-  F_k = \frac{x_k - x_w}{x_f - x_w} P_k\qquad\qquad\qquad
-  &W_k = \frac{x_k - x_f}{x_f - x_w} P_k\\
-  S_k =  P_k\left(2x_k-1\right)ln\frac{x_k}{1-x_k}
-         +W_k\left(2x_w-1\right)&ln\frac{x_w}{1-x_w}  
-         -F_k\left(2x_f-1\right)ln\frac{x_f}{1-x_f}\\
-  \sum_k{F_k} \leq F_{tot}\qquad\qquad
-  &\sum_k{S_k} \leq S_{tot}
-\end{align*}
+A set of standard archetypes are implemented and
+distributed as part of the Cycamore package.
+These archetypes use the simplest possible models
+to approximate each of the facilities that they
+represent.  In most cases, these models are too
+simple to be the basis for a rigorous uncertainty
+propagation model.  They are based heavily on user
+input to approximate the physics and error
+propagation may also require additional user
+input.  All Cycmoare archetypes will be assessed
+for their role in error propagation in a full fuel
+cycle simulation, with a minimum requirement that
+output material uncertainty be at least as high as
+input material uncertainty.  This can be
+accomplished, to a large degree, through the
+correct implementation of the material object
+operators referred to in the previous section.
+Although further analysis will be necessary to
+confirm it, this simple approach is most likely
+appropriate for the source, sink, and storage
+facility.
 
-With this model, the uncertainty in the product
-material is not determined by the inputs or the
-model itself.  Instead, the uncertainty in product
-enrichment can be introduced with a user-defined
-tolerance parameter.  Conversely, uncertainty in
-the product enrichment can lead to uncertainty in
-the amount of feed that is consumed by any request
-and uncertainty in the amount of separative work
-capacity that is consumed in order to fullful each
-request.  A user-specified tolerance on the tails
-assay can also be introduced to contribute to
-these uncertainties.
-
-Based on the uncertainty in the product enrichment
-(and possibly the tails enrichment), it would be
-possible to determine the uncertainty on the
-amount of feed material that is consumed by any
-given request and on the amount of separative work
-used by any given request.
-
-\begin{align*}
-  \left(\frac{\delta F_k}{F_k}\right)^2 &= \left(\frac{\delta x_k}{x_k}\right)^2 + \left(\frac{\delta x_w}{x_w}\right)^2 ????\\
-  \delta S_k &= ....
-\end{align*}
-
-
-\subsubsection{Other Enrichment Facility??}
-
-\comment{PPHW: Do we want one of these? Possibly
-  parametrized by something in the way the cascade
-  operates or a single centrifuge?}
-
-\subsubsection{Cyamore separation facility}
-
+Some facilities require additional considerations.
 The Cycamore separations facility uses a simple
 separation matrix approach to distribute every
 nuclide, $i$, in the input material across $K$
@@ -324,9 +241,91 @@ express as :
 \left(\frac{\delta N_{i}}{N_{j}}\right)^{2}_k = \left(\frac{\delta N_{i}}{N_{i}}\right)^{2}_{in} +  \left(\frac{\delta e_{i}}{e_{i}}\right)^{2}_k 
 \end{equation}
 
-\comment{PPHW: We do need to continue to discuss the
-  interdependence of these uncertainties between
-  different isotopes in the same composition.}
+In the limit of no uncertainty in the separation
+parameters, this separated materials can be
+generated purely by the material operators
+described in the previous section.  How to
+incorporate the additional source of uncertainty,
+and its impact on the uncertainty of the total
+mass will be addressed in this task.
+
+The existing Cycamore enrichment facility produces
+enriched uranium on demand, matching the
+enrichment of each request, $k$.  Standard models
+for enrichment flow rates and separative work
+requirements are used only to determine the total
+throughput of the facility in any time step as a
+function of the:
+\begin{itemize}
+\item inventory, $F_{tot}$, and composition,
+  $x_f$, of feed material,
+\item assay of the tails stream, $x_w$, and
+\item total separative work, $S_{tot}$.
+\end{itemize}
+
+\begin{align*}
+  \sum_k{F_k} \leq F_{tot}\qquad\qquad
+  &\sum_k{S_k} \leq S_{tot}\\
+  F_k = \frac{x_k - x_w}{x_f - x_w} P_k\qquad\qquad\qquad
+  &W_k = \frac{x_k - x_f}{x_f - x_w} P_k\\
+  S_k =  P_k\left(2x_k-1\right)ln\frac{x_k}{1-x_k}
+         +W_k\left(2x_w-1\right)&ln\frac{x_w}{1-x_w}  
+         -F_k\left(2x_f-1\right)ln\frac{x_f}{1-x_f}
+\end{align*}
+
+With this model, the uncertainty in the product
+material is not determined by the inputs or the
+model itself.  Instead, the uncertainty in product
+enrichment can be introduced with a user-defined
+tolerance parameter.  Conversely, uncertainty in
+the product enrichment can lead to uncertainty in
+the amount of feed that is consumed by any request
+and uncertainty in the amount of separative work
+capacity that is consumed in order to fullful each
+request.  A user-specified tolerance on the tails
+assay can also be introduced to contribute to
+these uncertainties.
+
+Based on the uncertainty in the product enrichment
+(and possibly the tails enrichment), it would be
+possible to determine the uncertainty on the
+amount of feed material that is consumed by any
+given request and on the amount of separative work
+used by any given request.
+
+\begin{align*}
+  \uncratiosq{F_k} &= \uncratiosq{x_k} + \uncratiosq{x_w} ????\\
+  \delta S_k &= ....
+\end{align*}
+
+Additional analysis will be necessary to determine
+how the uncertainties in the total feedstocks and
+separative work requirements will the response of
+the enrichment facility in the dynamic resource
+exchange (DRE).  The constraints imposed by the
+total available feedstocks and separative work
+manifest themselves in the offers provided by the
+enrichment facility when responding to requests
+for enriched material, impacting the feasible set
+of solutions for the network flow problem solved
+in the DRE.
+
+The Cycamore reactor facility implements a simple
+recipe based model for transmutation of material.
+That is, the user provides matched pairs of input
+recipes and output recipes that must correspond to
+other reactor parameters such as cycle length,
+discharge burnup and power level.
+
+
+
+\subsection{Task 3: Introduce new archetypes for advanced uncertainty propagation}
+
+\subsection{Task 4: Demonstrate uncertainty propagation}
+
+
+
+\subsubsection{Cyamore separation facility}
 
 \subsubsection{Cycamore reactor facility}
 
