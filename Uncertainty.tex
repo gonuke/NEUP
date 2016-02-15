@@ -332,27 +332,23 @@ uncertainty in every input isotope, although in
 practice some of these can be ignored.
 
 \begin{equation}
-\left(\frac{\delta N_j}{N_j}\right)^2 = \sum_i \left(\frac{\delta N_i}{N_i}\right)^2 \sigma_{i,j},
+\uncratiosq{N_j} = \sum_i \uncratiosq{N_i} \sigma_{i,j},
 \end{equation}
 where $\sigma_{i,j}$ describes the relationship
 between the uncertainty in output isotope $j$ and
 uncertainty in input isotope $i$.
 
+\comment{PPWH: I'm not sure this equation captures
+  everything.}
 
+\comment{PPHW: probably more here on how to do
+  this?  I expect it will be substantial
+  fraction of the effort, but less than task 3.}
 
-\subsection{Task 3: Introduce new archetypes for advanced uncertainty propagation}
-
-\subsection{Task 4: Demonstrate uncertainty propagation}
-
-
-
-
-We are envisaging two kind of the reactor, which
-will be both capable of handling uncertainty.  
-
-Variation consideration on those
-parameters will affect the discharge time, which
-should be very difficult to include in the
+\comment{PPHW: Does this belong here with the
+  recipe reactor?}  Variation consideration on
+those parameters will affect the discharge time,
+which should be very difficult to include in the
 uncertainty calculation. Nevertheless, a brute
 force study ( also sometimes called "Total Monte
 Carlo method") could allow the determine their
@@ -360,12 +356,25 @@ impact, running many time the same simulation
 choosing randomly the parameter value at each
 cycle of the reactor, the distribution of the
 results will provides a precise measurement of the
-sensivity.\\
+sensivity.
 
-The
-first one will be built as an upgrade of the
-existing CYCAMORE reactor, making it error
-aware.
+\subsection{Task 3: Introduce new archetypes for advanced uncertainty propagation}
+
+Although the basis of many fuel cycle simulators,
+the recipe reactor concept is overly rigid,
+unresponsive to fluctutions that may arise in fuel
+compositions, particularly in the presence of
+recycling.  Similarly, the simple sensitivity
+approach for propagating uncertainty in the recipe
+reactor is very rigid and may not respond fully to
+the uncertainties that may emerge.  The next level
+of sophistication relies on interpolation on a set
+of precomputed results from details depletion
+calculations.  In addition to a number of ongoing
+efforts to introduce a variety of interpolation
+approaches to Cyclus \cite{britelite, cyborg}, the
+CLASS project has developed a stand-alone approach
+based on neural networks.
 
 \subsubsection{CLASS-based reactor facility}
 
@@ -564,7 +573,7 @@ of the model can be expressed as :
  needed the be assessed by the calculation of the
  covariance matrix which need to be build.
 
-\subsection{Problems/Applications/Validations}
+\subsection{Task 4: Demonstrate uncertainty propagation}
 During the realization of this work we would like
 to validate each step of the uncertainty
 propagation process. First, with a mid/early-term
