@@ -8,6 +8,8 @@
 
 \usepackage[pdftex]{graphicx}
 \usepackage{url}
+\usepackage[pdftex]{xcolor}
+\usepackage{amsmath}
 
 % These are additional packages for "pdflatex", graphics, and to include
 % hyperlinks inside a document.
@@ -16,6 +18,10 @@
 \setlength{\textwidth}{6.5in}
 \setlength{\topmargin}{0in}
 \setlength{\textheight}{8.5in}
+
+\newcommand{\comment}[1]
+{{\bfseries \color{red} #1}}
+
 
 %----------------------------------------------------------------------------------------
 %	DOCUMENT INFORMATION
@@ -111,12 +117,41 @@ cycle.
 The first step of this work, is to update the
 principal CYCLUS metric : the material and
 associate the isotopic composition with a
-uncertainty. Because for this is the first
-introduction of uncertainty in CYCLUS (or fuel
-cycle calculation tool in general), we will
-consider the uncertainty on the material
-independent of any previous operation on this
-materials.
+uncertainty. 
+
+Because of the present of cycle in a fuel cycle
+calculation, one major problem could be redundancy
+of certain error/uncertainty, which are related,
+and should be taken into account in the
+uncertainty propagation. This should require a
+tracking of the error/uncertainty/tolerance source
+on each material circulating inside the fuel cycle
+calculation. Unfortunatly this is far to
+complicated for a first step into error
+propagation, therefore the uncertainty on the
+material independent of any previous operation on
+this materials.\\
+\comment{bam: the uncertainty of a material will
+be considered as independant of any error source
+in a archetypes}
+
+\comment{bam: not sure but if a composition vector
+in Cyclus represents a relative composition then
+one should have 2 kind of unertainty on a material
+: the error on the relativ composition and the
+error on the quantity on this material. Moreover
+on should also have some equation which bound the
+relativ uncertainty, like: \\
+\begin{eqnarray}
+\left\{
+\begin{aligned}
+&\sum_i N_i \{\delta N_i\} = 1 \{0\}\\
+&\delta Q\\
+\end{aligned}
+\right.
+\end{eqnarray}
+where ${x}$ represent the uncertainty on the parameter.
+}
 \subsection{Archetypes uncertainty management}
 In a fuel cycle calculation, there are three
 different uncertainty/error sources :
