@@ -486,23 +486,32 @@ matrix.
 As the cross section matrix at any time t, $D(t)$,
 can be determine using the prediction of the
 neural network (from the initial fuel composition)
-, it possible to determinate the sensitivity, $\gamma_{i,j}$  of
-the one group cross section, $i$ on the isotope quantity, $j$ at
-the end of the depletion step, $k$. One can then
-express the modeling error at the end of the step $k$ as :
+, it possible to determinate the sensitivity,
+$\gamma_{i,j}$  of the one group cross section,
+$i$ on the isotope quantity, $j$ at the end of the
+depletion step, $k$. One can then express the
+modeling error at the end of the step $k$ as :
 \begin{equation}
-  \left( \frac{\delta m_j^{k}}{m_j^{k}} \right)^{2} _{Mod} = \sum_{i}\left( \frac{\delta \sigma_i^{k-1}}{\sigma_i^{k-1}} \right)^{2} *\gamma_{i,j}
+  \left( \frac{\delta m_j^{k}}{m_j^{k}} \right)^{2} _{Mod} = \sum_{i}\left( \frac{\delta \sigma_i^{k-1}}{\sigma_i^{k-1}} \right)^{2} *\gamma_{i,j}(k)
 \end{equation}
 Following the same reasonment on can establish also the sentivity $\beta_{ij}$ of the initial uncertainty on the isotope, $j$ on the isotope, $i$, uncertainty at the end of the time step $k$ as:
 \begin{equation}
-  \left( \frac{\delta m_i^{k}}{m_i^{k}} \right)^{2} _{\delta \vec{m_i}^{k-1} } = \sum_{i}\left( \frac{\delta m_i^{k-1}}{m_i^{k-1}} \right)^{2} *\beta_{i,j}
+  \left( \frac{\delta m_i^{k}}{m_i^{k}} \right)^{2} _{\delta \vec{m_i}^{k-1} } = \sum_{u}\left( \frac{\delta m_u^{k-1}}{m_u^{k-1}} \right)^{2} *\beta_{u,j}(k)
 \end{equation}
 
 
-and then on the final composition as :
-\begin{equation}
-  \left( \frac{\delta \vec{m}^{f}}{\vec{m}^{f}} \right)^{2} _{Mod} = \sum_{k=0}^{L}\sum_{}
-\end{equation}
+and then on the final composition (considering $L$ calculation step) as :
+\begin{eqnarray}
+  \nonumber
+  \left( \frac{\delta \vec{m}^{L}}{\vec{m}^{L}} \right)^{2} _{Mod} &=& \sum_{i} \left( \frac{\delta \sigma_i^{L-1}}{\sigma_i^{L-1}} \right)^{2} *\gamma_{i,j}(L)\\
+\nonumber
+  &+& \sum_{u^{0}}  \sum_{i} \left( \frac{\delta \sigma_i^{L-2}}{\sigma_i^{k-2}} \right)^{2} *\gamma_{i,u^{0}}(L-1) *\beta_{u^{0},j}(L)\\
+\nonumber
+&+& \sum_{u^{0}} \sum_{u^{1}} \sum_{i} \left( \frac{\delta \sigma_i^{L-3}}{\sigma_i^{L-3}} \right)^{2} *\gamma_{i,u^{1}}(L-2) *\beta_{u^{1},u^{0}}(L-1) *\beta_{u^{0},j}(L)\\
+\nonumber
+&+& ...\\
+  &+& \sum_{u^{0}}... \sum_{u^{L-2}} \sum_{i} \left( \frac{\delta \sigma_i^{0}}{\sigma_i^{0}} \right)^{2} *\gamma_{i,u^{L-2}}(1)*\beta_{u^{L-2},u^{L-3}}(2)* ...  *\beta_{u^{0},j}(L)
+\end{eqnarray}
 
 
 
