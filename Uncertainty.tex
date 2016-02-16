@@ -304,15 +304,15 @@ used by any given request.
 
 Additional analysis will be necessary to determine
 how the uncertainties in the total feedstocks and
-separative work requirements will alter the response of
-the enrichment facility in the dynamic resource
-exchange (DRE).  The constraints imposed by the
-total available feedstocks and separative work
-manifest themselves in the offers provided by the
-enrichment facility when responding to requests
-for enriched material, impacting the feasible set
-of solutions for the network flow problem solved
-in the DRE.
+separative work requirements will alter the
+response of the enrichment facility in the dynamic
+resource exchange (DRE).  The constraints imposed
+by the total available feedstocks and separative
+work manifest themselves in the offers provided by
+the enrichment facility when responding to
+requests for enriched material, impacting the
+feasible set of solutions for the network flow
+problem solved in the DRE.
 
 \subsubsection{Cyamore reactor facility}
 
@@ -385,18 +385,20 @@ A new reactor archetype will be introduced
 using pre-trained
 models to predict key physics
 parameters needed to compute the evolution of a
-fuel during the irradiation.  It has been demonstrated
+fuel during the irradiation. It has been demonstrated
 that pre-trained neural network models can be
 used to predict the evolution of the one group cross
-sections (of each nuclide?) during the irradiation 
-of the fuel from its initial isotopic composition
-for a range of reactor concepts, from LWR to SFR
+sections of each nuclide (for fission, capture and
+$n,2n$ reactions) during the irradiation of the
+fuel from its initial isotopic composition for a
+range of reactor concepts, from LWR to SFR
 \cite{Leniau Neural networks, Leniau.PHYSOR.2016}.
 These time-dependent cross sections are then used
 by an ODE solver to determine the composition
 upon discharge of the fuel. Two approaches will 
 be considered for extending this neural network 
 concept to uncertainty propagation.
+
 
 The first approach will extend this concept of
 predicting one group cross sections to also
@@ -408,6 +410,101 @@ irradiation will be solved, taking these
 uncertainties into account, and also including
 modeling errors due to the numerical resolution of
 the Bateman solution itself.
+
+The second approach will an attempt to use of the
+neural network to predict direct the fuel
+composition evolution and to estimate the
+uncertainty on this composition based on the
+uncertainty of the initial isotopic inventory and
+the possible other reactor parameters.
+
+In both case, the uncertainty on the output
+composition, $\vec{m_i}^{f}$, will have different
+compoments that need to be computed and combined:
+\begin{equation}
+  \left( \frac{\delta \vec{m}^{f}}{\vec{m}^{f}} \right)^{2} _{tot} =
+  {\cal C}\left(  \left( \frac{\delta \vec{m}^{f}}{\vec{m}^{f}} \right)^{2} _{Mod},
+                  \left( \frac{\delta \vec{m}^{f}}{\vec{m}^{f}} \right)^{2} _{\delta \vec{m_i}^{i} },
+                  \left( \frac{\delta \vec{m}^{f}}{\vec{m}^{f}} \right)^{2} _{\tau_p} \right)
+\end{equation}
+
+In both case, we are proposing to determine and
+combine those errors using empirical methods.
+
+\paragraph{The Modeling Error $\left( \frac{\delta \vec{m}^{f}}{\vec{m}^{f}} \right)^{2} _{Mod}$ : \\}
+This error are more complicated in the first case
+than in the second case. Indeed in the second case,
+the Modeling Error are the direct error on the
+prediction made by the neural networks.
+In the first case, those prediction errors have to
+be propagated along the depletion calculation.
+In both cases, after having trained the neural
+network, we need to map the error on the neural
+prediction.
+To do so, to detect neural network over-training,
+the best is to compute a new data set, similar but
+independant to the one use for the training, and
+test the accuracy of the neural network prediction.
+Then using an interpolation model (as krigking),
+${\cal K}_k$,  predict the error on the parameter
+predictions, $\rho_k$,  made with the neural
+network :
+\begin{equation}
+  \left( \frac{\delta \rho_k}{\rho_k} \right)^{2} _{Mod} = {\cal K}_k \left( \vec{m_i}^{i} \right)
+\end{equation}
+\comment{ Bam : The kriging seems to be a good
+approach to map the error of the neural network
+prediction in the space}
+
+For the second the case the estimation of the
+direct Modeling Error end there, as $\rho_k$ = $m_k$.
+
+
+For the first case, the predicted paramter are the
+one group cross section, one still need to
+propagate those error during the depletion
+calculation ${\cal D}$.\\
+The Bateman equation can be written in its matrix
+form as :
+\begin{equation}
+  \frac{d\vec{N}}{dt}(t) = (\Lambda + \phi(t) . D) \times \vec{N}(t)
+\end{equation}
+where $\vec{N}(t)$ represents the isotopic vector
+of the fuel at the time t and
+$\frac{d\vec{N}}{dt}(t)$ its variation, $\Lambda$
+the decay part of the depletion matrix, $D$ the
+cross section part and $\phi(t)$ the neutron flux.
+The neutron flux can be estimated assuming a the
+constant power in the reactor core as:
+\begin{equation}
+  \phi(t) = \frac{P}{ \vec{E}_f \times D_f \times \vec{N}},
+\end{equation}
+with P the thermal power of the core, $\vec{E}_f$,
+the vector of the energy release per fission and
+$D_f$ the fission compoment of the cross section
+matrix.
+As the cross section matrix at any time t, $D(t)$,
+can be determine using the prediction of the
+neural network (from the initial fuel composition)
+, it possible to determinate the sensitivity, $\gamma_{i,j}$  of
+the one group cross section, $i$ on the isotope quantity, $j$ at
+the end of the depletion step, $k$. One can then
+express the modeling error at the end of the step $k$ as :
+\begin{equation}
+  \left( \frac{\delta m_j^{k}}{m_j^{k}} \right)^{2} _{Mod} = \sum_{i}\left( \frac{\delta \sigma_i^{k-1}}{\sigma_i^{k-1}} \right)^{2} *\gamma_{i,j}
+\end{equation}
+Following the same reasonment on can establish also the sentivity $\beta_{ij}$ of the initial uncertainty on the isotope, $j$ on the isotope, $i$, uncertainty at the end of the time step $k$ as:
+\begin{equation}
+  \left( \frac{\delta m_i^{k}}{m_i^{k}} \right)^{2} _{\delta \vec{m_i}^{k-1} } = \sum_{i}\left( \frac{\delta m_i^{k-1}}{m_i^{k-1}} \right)^{2} *\beta_{i,j}
+\end{equation}
+
+
+and then on the final composition as :
+\begin{equation}
+  \left( \frac{\delta \vec{m}^{f}}{\vec{m}^{f}} \right)^{2} _{Mod} = \sum_{k=0}^{L}\sum_{}
+\end{equation}
+
+
 
 Because the predictive model will be able to
 predict the one group cross section as the
@@ -426,6 +523,7 @@ performed with this approach with a reference
 depletion calculation using the same modeling
 approach used in the training depletions, along
 the full isotopic space.
+
 
 It may also be possible, and preferable, to train
 the neural network to directly predict the final
