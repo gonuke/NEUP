@@ -73,7 +73,7 @@ concepts.
 
 The aim of this project is to add error
 propagation capability to the CYCLUS fuel cycle
-simulator [1]. Given the use case of predicting the
+simulator \cite{CYCLUS}. Given the use case of predicting the
 evolution of a large industrial enterprise in an
 uncertain future, nuclear fuel cycle simulations
 are generally based on approximate models and
@@ -404,9 +404,9 @@ of precomputed results from details depletion
 calculations.  In addition to a number of ongoing
 efforts to introduce a variety of interpolation
 approaches to Cyclus \cite{britelite, cyborg}, the
-CLASS project has developed a stand-alone approach
-based on neural networks\cite{CLASS}.  The CLASS
-methodology will be incorporated into Cyclus
+CLASS project\cite{CLASS} has developed a
+stand-alone approach based on neural networks \cite{Leniau.ANE.2015}. The
+CLASS methodology will be incorporated into Cyclus
 modules and extended to include uncertainty
 propagation.
 
@@ -422,12 +422,11 @@ one group cross sections of each nuclide (for
 fission, capture and $n,2n$ reactions) during the
 irradiation of the fuel from its initial isotopic
 composition for a range of reactor concepts, from
-LWR to SFR \cite{Leniau.ANE.2015,
-  Leniau.PHYSOR.2016}.  These time-dependent cross
-sections are then used by an ODE solver to
-determine the composition upon discharge of the
-fuel.  For a neural network predictor, ${\cal P}$,
-and an ODE solver, ${\cal S}$,
+LWR to SFR \cite{Leniau.ANE.2015, Leniau.PHYSOR.2016}.
+These time-dependent cross sections are then used
+by an ODE solver to determine the composition upon
+discharge of the fuel.  For a neural network
+predictor, ${\cal P}$, and an ODE solver, ${\cal S}$,
 
 \begin{align}
   \vec{\Sigma}(t) &= {\cal P}\left( \vec{m}_{in}\right)\\
@@ -845,7 +844,10 @@ and the propagation of the initial uncertainty:
 \begin{equation}
   \left(\unc{\rho}\right)_{in} = {\cal K}^{\star}_2\left( \uncvector{\vec{m}_{1}},\uncvector{\vec{m}_{2}}, BU \right)
 \end{equation}
-
+We may consider directly include $\delta BU$:
+\begin{equation}
+  \left(\unc{\rho}\right)_{in} = {\cal K}^{\star}_2\left( \uncvector{\vec{m}_{1}},\uncvector{\vec{m}_{2}}, \uncvector{BU} \right)
+\end{equation}
 
 We are considering in the first time including
 fabrication model for MOX fuel only, in LWR and
