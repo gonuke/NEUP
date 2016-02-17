@@ -259,7 +259,7 @@ uncertainty on the output material composition can
 express as :
 
 \begin{equation}
-\left(\frac{\delta N_{i}}{N_{j}}\right)^{2}_k = \left(\frac{\delta N_{i}}{N_{i}}\right)^{2}_{in} +  \left(\frac{\delta e_{i}}{e_{i}}\right)^{2}_k 
+  \uncratiosq{N_{i,k}} = \uncratiosq{N_{i,in}} +  \uncratiosq{e_{i,k}}
 \end{equation}
 
 In the limit of no uncertainty in the separation
@@ -328,7 +328,7 @@ probably involve a similar level of complexity as
 it combines streams of material to approximate a
 desired reactivity.
 
-\subsubsection{Cyamore reactor facility}
+\subsubsection{Cycamore reactor facility}
 
 The reactor archetype included in Cycamore is
 based on fixed matched pairs of recipes for input
@@ -422,7 +422,7 @@ one group cross sections of each nuclide (for
 fission, capture and $n,2n$ reactions) during the
 irradiation of the fuel from its initial isotopic
 composition for a range of reactor concepts, from
-LWR to SFR \cite{Leniau Neural networks,
+LWR to SFR \cite{Leniau.ANE.2015,
   Leniau.PHYSOR.2016}.  These time-dependent cross
 sections are then used by an ODE solver to
 determine the composition upon discharge of the
@@ -830,8 +830,24 @@ streams of material in order to satisfy a number
 of reactor performance goals including initial
 reactivity, burnup and/or conversion ratio.
 
-We are
-considering in the first time including
+
+What existe now :
+\begin{align}
+  \rho &= {\cal P^{\star}}\left( \vec{m}_{1},\vec{m}_{2}, BU \right)\\
+\end{align}
+
+It is also necessary to estimate the error due to
+the neural network prediction:
+\begin{equation}
+  \left(\unc{\rho}\right)_{\cal P^\star} = {\cal K}_1^{\star}\left( \vec{m}_{1},\vec{m}_{2}, BU \right)
+\end{equation}
+and the propagation of the initial uncertainty:
+\begin{equation}
+  \left(\unc{\rho}\right)_{in} = {\cal K}^{\star}_2\left( \uncvector{\vec{m}_{1}},\uncvector{\vec{m}_{2}}, BU \right)
+\end{equation}
+
+
+We are considering in the first time including
 fabrication model for MOX fuel only, in LWR and
 SFR, used as burner and breeder for SFR. One will
 use algorithm building fuel allowing to build fuel
@@ -1084,7 +1100,7 @@ represented on the figure \ref{fig:progression}.
 
 \bibliographystyle{unsrt}
 
-\bibliography{}
+\bibliography{Uncertainty}
 
 %----------------------------------------------------------------------------------------
 
