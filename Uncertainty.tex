@@ -410,7 +410,7 @@ CLASS methodology will be incorporated into Cyclus
 modules and extended to include uncertainty
 propagation.
 
-\subsubsection{CLASS-based reactor facility}
+\subsubsection{CLASS-based reactor facility} \label{sec:reactors}
 
 A new reactor archetype will be introduced using
 pre-trained models, ${\cal M}$, to predict key
@@ -451,12 +451,27 @@ uncertainty in the final composition:
   \uncvector{\vec{m}_{out}} = {\cal S^\prime}\left( \uncvector{\vec{\Sigma}(t)}, \uncvector{\vec{m}_{in}}\right)
 \end{align}
 
+The primary approach to approximating the error in
+predicted cross sections will be to directly
+compare the predicted cross section evolutions
+with directly calculated cross section evolutions
+for a variety of intial material compositions that
+are not included in the set of data used to train
+the neural networks.  Theoretically, the training
+data itself is subject to uncertainty from its own
+calculation methodology, but this source of
+uncertainty will not be considered in this
+project.
+
 Uncertainty may also be introduced in the
-user-defined model parameters, $\tau_p$.  The
-neural network model itself may be able to provide
-insight on the uncertainty in output composition
-caused by some model parameters, \textit{e.g.} he
-burnup of the fuel at discharge.
+user-defined model parameters, $\tau_p$, but the
+mechanism for doing so will depend on how each
+parameter interacts with the physics model being
+implemented.  The neural network model itself may
+be able to provide insight on the uncertainty in
+output composition caused by some model
+parameters, \textit{e.g.} he burnup of the fuel at
+discharge.
 
 The second approach will attempt to use a new
 neural network predictor, ${\cal P^\prime}$, to
@@ -474,340 +489,38 @@ and the propagation of the initial uncertainty:
   \left(\unc{\vec{m}_{out}}\right)_{\unc{\vec{m}_{in}}} = {\cal K}^{\prime}_2(\vec{m}_{in}, \unc{\vec{m}_{in}})
 \end{align}
 
+The operator to estimate the uncertainty due to
+the neural network prediction, ${\cal
+  K}_1^{\prime}$, can be evaluated in the same way
+as for operator ${\cal K}$ described in
+\ref{eqn:10}.  The operator to estimate the
+propagation of the initial uncertainty, ${\cal
+  K}_2^{\prime}$ requires more investigation, but
+could be implemented either as a neural network
+itself, or with other techniques (\textit{e.g.}
+kriging).
 
+Once again, it is still necessary to consider the
+mechanism for also incorporating uncertainty that
+is introduced from variation in the parameters
+that define the reactor's behavior.
 
-It's possible that this new predictor is separable
-and can be decomposed into one predictor for the
-final composition and another predictor for the
-uncertainty in that composition.
+\paragraph{Other errors:\\}
 
-As with the first approach, this predictor will
-introduce a modeling error.
-
-In both case, the uncertainty of the output
-composition, $\vec{m}_{out}$, will have different
-compoments that need to be computed and combined:
-\begin{align}
-  \uncratiosq{\vec{m}_{out}}_{tot} =
-  {\cal C}\left(  \uncratiosq{\vec{m}_{out}} _{\cal M},
-                  \uncratiosq{\vec{m}_{out}} _{\delta \vec{m}_{in}},
-                  \uncratiosq{\vec{m}_{out}} _{\vec{\tau}}
-         \right)
-\end{align}
-
-In both case, we are proposing to determine and
-combine those errors using empirical methods.
-
-\paragraph{The Modeling Error $\uncratiosq{\vec{m}_{out}} _{\cal M}$ : \\}
-
-Since both cases rely on neural networks that are
-trained with sets of training data, modeling
-errors arise from errors in the methods of
-producing those training data and also in the
-methods of training the neural network.  For this
-work, errors in the underlying training data will
-be ignored, but errors in the neural network
-algorithms can be empircally estimated by
-comparing the predictions of the neural network to
-a direct calculation for data sets that are not in
-the set of training data.
-
-For the first approach, the neural network will be
-predicting cross sections at each time step of a
-depletion solve based on the initial composition,
-and each such prediction has an associated
-modeling error.  Different ODE solver approaches
-will be investigated for their ability to include
-the combination of uncertainty and modeling error
-as the solution progresses through time.  There is
-also a second order effect that the magnitude of
-the modeling error in the cross-sections may
-depend on the magnitude of the uncertainty in the
-initial material composition.  Such effects will
-be investigated but may not be included in the
-final methodology.
-
-In the second approach, we will aim to directly
-predict the final composition and its uncertainty
-from the initial composition and its uncertainty
-using the neural network.
-
-
-This error are more complicated in the first case
-than in the second case. Indeed in the second case,
-the Modeling Error are the direct error on the
-prediction made by the neural networks.
-
-
-In the first case, those prediction errors have to
-be propagated along the depletion calculation.
-In both cases, after having trained the neural
-network, we need to map the error on the neural
-prediction.
-To do so, to detect neural network over-training,
-the best is to compute a new data set, similar but
-independant to the one use for the training, and
-test the accuracy of the neural network prediction.
-Then using an interpolation model (as kriging or
-neural network), ${\cal K}_k$,  predict the error
-on the parameter predictions, $\rho_k$, made with
-the neural network :
-\begin{align}
-  \left( \frac{\delta \rho_k}{\rho_k} \right)^{2} _{{\cal M}} = {\cal K}_k \left( \vec{m}^{i} \right)
-\end{align}
-
-For the second the case the estimation of the
-direct Modeling Error end there, as $\rho_k$ = $m_k$.
-
-For the first case, the predicted paramter are the
-one group cross section, one still need to
-propagate those error during the depletion
-calculation ${\cal D}$.\\
-The Bateman equation can be written in its matrix
-form as :
-\begin{align}
-  \frac{d\vec{N}}{dt}(t) = (\Lambda + \phi(t) . D) \times \vec{N}(t)
-\end{align}
-where $\vec{N}(t)$ represents the isotopic vector
-of the fuel at the time t and
-$\frac{d\vec{N}}{dt}(t)$ its variation, $\Lambda$
-the decay part of the depletion matrix, $D$ the
-cross section part and $\phi(t)$ the neutron flux.
-The neutron flux can be estimated assuming a the
-constant power in the reactor core as:
-\begin{align}
-  \phi(t) = \frac{P}{ \vec{E}_f \times D_f \times \vec{N}(t)},
-\end{align}
-with P the thermal power of the core, $\vec{E}_f$,
-the vector of the energy release per fission and
-$D_f$ the fission compoment of the cross section
-matrix.
-
-The depletion calculation will be performed with a
-step by step process, considering the one group
-cross section are constant during a step. As this
-kind of error is commun to any step by step
-depletion calculation and inversely correlated
-with he timestep length, in first approximation
-its effect will not be included in our calculation
-and could be reduce with a proper choice of the
-timestep length. \\
-As a finit number of one group cross section will
-be predicted, a brief study will be conducted to
-estimate the impact of ignoring some reactions and
-a reaction rate threshold will be set to have a
-negligible impact on the resulting depletion
-calculation error.\\
-
-As the cross section matrix at any time t, $D(t)$,
-can be determine using the prediction of the
-neural network (from the initial fuel composition)
-, it possible to determinate the sensitivity,
-$\gamma_{i,j}$  of the one group cross section,
-$i$ on the isotope quantity, $j$ at the end of the
-depletion step, $k$. One can then express the
-modeling error at the end of the step $k$ as :
-\begin{align}
-  \left( \frac{\delta m_j^{k}}{m_j^{k}} \right)^{2} _{{\cal M}} = \sum_{i}\left( \frac{\delta \sigma_i^{k-1}}{\sigma_i^{k-1}} \right)^{2} *\gamma_{i,j}(k)\label{eq:mod}
-\end{align}
-Following the same reasonment one can establish
-also the sentivity $\beta_{ij}$ of the initial
-uncertainty on the isotope, $j$ on the isotope,
-$i$, uncertainty at the end of the time step $k$
-as:
-\begin{align}
-  \left( \frac{\delta m_i^{k}}{m_i^{k}} \right)^{2} _{\delta \vec{m_i}^{k-1} } = \sum_{u}\left( \frac{\delta m_u^{k-1}}{m_u^{k-1}} \right)^{2} *\beta_{u,j}(k) \label{eq:dm}
-\end{align}
-
-
-
-Combining together the equation \eqref{eq:mod} and
-\eqref{eq:dm} will allow us to propagate the
-modeling uncertainty through the integration of
-the Bateman equation. Because we are able to
-predict the cross section and the associated
-prediction error from the initial composition, so
-the effect of the error on the cross section at
-the time step $k$ is already included in the error
-on the one group cross section of the time step
-$k+1$.
-
-%and then on the final composition (considering $L$ calculation step) as :
-%\begin{eqnarray}
-%  \nonumber
-%  \left( \frac{\delta \vec{m}^{L}}{\vec{m}^{L}} \right)^{2} _{Mod} &=& \sum_{i} \left( \frac{\delta \sigma_i^{L-1}}{\sigma_i^{L-1}} \right)^{2} *\gamma_{i,j}(L)\\
-%\nonumber
-%  &+& \sum_{u^{0}}  \sum_{i} \left( \frac{\delta \sigma_i^{L-2}}{\sigma_i^{k-2}} \right)^{2} *\gamma_{i,u^{0}}(L-1) *\beta_{u^{0},j}(L)\\
-%\nonumber
-%&+& \sum_{u^{0}} \sum_{u^{1}} \sum_{i} \left( \frac{\delta \sigma_i^{L-3}}{\sigma_i^{L-3}} \right)^{2} *\gamma_{i,u^{1}}(L-2) *\beta_{u^{1},u^{0}}(L-1) *\beta_{u^{0},j}(L)\\
-%\nonumber
-%&+& ...\\
-%  &+& \sum_{u^{0}}... \sum_{u^{L-2}} \sum_{i} \left( \frac{\delta \sigma_i^{0}}{\sigma_i^{0}} \right)^{2} *\gamma_{i,u^{L-2}}(1)*\beta_{u^{L-2},u^{L-3}}(2)* ...  *\beta_{u^{0},j}(L)
-%\end{eqnarray}
-
-
-
-\paragraph{The Initial Composition Uncertainty propagation:\\}
-Based on the previous formalisum definited, one
-can consider the initial composition uncertainty
-as term $\left( \frac{\delta m_i^{0}}{m_i^{0}} \right)^{2}$
-and then be easely included in the error
-propagation  at the first step as :\\
-\begin{align}
-  \left( \frac{\delta m_i^{1}}{m_i^{1}} \right)^{2} = \sum_{u}\left( \frac{\delta m_u^{0}}{m_u^{0}} \right)^{2} *\beta_{u,j}(1) + \sum_{i}\left( \frac{\delta \sigma_i^{0}}{\sigma_i^{0}} \right)^{2} *\gamma_{i,j}(1) \label{eq:dm0}
-\end{align}
-
-
-
-One also need to convolute the uncertainty on the
-initial composition with the model prediction.
-One can need to extend the ${\cal K}$ interpolation method to isotopic composition uncertainty :
-\begin{align}
-  \left( \frac{\delta \rho_k}{\rho_k} \right)^{2} _{{\cal M}, \delta \vec{m}^{i}} = {\cal K}_k \left( \vec{m}^{i} , \delta\vec{m}^{i} \right)
-\end{align}
-This could be easly be done statistically:
-determining the distribution of the outut
-parameter and its error running many time the
-predictiv model, ${\cal M}$, and the error
-interpolator, ${\cal K}$, on a wild varity of
-isotopic composition ranged inside the initial
-composition uncertainty.
-
-\paragraph{Other error:\\}
-We are aware that the error listed previously are
-not exhaustiv. For exemple, the neural network
-will be trained on simulated data which are
-subject to many different error/uncertainty
-(nuclear data uncertainty, statistical error,
-modeling error...). We will consider those errors
-beyond the scope of this study.
-The aim of this project is to create a framework
-for uncertainty/error propagation in fuel cycle
+The sources of uncertainty considered above are
+clearly not exhaustive. For exemple, as already
+mentioned, the neural network will be trained on
+simulated data which are subject to many different
+error/uncertainty (nuclear data uncertainty,
+statistical error, modeling error...).  These
+errors are outside the scope of this study.  The
+aim of this project is to create a framework for
+uncertainty/error propagation in fuel cycle
 calculation and develop the require tool to do so.
-Therefore one will only consider the error induce
-by the developed tools.
+Based on the success of this effort, other
+projects may choose to tackle the other sources of
+error and uncertainty.
 
-
-%Again using an statistical approach, one will be
-%able to assess the impact of the isotopic
-%composition uncertainty on the one group cross
-%section prediction error: running many time the
-%neural network prediction and the ${cal K}$ error
-%interpolator, one could determine the resulting
-%one group cross section and the
-
-
-
-%Because the predictive model will be able to
-%predict the one group cross section as the
-%function of time (or burnup), one should be able
-%to propagate those error using sensitivity
-%analysis.  \comment{PPHW: we need more here - this
-%  is the key contribution.}
-
-%The time discretization other other approximations
-%required to solve the Bateman equation will
-%introduce computation error that also needs to be
-%incorporated into the final uncertainty. This
-%contribution to uncertainty can be characterized
-%by a comparison of depletion calculations
-%performed with this approach with a reference
-%depletion calculation using the same modeling
-%approach used in the training depletions, along
-%the full isotopic space.
-
-
-%It may also be possible, and preferable, to train
-%the neural network to directly predict the final
-%isotopic inventory from the initial isotopic
-%inventory and other reactor parameters.  Although
-%this approach has not been demonstrated, even in
-%the absence of uncertainty, it may provide a
-%better platform for the propagation of
-%uncertainty.
-
-%\comment{PPHW: I am not really sure what this
-%  looks like, and the following text spends a lot
-%  of time discussing what we WON'T do.}
-
-%The main reason leading the try of direct
-%prediction of the isotopic evolution, is the
-%error/uncertainty propagation. As express
-%prevsiously :
-
-%\begin{align}
-%\delta \vec{m}_{out} = {\cal F}\{~\delta\vec{m}_{in}~,~\tau_0~,~...~,~\tau_P~,~\epsilon_{mod}~\}
-%\end{align}
-%The determination and the propagation of all
-%uncertainty source is, for this kind of reactor, a
-%complicated matter. The error due to the
-%computation of the depletion calculation are wild:
-%\begin{itemize}
-%\item the error of the neural network predictor,
-%  $\epsilon^{nn}_{i}$, with $i\in[0..N]$, $N$ the
-%  number of predicted parameter,
-%\item the convolution of the uncertainty on the
-%  material composition with the neural network
-%  prediction.
-%\item the calculation error on the data sets used
-%  to train the neural network, $\epsilon_{T.D.}$.
-%\end{itemize}
-%And then can be expressed as :
-%\begin{align}
-%\epsilon_{mod} = {\cal G}\{~\delta\vec{N}_{in}~,~\epsilon^{nn}_{0}~,~...~,~\epsilon^{nn}_{n}~,~\epsilon_{T.D.}~\}
-%\end{align}
-
-%Because, the predictive model are trained on
-%sample populated using few thousand of depletion
-%calculation, which are subject to computation
-%error, $\epsilon_{T.D.}$. On one side, a depletion
-%calculation take as input, the nuclear data. Those
-%nuclear data are interpolated/extrapolated from
-%many different experimental measurement using many
-%different models. Therefore the nuclear data
-%contain uncertainty...  Those uncertainty are
-%extremely difficult to propagate properly through
-%a full depletion calculation because of the
-%coupling between neutron transport and depletion
-%calculation: the composition of the fuel impact
-%the shape of the neutron spectrum, which impact
-%the reaction rate on the nuclei... On the other
-%side, the depletion calculation require different
-%approximation to be completed. There is nearly
-%impossible using Monte Carlo technique on a PWR
-%full core calculation due to source convergence
-%issue. It is also extremely complicate to follow
-%precisely the different reactor parameter, such as
-%boron concentration, rod control management,
-%charge factor evolution, neutron leakage... The
-%study and the propagation of the modeling
-%uncertainty, such as the modeling simplification
-%and the nuclear data uncertainty is way beyond the
-%scope of this project...\\
-%This require a full dedicated research project
-%(and probably more). Therefore, those error,
-%$\epsilon_{T.D.}$, will not be considered on the
-%first version of this work. This might need to be
-%reconsidered when the depletion calculation error
-%propagation capacity will have done important
-%progress.\\
-%The direct error induced by the use of predictive
-%model, $\epsilon^{nn}_{i}$ on each parameter, $i$,
-%need to be assessed. This could be performed with
-%a mapping the error on the isotopic space
-%populated with the training sample. This will
-%allow to determine the error of the model on each
-%point on the isotopic space populated. We might
-%use then a other neural network, or other
-%interpolation method to predict the error of the
-%prediction as the function of the isotopic
-%composition.\\
-%Once we have a working predictive model and a map
-%of the error on the prediction, one need to build
-%the covariance matrix which will allow to
-%convolute the uncertainty on the input material,
-%$\delta N_{in}$, with the prediction of the
-%model.\\
 
 
 \subsubsection{CLASS-based fuel fabrication} \label{sec:fabrication}
@@ -820,85 +533,50 @@ Cycamore fuel fabrication facility mixes two
 streams of material using an equivalence method to
 approximate a desired composition by matching its
 initial reactivity.  \cite{cycamore_fab}
-\comment{PPHW: may need to tweak this wording
-  about Cycamore to be concise and correct.}  By
-contrast, methods implemented in the CLASS project
-have used a similar neural network approach as
-described above to determine how to mix multiple
-streams of material in order to satisfy a number
-of reactor performance goals including initial
-reactivity, burnup and/or conversion ratio.
 
+By contrast, methods implemented in the CLASS
+project have used a similar neural network
+approach as described above to determine how to
+mix multiple streams of material in order to
+satisfy a number of reactor performance goals
+including initial reactivity, burnup and/or
+conversion ratio. As with the reactor models, the
+predictive model is trained on the same set of
+training depletion calculation used for the
+reactor models. The capability of the neural
+networks have been proven to predict the evolution
+of the criticality in PWR reactor using MOX fuel
+\cite{Leniaux.NN, CLASS_UserManual}, as well as
+the the initial criticality of MOX fuel in SFR
+\cite{CLASS_UserManual} and should be possible to
+extend it to conversion ratio evolution.
 
-What existe now :
 \begin{align}
-  \rho = {\cal P^{\star}}\left( \vec{m}_{1},\vec{m}_{2}, BU \right)
+  \rho = {\cal P^{\star}}\left( \vec{m}_{1},\vec{m}_{2}, \vec{\tau} \right)
 \end{align}
 
-It is also necessary to estimate the error due to
-the neural network prediction:
+Following the model described in \S
+\ref{sec:reactors}, we will explore mechanisms to
+estimate the error introduced by the neural
+netowork prediction:
 \begin{align}
   \left(\unc{\rho}\right)_{\cal P^\star} = {\cal K}_1^{\star}\left( \vec{m}_{1},\vec{m}_{2}, BU \right)
 \end{align}
-and the propagation of the initial uncertainty:
-\begin{align}
-  \left(\unc{\rho}\right)_{\unc{\vec{m}_{1}},\unc{\vec{m}_{2}}} = {\cal K}^{\star}_2\left( \uncvector{\vec{m}_{1}},\uncvector{\vec{m}_{2}}, BU \right)
-\end{align}
-We may consider directly include $\delta BU$:
+and separately, the propagation of the initial uncertainty:
 \begin{align}
   \left(\unc{\rho}\right)_{\unc{\vec{m}_{1}},\unc{\vec{m}_{2}},\unc{BU}} = {\cal K}^{\star}_2\left( \uncvector{\vec{m}_{1}},\uncvector{\vec{m}_{2}}, \uncvector{BU} \right)
 \end{align}
 
-We are considering in the first time including
-fabrication model for MOX fuel only, in LWR and
-SFR, used as burner and breeder for SFR. One will
-use algorithm building fuel allowing to build fuel
-reaching the targeted burnup according to either
-criticality criterium either conversion ratio
-criterium.  Those algorithm will relies on the
-capabilities of some predictive model to predict
-the maximal achievable burnup depending on the the
-criticality or conversion ratio evolution
-according to burnup.  The predictive model as the
-reactor model, will be based on the use of neural
-network formerly trained on the same set of
-training depletion calculation used for the
-reactor models. The capability of the neural
-network have been proven to predict the evolution
-of the criticality in PWR reactor using MOX fuel
-\cite{Leniaux.NN, CLASS_UserManual}, as well as
-the the initial criticality of MOX fuel in SFR
-\cite{CLASS UserManual} and should be possible to
-extend it to conversion ratio evolution.
+Generally, the same appr
 
-The error/uncertainty propagation for fuel
-fabrication should be pretty similar than for
-reactor. Indeed the uncertainty can be expressed
-as :
-\begin{align}
-\delta \vec{N}_{out} = {\cal H}\{~\delta\vec{N}_{in}~,~\epsilon_{mod}~\}.
-\end{align}
-In this case there is no tolerance, since the
-parameter are goal to achieve, not physicals
-characteristics. As well as previously the error
-of the model can be expressed as :
-\begin{align}
-\epsilon_{mod} = {\cal K}\{~\delta\vec{N}_{in}~,~\epsilon^{nn}_{0}~,~...~,~\epsilon^{nn}_{n}~,~\epsilon_{T.D.}~\},
-\end{align}
- where $\epsilon^{nn}_{i}$ represent the error on
- the prediction of the parameter $i$ by the neural
- network predictive model and $\epsilon_{T.D.}$
- the error due to the error on the depletion
- calculation composing the training set, which
- will not be considered since we dont have any way
- to correctly estimate it.\\
- 
- As for the reactor model, the $\epsilon^{nn}_{i}$
- component of the error can be determined through
- a mapping of the error along the isotopic space,
- and the impact of the material input uncertainty
- needed the be assessed by the calculation of the
- covariance matrix which need to be build.
+Initially, this model will be developed for MOX
+fuel only, in LWR and SFR, used as both burners
+and breeders.  The target parameters for the fuel
+will depend on the type of reactor system, with
+burnup being a typical LWR target parameter and
+conversion ratio and initial reactivity used for
+SFRs.
+
 
 \subsection{Task 4: Demonstrate uncertainty propagation}
 During the realization of this work we would like
@@ -976,6 +654,9 @@ analysis conclusions.
 
 %Finally, we would like
 %Third step : application to simple case : PWR, transition from PWR to FBR...}
+
+\subsection{Task 5: Update fuel cycle metrics in Cymetric}
+
 \section{Relevance of Proposed Research}
 This proposal aims to provide an important feature
 needed in the fuel cycle simulator.  Given the
