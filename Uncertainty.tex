@@ -193,10 +193,10 @@ of uncertainty or error:
 \end{itemize}
 The uncertainty of the output material composition is a
 function of all those uncertainties:
-\begin{equation}
+\begin{align}
   \delta \vec{m}_{out} = 
          {\cal F}\{~\unc{\vec{m}_{in}}~,~\tau_0~,~...~,~\tau_P~,~\epsilon_{mod}~\}.
-\end{equation}
+\end{align}
 
 In this work we propose to introduce archetypes
 that are able to combine all those sources and
@@ -242,9 +242,9 @@ separation matrix approach to distribute every
 nuclide, $i$, in the input material across $K$
 different streams in the output.
 
-\begin{equation}
+\begin{align}
 N_{i,k} = N_{i,in} \cdot e_{i,k}
-\end{equation}
+\end{align}
 
 The only parameter which can introduce extra
 variance is the separation parameter for nuclide
@@ -258,9 +258,9 @@ parameters are independent, the resulting
 uncertainty on the output material composition can
 express as :
 
-\begin{equation}
+\begin{align}
   \uncratiosq{N_{i,k}} = \uncratiosq{N_{i,in}} +  \uncratiosq{e_{i,k}}
-\end{equation}
+\end{align}
 
 In the limit of no uncertainty in the separation
 parameters, this separated materials can be
@@ -349,9 +349,9 @@ output isotope will be sensitive to the
 uncertainty in every input isotope, although in
 practice some of these can be ignored.
 
-\begin{equation}
+\begin{align}
 \uncsq{N_{j,out}} = \sum_i \uncsq{N_{i,in}} \sigma_{i,j},
-\end{equation}
+\end{align}
 where $\sigma_{i,j}$ describes the relationship
 between the uncertainty in output isotope $j$ and
 uncertainty in input isotope $i$.  Since the
@@ -440,16 +440,16 @@ propagation.
 The first approach will develop a mechanism to
 estimate the errors in the cross-sections, 
 ${\cal K}$, as a function of the initial composition:
-\begin{equation}
+\begin{align}
   \delta\vec{\Sigma}(t) = {\cal K}\left( \vec{m}_{in}\right)
-\end{equation}
+\end{align}
 and extend the ODE solver to combine the
 uncertainty in the initial composition with the
 error in the cross sections to estimate the
 uncertainty in the final composition:
-\begin{equation}
+\begin{align}
   \uncvector{\vec{m}_{out}} = {\cal S^\prime}\left( \uncvector{\vec{\Sigma}(t)}, \uncvector{\vec{m}_{in}}\right)
-\end{equation}
+\end{align}
 
 Uncertainty may also be introduced in the
 user-defined model parameters, $\tau_p$.  The
@@ -461,18 +461,18 @@ burnup of the fuel at discharge.
 The second approach will attempt to use a new
 neural network predictor, ${\cal P^\prime}$, to
 directly predict the fuel composition evolution:
-\begin{equation}
+\begin{align}
   \vec{m}_{out} = {\cal P^\prime}\left( \vec{m}_{in}\right)
-\end{equation}
+\end{align}
 It is also necessary to estimate the error due to
 the neural network prediction:
-\begin{equation}
+\begin{align}
   \left(\unc{\vec{m}_{out}}\right)_{\cal P^\prime} = {\cal K}_1^{\prime}(\vec{m}_{in})
-\end{equation}
+\end{align}
 and the propagation of the initial uncertainty:
-\begin{equation}
+\begin{align}
   \left(\unc{\vec{m}_{out}}\right)_{\unc{\vec{m}_{in}}} = {\cal K}^{\prime}_2(\vec{m}_{in}, \unc{\vec{m}_{in}})
-\end{equation}
+\end{align}
 
 
 
@@ -487,13 +487,13 @@ introduce a modeling error.
 In both case, the uncertainty of the output
 composition, $\vec{m}_{out}$, will have different
 compoments that need to be computed and combined:
-\begin{equation}
+\begin{align}
   \uncratiosq{\vec{m}_{out}}_{tot} =
   {\cal C}\left(  \uncratiosq{\vec{m}_{out}} _{\cal M},
                   \uncratiosq{\vec{m}_{out}} _{\delta \vec{m}_{in}},
                   \uncratiosq{\vec{m}_{out}} _{\vec{\tau}}
          \right)
-\end{equation}
+\end{align}
 
 In both case, we are proposing to determine and
 combine those errors using empirical methods.
@@ -552,9 +552,9 @@ Then using an interpolation model (as kriging or
 neural network), ${\cal K}_k$,  predict the error
 on the parameter predictions, $\rho_k$, made with
 the neural network :
-\begin{equation}
+\begin{align}
   \left( \frac{\delta \rho_k}{\rho_k} \right)^{2} _{{\cal M}} = {\cal K}_k \left( \vec{m}^{i} \right)
-\end{equation}
+\end{align}
 
 For the second the case the estimation of the
 direct Modeling Error end there, as $\rho_k$ = $m_k$.
@@ -565,9 +565,9 @@ propagate those error during the depletion
 calculation ${\cal D}$.\\
 The Bateman equation can be written in its matrix
 form as :
-\begin{equation}
+\begin{align}
   \frac{d\vec{N}}{dt}(t) = (\Lambda + \phi(t) . D) \times \vec{N}(t)
-\end{equation}
+\end{align}
 where $\vec{N}(t)$ represents the isotopic vector
 of the fuel at the time t and
 $\frac{d\vec{N}}{dt}(t)$ its variation, $\Lambda$
@@ -575,9 +575,9 @@ the decay part of the depletion matrix, $D$ the
 cross section part and $\phi(t)$ the neutron flux.
 The neutron flux can be estimated assuming a the
 constant power in the reactor core as:
-\begin{equation}
+\begin{align}
   \phi(t) = \frac{P}{ \vec{E}_f \times D_f \times \vec{N}(t)},
-\end{equation}
+\end{align}
 with P the thermal power of the core, $\vec{E}_f$,
 the vector of the energy release per fission and
 $D_f$ the fission compoment of the cross section
@@ -607,17 +607,17 @@ $\gamma_{i,j}$  of the one group cross section,
 $i$ on the isotope quantity, $j$ at the end of the
 depletion step, $k$. One can then express the
 modeling error at the end of the step $k$ as :
-\begin{equation}
+\begin{align}
   \left( \frac{\delta m_j^{k}}{m_j^{k}} \right)^{2} _{{\cal M}} = \sum_{i}\left( \frac{\delta \sigma_i^{k-1}}{\sigma_i^{k-1}} \right)^{2} *\gamma_{i,j}(k)\label{eq:mod}
-\end{equation}
+\end{align}
 Following the same reasonment one can establish
 also the sentivity $\beta_{ij}$ of the initial
 uncertainty on the isotope, $j$ on the isotope,
 $i$, uncertainty at the end of the time step $k$
 as:
-\begin{equation}
+\begin{align}
   \left( \frac{\delta m_i^{k}}{m_i^{k}} \right)^{2} _{\delta \vec{m_i}^{k-1} } = \sum_{u}\left( \frac{\delta m_u^{k-1}}{m_u^{k-1}} \right)^{2} *\beta_{u,j}(k) \label{eq:dm}
-\end{equation}
+\end{align}
 
 
 
@@ -653,18 +653,18 @@ can consider the initial composition uncertainty
 as term $\left( \frac{\delta m_i^{0}}{m_i^{0}} \right)^{2}$
 and then be easely included in the error
 propagation  at the first step as :\\
-\begin{equation}
+\begin{align}
   \left( \frac{\delta m_i^{1}}{m_i^{1}} \right)^{2} = \sum_{u}\left( \frac{\delta m_u^{0}}{m_u^{0}} \right)^{2} *\beta_{u,j}(1) + \sum_{i}\left( \frac{\delta \sigma_i^{0}}{\sigma_i^{0}} \right)^{2} *\gamma_{i,j}(1) \label{eq:dm0}
-\end{equation}
+\end{align}
 
 
 
 One also need to convolute the uncertainty on the
 initial composition with the model prediction.
 One can need to extend the ${\cal K}$ interpolation method to isotopic composition uncertainty :
-\begin{equation}
+\begin{align}
   \left( \frac{\delta \rho_k}{\rho_k} \right)^{2} _{{\cal M}, \delta \vec{m}^{i}} = {\cal K}_k \left( \vec{m}^{i} , \delta\vec{m}^{i} \right)
-\end{equation}
+\end{align}
 This could be easly be done statistically:
 determining the distribution of the outut
 parameter and its error running many time the
@@ -735,9 +735,9 @@ by the developed tools.
 %error/uncertainty propagation. As express
 %prevsiously :
 
-%\begin{equation}
+%\begin{align}
 %\delta \vec{m}_{out} = {\cal F}\{~\delta\vec{m}_{in}~,~\tau_0~,~...~,~\tau_P~,~\epsilon_{mod}~\}
-%\end{equation}
+%\end{align}
 %The determination and the propagation of all
 %uncertainty source is, for this kind of reactor, a
 %complicated matter. The error due to the
@@ -753,9 +753,9 @@ by the developed tools.
 %  to train the neural network, $\epsilon_{T.D.}$.
 %\end{itemize}
 %And then can be expressed as :
-%\begin{equation}
+%\begin{align}
 %\epsilon_{mod} = {\cal G}\{~\delta\vec{N}_{in}~,~\epsilon^{nn}_{0}~,~...~,~\epsilon^{nn}_{n}~,~\epsilon_{T.D.}~\}
-%\end{equation}
+%\end{align}
 
 %Because, the predictive model are trained on
 %sample populated using few thousand of depletion
@@ -832,22 +832,22 @@ reactivity, burnup and/or conversion ratio.
 
 What existe now :
 \begin{align}
-  \rho &= {\cal P^{\star}}\left( \vec{m}_{1},\vec{m}_{2}, BU \right)\\
+  \rho = {\cal P^{\star}}\left( \vec{m}_{1},\vec{m}_{2}, BU \right)
 \end{align}
 
 It is also necessary to estimate the error due to
 the neural network prediction:
-\begin{equation}
+\begin{align}
   \left(\unc{\rho}\right)_{\cal P^\star} = {\cal K}_1^{\star}\left( \vec{m}_{1},\vec{m}_{2}, BU \right)
-\end{equation}
+\end{align}
 and the propagation of the initial uncertainty:
-\begin{equation}
-  \left(\unc{\rho}\right)_{in} = {\cal K}^{\star}_2\left( \uncvector{\vec{m}_{1}},\uncvector{\vec{m}_{2}}, BU \right)
-\end{equation}
+\begin{align}
+  \left(\unc{\rho}\right)_{\unc{\vec{m}_{1}},\unc{\vec{m}_{2}}} = {\cal K}^{\star}_2\left( \uncvector{\vec{m}_{1}},\uncvector{\vec{m}_{2}}, BU \right)
+\end{align}
 We may consider directly include $\delta BU$:
-\begin{equation}
-  \left(\unc{\rho}\right)_{in} = {\cal K}^{\star}_2\left( \uncvector{\vec{m}_{1}},\uncvector{\vec{m}_{2}}, \uncvector{BU} \right)
-\end{equation}
+\begin{align}
+  \left(\unc{\rho}\right)_{\unc{\vec{m}_{1}},\unc{\vec{m}_{2}},\unc{BU}} = {\cal K}^{\star}_2\left( \uncvector{\vec{m}_{1}},\uncvector{\vec{m}_{2}}, \uncvector{BU} \right)
+\end{align}
 
 We are considering in the first time including
 fabrication model for MOX fuel only, in LWR and
@@ -875,16 +875,16 @@ The error/uncertainty propagation for fuel
 fabrication should be pretty similar than for
 reactor. Indeed the uncertainty can be expressed
 as :
-\begin{equation}
+\begin{align}
 \delta \vec{N}_{out} = {\cal H}\{~\delta\vec{N}_{in}~,~\epsilon_{mod}~\}.
-\end{equation}
+\end{align}
 In this case there is no tolerance, since the
 parameter are goal to achieve, not physicals
 characteristics. As well as previously the error
 of the model can be expressed as :
-\begin{equation}
+\begin{align}
 \epsilon_{mod} = {\cal K}\{~\delta\vec{N}_{in}~,~\epsilon^{nn}_{0}~,~...~,~\epsilon^{nn}_{n}~,~\epsilon_{T.D.}~\},
-\end{equation}
+\end{align}
  where $\epsilon^{nn}_{i}$ represent the error on
  the prediction of the parameter $i$ by the neural
  network predictive model and $\epsilon_{T.D.}$
