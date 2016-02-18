@@ -66,47 +66,44 @@
 \vspace{0.2in}
 \noindent\rule{\textwidth}{1pt}\\
 
-\noindent\textbf{Abstract:} 
-The goal of this project is to build a framework
-dedicated to uncertainty/error propagation for the
-CYCLUS fuel cycle simulator. In this project two
-main works will be conducted. The first will allow
-CYCLUS to be uncertainty aware updating the
-material basic class and all the corresponding
-operator (insuring the backward compatibility with
-other CYCLUS project). The second will be
-dedicated to introduce incertainty/error to (and
-improve) existing models providing algortyms to
-build fuel according to neutronics constrains and
-to determine the evolution of the fuel during
-irradiation.
+\noindent\textbf{Abstract:} The goal of this
+project is to build a framework dedicated to
+uncertainty/error propagation for the Cyclus fuel
+cycle simulator. In this project two main tasks
+will be conducted. The first will allow Cyclus to
+be aware of uncertainty by updating the material
+class and all the corresponding operators
+(ensuring the backward compatibility with other
+Cyclus project). The second will introduce
+uncertainty/error propagation in to Cyclus
+archetypes.  In addition to improving existing
+archetypes, new archetypes will be introduced that
+are more responsive to incoming material
+compisitions.  These archetypes will use neural
+network approaches to build fuel according to
+neutronics constraints and to determine the
+evolution of the fuel during irradiation.
 
-Error propagation could be a very complicated
-matter and long to compute. Therefore to limite
-the impact on the user experience we are
-considering mainly a empirical approach to assess
-and estimate the error/uncertainty impact of the
-different modules. An empirical approach has the
-advantage to concentrate the computationnal effort
-in the development phase and then to be faster
-during the usage. The models we are will developp
-are based on pre-trained neural network prediction
-(or Multilayer perceptron depending on naming
-convention). This this proposal this proposal will
-leverage existing neural network library
-frameworks. Frameworks to be considered for
-inclusion are TMVA (ROOT/CERN), FANN, neuralnet
-from R or the pybrain.
+A variety of approaches for propagating
+uncertainty and error will be explored, each
+matched to the fidelity of the physics model of
+the archetype in question.  For some, it is a
+simple analytical propagation of error.  For
+others, it may require neural netowrks, kriging or
+other approaches.
 
-The results will provide an important feature
-needed in the fuel cycle simulator. Given the
-appropriate estimation of the error relative to
-any fuel cycle simulation, the simulator would be
-able to make decisions about fuel cycle transition
-like fuel reprocessing, or the launching of new
-technologies or types of reactors. Furthermore,
-the project will be one of the first of its kind
-to introducing error propagation in fuel cycle
+The results will provide an important feature for
+fuel cycle simulation. Given the appropriate
+estimation of the error relative to any fuel cycle
+simulation, the simulator would be able to make
+decisions about fuel cycle transition like fuel
+reprocessing, or the launching of new technologies
+or types of reactors. Furthermore, the project
+will be one of the first of its kind to
+introducing error propagation in fuel cycle
 calculation, increasing the utility of the Cyclus
-kernel.
+kernel.  It is expected that this estimation of
+uncertainty will help identify specific
+sensitivities and also increase overall confidence
+in the results of such simulations.
 \end{document}
