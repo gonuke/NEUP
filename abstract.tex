@@ -1,0 +1,62 @@
+\documentclass[dvips,12pt]{article}
+
+% Any percent sign marks a comment to the end of the line
+
+% Every latex document starts with a documentclass declaration like this
+% The option dvips allows for graphics, 12pt is the font size, and article
+%   is the style
+
+\usepackage[letterpaper, margin=1in]{geometry}
+
+\usepackage[pdftex]{graphicx}
+\usepackage{tabularx}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\chead{\includegraphics[width=2in]{neup_logo.png}}
+\renewcommand{\headrulewidth}{0pt}
+
+\newcommand{\unc}[1]
+{ \delta #1 }
+
+\newcommand{\uncsq}[1]
+{ \left(\unc{#1}\right)^2 }
+
+\newcommand{\uncratio}[1]
+{ \left(\frac{\unc{#1}}{#1}\right) }
+
+\newcommand{\uncratiosq}[1]
+{ \uncratio{#1}^2 }
+
+\newcommand{\uncvector}[1]
+{ \left[ \begin{array}{c} #1 \\ \delta #1 \end{array} \right] }
+
+\newcommand{\comment}[1]
+{{\bfseries \color{red} #1}}
+
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT INFORMATION
+%----------------------------------------------------------------------------------------
+\begin{document}
+\vspace*{0.5in}
+\begin{centering}
+  \textbf{\large Error and Uncertainty Propagation for Fuel Cycle Calculations}\\
+\end{centering}
+
+\noindent\rule{\textwidth}{0.4pt}\\
+
+\noindent
+\begin{tabular}{rll}
+\textbf{PI:} & Paul Wilson & University of Wisconsin-Madison\\
+\textbf{Collaborators:} & Baptiste Mouginot & University of Wisconsin-Madison\\
+\textbf{Technical Workscope:} & Fuel Cycle  & (FC-5.1b)\\
+\end{tabular}
+
+\vspace{0.2in}
+\noindent\rule{\textwidth}{0.4pt}\\
+
+\noindent\textbf{Abstract:} 
+
+\end{document}
