@@ -8,7 +8,8 @@
 *.toc
 *.fmt
 
-Uncertainty.pdf
+abstract.pdf
+narrative.pdf
 
 ## Intermediate documents:
 *.dvi
