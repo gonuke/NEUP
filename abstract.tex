@@ -10,7 +10,7 @@
 
 \usepackage[pdftex]{graphicx}
 \usepackage{tabularx}
-
+\usepackage{multirow}
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
@@ -41,21 +41,30 @@
 %----------------------------------------------------------------------------------------
 \begin{document}
 \vspace*{0.5in}
+
+\noindent\rule{\textwidth}{1pt}\
+
+\vspace*{0.2in}
+
 \begin{centering}
   \textbf{\large Error and Uncertainty Propagation for Fuel Cycle Calculations}\\
 \end{centering}
 
-\noindent\rule{\textwidth}{0.4pt}\\
+\vspace*{0.25in}
 
 \noindent
-\begin{tabular}{rll}
-\textbf{PI:} & Paul Wilson & University of Wisconsin-Madison\\
-\textbf{Collaborators:} & Baptiste Mouginot & University of Wisconsin-Madison\\
-\textbf{Technical Workscope:} & Fuel Cycle  & (FC-5.1b)\\
-\end{tabular}
+\begin{tabularx}{\textwidth}{rlrl}
+   \textbf{PI:} & Paul P.H. Wilson, & 
+         \textbf{Collaborators:} & Baptiste Mouginot, \\
+                & U. Wisconsin-Madison & 
+         & U. Wisconsin-Madison \\
+   \textbf{Program:} & Fuel Cycle R\&D (FC-5.1b) & &
+\end{tabularx}
+
+
 
 \vspace{0.2in}
-\noindent\rule{\textwidth}{0.4pt}\\
+\noindent\rule{\textwidth}{1pt}\\
 
 \noindent\textbf{Abstract:} 
 The goal of this project is to build a framework
