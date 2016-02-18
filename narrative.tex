@@ -93,7 +93,7 @@ on calculations based on the use of new
 concepts.
 
 The aim of this project is to add error
-propagation capability to the CYCLUS fuel cycle
+propagation capability to the Cyclus fuel cycle
 simulator \cite{Cyclus_paper}. Given the use case of predicting the
 evolution of a large industrial enterprise in an
 uncertain future, nuclear fuel cycle simulations
@@ -364,15 +364,15 @@ desired reactivity.
 The reactor archetype included in Cycamore is
 based on fixed matched pairs of recipes for input
 and output materials that are provided by the
-user, in addition of all the classical reactor
-parameter (batch number, cycle length, power,
+user, in addition to all the classical reactor
+parameters (batch number, cycle length, power,
 capacity factor,...).  Such a model does not allow
 any meaningful way to propagate uncertainty from
 any input quantities into the output composition,
 and simply requiring the user to provide uncertainty 
 estimates on the output composition does not allow
 any responsiveness to variations in the input
-composition uncertainty.
+composition or its uncertainty.
 Instead, the user will need to provide estimates
 of the sensitivity of the output recipe's uncertainty to
 variations in the input recipe's uncertainty.  In
