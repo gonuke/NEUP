@@ -386,7 +386,7 @@ where $\sigma_{i,j}$ describes the relationship
 between the uncertainty in output isotope $j$ and
 uncertainty in input isotope $i$.  Since the
 recipe reactor assumes a fixed input composition,
-even if it does not assume a fixed uncertainty in
+even if it does \textit{not} assume a fixed uncertainty in
 that composition, these sensitivity parameters can
 be written to depend only on the uncertainty of
 the input composition and not on the composition
@@ -465,9 +465,10 @@ Two approaches will be considered for extending
 this neural network concept to uncertainty
 propagation.
 
-The first approach will develop an operator to
-estimate the errors in the cross-sections, 
-${\cal K}$, as a function of the initial composition:
+The first approach will develop an operator, 
+${\cal K}$, to
+estimate the errors in the cross-sections as 
+a function of the initial composition:
 \begin{align}
   \delta\vec{\Sigma}(t)  = {\cal K}\left( \vec{m}_{in}\right)  \equiv  \unc{{\cal P}^\Sigma\left( \vec{m}_{in}\right)} \label{eq:NNSigmaError}
 \end{align}
@@ -538,7 +539,7 @@ The sources of uncertainty considered above are
 clearly not exhaustive. For example, as already
 mentioned, the neural network will be trained on
 simulated data which are subject to many different
-error/uncertainty (nuclear data uncertainty,
+errors/uncertainties (nuclear data uncertainty,
 statistical error, modeling error...).  These
 errors are outside the scope of this study.  The
 aim of this project is to create a framework for
@@ -668,7 +669,7 @@ archetypes available for general Cyclus use.
 
 \section{Milestone Task Listing}
 
-This research project consist of four major tasks
+This research project consists of four major tasks
 that will be conducted in parallel.  The first
 task will extend over the first 9 months to
 complete the basic implementation of uncertainty
@@ -755,7 +756,6 @@ and continue for the duration of the project.
 {\footnotesize $^*$ all dates are given in months from project start}
 \end{table}
 
-\vspace*{-2.5ex}
 \section{Facilities}
 
 Most of the development work for this project will
