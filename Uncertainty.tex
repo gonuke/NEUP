@@ -184,18 +184,20 @@ of uncertainty or error:
 \item the isotopic inventory vector of the input,
   $\vec{m}_{in} = m_{tot,in} \cdot \vec{f}_{in}$,
   has an associated uncertainty $\unc{\vec{m}_{in}}$,
-\item the uncertainty of parameters that define that
-  facility, $\tau_{p}$, 
-  which correspond to the possible
-  variation, or engineering tolerance, in any physics parameter, $p$,
-\item the modeling error, $\epsilon_{mod}$, introduced by
-  the choice of approximate archetypes models.
+\item the uncertainty of parameters that define
+that facility, $\unc{\tau}$, which correspond to
+the possible   variation, or engineering tolerance,
+in any physics parameter,
+$\tau$,
+\item the modeling error, $\unc{{\cal M}}$,
+introduced by the choice of approximate archetypes
+models.
 \end{itemize}
-The uncertainty of the output material composition is a
-function of all those uncertainties:
+The uncertainty of the output material composition
+is a function of all those uncertainties:
 \begin{align}
   \delta \vec{m}_{out} = 
-         {\cal F}\{~\unc{\vec{m}_{in}}~,~\tau_0~,~...~,~\tau_P~,~\epsilon_{mod}~\}.
+         {\cal F}\{~\unc{\vec{m}_{in}}~,~\unc{\vec{\tau}}~,~\unc{{\cal M}}~\}.
 \end{align}
 
 In this work we propose to introduce archetypes
@@ -344,10 +346,10 @@ any responsiveness to variations in the input
 composition uncertainty.
 Instead, the user will need to provide estimates
 of the sensitivity of the output recipe's uncertainty to
-variations in the input recipe's uncertainty.  In general, each
-output isotope will be sensitive to the
-uncertainty in every input isotope, although in
-practice some of these can be ignored.
+variations in the input recipe's uncertainty.  In
+general, each output isotope will be sensitive to
+the uncertainty in every input isotope, although
+in practice some of these can be ignored.
 
 \begin{align}
 \uncsq{N_{j,out}} = \sum_i \uncsq{N_{i,in}} \sigma_{i,j},
@@ -441,7 +443,7 @@ The first approach will develop a mechanism to
 estimate the errors in the cross-sections, 
 ${\cal K}$, as a function of the initial composition:
 \begin{align}
-  \delta\vec{\Sigma}(t) = {\cal K}\left( \vec{m}_{in}\right)
+  \delta\vec{\Sigma}(t) = \unc{{\cal P}\left( \vec{m}_{in}\right)} = {\cal K}\left( \vec{m}_{in}\right)  
 \end{align}
 and extend the ODE solver to combine the
 uncertainty in the initial composition with the
@@ -482,7 +484,7 @@ directly predict the fuel composition evolution:
 It is also necessary to estimate the error due to
 the neural network prediction:
 \begin{align}
-  \left(\unc{\vec{m}_{out}}\right)_{\cal P^\prime} = {\cal K}_1^{\prime}(\vec{m}_{in})
+  \left(\unc{\vec{m}_{out}}\right)_{\cal P^\prime} ( = \unc{{\cal P^\prime}\left( \vec{m}_{in}\right)} )= {\cal K}_1^{\prime}(\vec{m}_{in}) \label{eq:NNModError}
 \end{align}
 and the propagation of the initial uncertainty:
 \begin{align}
@@ -493,12 +495,12 @@ The operator to estimate the uncertainty due to
 the neural network prediction, ${\cal
   K}_1^{\prime}$, can be evaluated in the same way
 as for operator ${\cal K}$ described in
-\ref{eqn:10}.  The operator to estimate the
-propagation of the initial uncertainty, ${\cal
-  K}_2^{\prime}$ requires more investigation, but
-could be implemented either as a neural network
-itself, or with other techniques (\textit{e.g.}
-kriging).
+Eq.\eqref{eq:NNModError}. The operator to estimate
+the propagation of the initial uncertainty,
+${\cal K}_2^{\prime}$ requires more investigation,
+but could be implemented either as a neural
+network itself, or with other techniques
+(\textit{e.g.} kriging).
 
 Once again, it is still necessary to consider the
 mechanism for also incorporating uncertainty that
@@ -609,51 +611,6 @@ constructed to highlight the role of error and
 uncertainty and identify metrics in which the
 presence uncertainty may impact fuel cycle
 analysis conclusions.
-
-
-
-%\textit{We imagine 3 step in the final
-%phase. First we would like to step up a testing
-%mechanism, based on simply brute force the
-%uncertainty propagation in the fuel cycle
-%calculation by using some kind of Total monte
-%Carlo, allowing all parameters to fluctuate
-%accordingly to their respective uncertainty on
-%many integration of the same calculation. The
-%result distribution can be read as a direct
-%measure of the uncertainty on the final parameter
-%and will be compared to the direct uncertainty
-%propagation calculation as a validation of all
-%the method previously presented. This method will
-%(turning on the uncertainty on each parameter one
-%by one) to validate the uncertainty propagation
-%on each parameter...\\
-
-%One need nevertheless keep in mind that
-%everything is never perfect, and one should
-%always try to improve. To do so it is required to
-%identify the most problematic issue and solve
-%it. In this particular case, one need to identify
-%what is the uncertainty gaol depending on the
-%application of the fuel calculation, of course
-%the precision goal is very different when one
-%doing a prospective calculation versus a
-%non-proliferation retrospective
-%analysis... Knowing it, one very important of
-%this project is it could allow through
-%sensitivity analysis to identify the biggest
-%uncertainty source, and help to focus to improve
-%it.\\ 
-
-%That is why, in addition of the TMC test tool, I
-%would like to develop a tool/method to
-%systematically allows user to perform sensitivity
-%analysis applied to their calculation allowing us
-%to improve future models dedicated to some
-%precise use of the CYCLUS tool.\\
-
-%Finally, we would like
-%Third step : application to simple case : PWR, transition from PWR to FBR...}
 
 \subsection{Task 5: Update fuel cycle metrics in Cymetric}
 Since many important fuel cycle metrics, such as
