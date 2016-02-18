@@ -185,10 +185,9 @@ of uncertainty or error:
   $\vec{m}_{in} = m_{tot,in} \cdot \vec{f}_{in}$,
   has an associated uncertainty $\unc{\vec{m}_{in}}$,
 \item the uncertainty of parameters that define
-that facility, $\unc{\tau}$, which correspond to
-the possible   variation, or engineering tolerance,
-in any physics parameter,
-$\tau$,
+that facility, $\unc{\tau_p}$, which correspond to
+the possible  variation, or engineering tolerance,
+in any physics parameter, $\tau_p$,
 \item the modeling error, $\unc{{\cal M}}$,
 introduced by the choice of approximate archetypes
 models.
@@ -389,7 +388,7 @@ the fuel, and a similar approach to the one
 described above can be used to estimate the effect
 on the discharge inventory of the fuel.  A more
 complete analysis of the set of parameters,
-$\tau_p$, will be performed as part of this work.
+$\vec{\tau}$, will be performed as part of this work.
 
 \subsection{Task 3: Introduce new archetypes for advanced uncertainty propagation}
 
@@ -405,7 +404,7 @@ of sophistication relies on interpolation on a set
 of precomputed results from details depletion
 calculations.  In addition to a number of ongoing
 efforts to introduce a variety of interpolation
-approaches to Cyclus \cite{britelite, cyborg}, the
+approaches to Cyclus \cite{brightlite, cyborg}, the
 CLASS project\cite{CLASS} has developed a
 stand-alone approach based on neural networks \cite{Leniau.ANE.2015}. The
 CLASS methodology will be incorporated into Cyclus
@@ -443,7 +442,7 @@ The first approach will develop a mechanism to
 estimate the errors in the cross-sections, 
 ${\cal K}$, as a function of the initial composition:
 \begin{align}
-  \delta\vec{\Sigma}(t) = \unc{{\cal P}\left( \vec{m}_{in}\right)} = {\cal K}\left( \vec{m}_{in}\right)  
+  \delta\vec{\Sigma}(t) (= \unc{{\cal P}\left( \vec{m}_{in}\right)}) = {\cal K}\left( \vec{m}_{in}\right)  
 \end{align}
 and extend the ODE solver to combine the
 uncertainty in the initial composition with the
@@ -466,7 +465,7 @@ uncertainty will not be considered in this
 project.
 
 Uncertainty may also be introduced in the
-user-defined model parameters, $\tau_p$, but the
+user-defined model parameters, $\vec{\tau}$, but the
 mechanism for doing so will depend on how each
 parameter interacts with the physics model being
 implemented.  The neural network model itself may
@@ -548,7 +547,7 @@ training depletion calculation used for the
 reactor models. The capability of the neural
 networks have been proven to predict the evolution
 of the criticality in PWR reactor using MOX fuel
-\cite{Leniaux.NN, CLASS_UserManual}, as well as
+\cite{Leniau.ANE.2015, CLASS_UserGuide}, as well as
 the the initial criticality of MOX fuel in SFR
 \cite{CLASS_UserManual} and should be possible to
 extend it to conversion ratio evolution.
