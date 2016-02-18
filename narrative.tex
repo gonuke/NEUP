@@ -644,20 +644,12 @@ which input parameters have the biggest impact on
 the uncertainty of the output quantities of
 interest.
 
-And even if this wok
-will be applied to the fuel cycle simulation tool
-CYCLUS, the concept should be a theoretically
-applicable on any agent based fuel cycle
-simulation tool.\\ Additionally, new archetypes
-will be contributed to the Cyclus ecosystem,
-including not only error propagation but also
-different fuel fabrication methods, cross-section
-prediction models and a Bateman equation
-solver. These features will permit future
-comparison between the different fuel fabrication
-models and improve the user experience and
-confidence in the interpretations of Cyclus
-simulations.
+Another outcome of this work will be the addition
+of new responsive reactor and fuel fabrication
+archetypes.  These archetypes will be based on
+neural network capability already demonstrated by
+other tools and will add to the suite of
+archetypes available for general Cyclus use.
 
 \section{Milestone Task Listing}
 
@@ -672,7 +664,6 @@ after 6 months and continuing for 24 months.  Task
 4 will begin with simple testing after 4 months
 and continue for the duration of the project.
 
-
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth]	{timeline}
@@ -680,6 +671,7 @@ and continue for the duration of the project.
 \label{fig:progression}
 \end{figure}
 
+\newpage
 \noindent\textbf{TASK 1:} Cyclus update for uncertainty awareness
 \begin{itemize}[nosep]
 \item subtask 1: update material to uncertainty
@@ -747,11 +739,69 @@ and continue for the duration of the project.
 \end{tabularx}
 {\footnotesize $^*$ all dates are given in months from project start}
 \end{table}
+
+\section{Facilities}
+
+Most of the development work for this project will
+be carried out on desktop workstation or laptop
+computers with free and open source software
+and software libraries. Desktop computing
+capabilities are available to the investigators;
+where additional computing platforms are required
+(for instance, for graduate students working on
+the project), funding for them is requested.
+
+Where larger computational resources are required,
+the lead institution maintains a variety of
+centrally-supported computing resources, including
+a large pool of distributed computing resources
+and a growing tightly coupled high performance
+computing resource. The distributed computing pool
+gives researchers access to over 10,000 computing
+cores, and seamless capability of reaching the
+nationally distributed Open Science
+Grid. Combined, these resources routinely provide
+researchers with approximately 300,000 CPU hours
+per day. If the algorithms favor a high
+performance computing mode, the cluster at has
+over 3000 cores with 30 TB of RAM, connected with
+a 56 GB/s Infiniband backplane.
+
+\section{Quality Assurance \& Software Development Process}
+
+\textit{PThis project will comply with all Quality
+  Assurance requirements, as described on the NEUP
+  website.}  
+This work will follow the Cyclus development
+model.  We will employ a variety of modern
+software project management tools: revision
+control, automated testing, automated and manual
+documentation, bug tracking. Related projects at
+are already managed under source code revision
+control system (git) that provides detailed
+tracking of all changes to the code base. A test
+suite has been developed and new tests will be
+added for each new capability. This test suite
+will be automatically executed with each proposed
+change in the revision control system to identify
+any flaws that may be introduced. Automated
+documentation tools are used in the source code to
+create a detailed reference for the interfaces and
+additional background documentation. Out-of-code
+detailed reports and publications will supplement
+the information on each new capability. Finally, a
+bug tracking system (GitHub issues) is deployed to
+help users and developers to understand known
+issues and to track their resolution as a
+developer community. As new capability is added,
+it will come under the same quality assurance
+practices as described here for the existing
+capabilities.
+
 %----------------------------------------------------------------------------------------
 %	BIBLIOGRAPHY
 %----------------------------------------------------------------------------------------
 
-\newpage
 \bibliographystyle{unsrt}
 
 \bibliography{narrative}
