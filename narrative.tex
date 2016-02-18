@@ -42,6 +42,21 @@
 \newcommand{\comment}[1]
 {{\bfseries \color{red} #1}}
 
+\makeatletter
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+                                   {-2.0ex \@plus -1ex \@minus -.2ex}%
+                                   {2.3ex \@plus.2ex}%
+                                   {\normalfont\bfseries}}% from \Large
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+                                     {-2.0ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\bfseries}}% from \large
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+                                     {-2.0ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\bfseries}}% from \normalsize
+\makeatother
+
 
 %----------------------------------------------------------------------------------------
 %	DOCUMENT INFORMATION
@@ -666,7 +681,7 @@ and continue for the duration of the project.
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=\textwidth]	{timeline}
+\includegraphics[width=0.85\textwidth]	{timeline}
 \caption{Preliminary schedule of the project indicating tasks and subtasks}
 \label{fig:progression}
 \end{figure}
@@ -714,7 +729,7 @@ and continue for the duration of the project.
   transition from PWR to FBR
 \end{itemize}
 
-\begin{table}
+\begin{table}[h!]
 \caption{List of major milestones and deliverables}
 \begin{tabularx}{
 \textwidth}{|X|c|l|}\hline
@@ -740,6 +755,7 @@ and continue for the duration of the project.
 {\footnotesize $^*$ all dates are given in months from project start}
 \end{table}
 
+\vspace*{-2.5ex}
 \section{Facilities}
 
 Most of the development work for this project will
@@ -769,9 +785,10 @@ a 56 GB/s Infiniband backplane.
 
 \section{Quality Assurance \& Software Development Process}
 
-\textit{PThis project will comply with all Quality
+\textit{This project will comply with all Quality
   Assurance requirements, as described on the NEUP
   website.}  
+
 This work will follow the Cyclus development
 model.  We will employ a variety of modern
 software project management tools: revision
