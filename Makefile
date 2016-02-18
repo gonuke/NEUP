@@ -1,2 +1,2 @@
-pdf: Uncertainty.tex
-	pdflatex Uncertainty.tex
+pdf: narrative.tex timeline.pdf narrative.bib
+	pdflatex narrative.tex
