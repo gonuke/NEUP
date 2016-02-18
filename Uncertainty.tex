@@ -203,7 +203,7 @@ that are able to combine all those sources and
 compute the resulting uncertainties on the output
 materials.  The following sections indicate which
 specific archetypes will be considered with some
-indication of the uncertain paramters that define
+indication of the uncertain parameters that define
 those archetypes.  In some cases, these archetypes
 are modifications of those that are already part
 of the Cycamore set of base archetypes.  In other
@@ -221,7 +221,7 @@ simple to be the basis for a rigorous uncertainty
 propagation model.  They are based heavily on user
 input to approximate the physics and error
 propagation may also require additional user
-input.  All Cycmoare archetypes will be assessed
+input.  All Cycamore archetypes will be assessed
 for their role in error propagation in a full fuel
 cycle simulation, with a minimum requirement that
 output material uncertainty be at least as high as
@@ -250,7 +250,7 @@ The only parameter which can introduce extra
 variance is the separation parameter for nuclide
 $i$ in output stream $k$, $e_{i,k} \pm \delta
 e_{i,k}$.  For this definition of the separation
-paramter, $\sum_k e_{i,k} = 1$
+parameter, $\sum_k e_{i,k} = 1$
 
 Assuming that the uncertainty of the input
 material and the tolerance of the separation
@@ -304,7 +304,7 @@ tolerance parameter.  However, uncertainty in
 the product enrichment can lead to uncertainty in
 the amount of feed that is consumed by any request
 and uncertainty in the amount of separative work
-capacity that is consumed in order to fullful each
+capacity that is consumed in order to fulfill each
 request.  A user-specified tolerance on the tails
 assay can also be introduced to contribute to
 these uncertainties.  The uncertainty in these 
@@ -336,7 +336,7 @@ and output materials that are provided by the
 user, in addition of all the classical reactor
 parameter (batch number, cycle length, power,
 capacity factor,...).  Such a model does not allow
-any meaningful way to propagate uncertainty fron
+any meaningful way to propagate uncertainty from
 any input quantities into the output composition,
 and simply requiring the user to provide uncertainty 
 estimates on the output composition does not allow
@@ -369,7 +369,7 @@ a full depletion calculation can performed to
 arrive at an output composition.  Multiple
 realizations of the input composition can be
 sampled from a particular uncertainty of the input
-composition to yeild a population of output
+composition to yield a population of output
 compositions, from which an output uncertainty can
 be measured.  If this is repeated for different
 values of the input uncertainty, an approximation
@@ -393,7 +393,7 @@ $\tau_p$, will be performed as part of this work.
 
 Although the basis of many fuel cycle simulators,
 the recipe reactor concept is overly rigid,
-unresponsive to fluctutions that may arise in fuel
+unresponsive to fluctuations that may arise in fuel
 compositions, particularly in the presence of
 recycling.  Similarly, the simple sensitivity
 approach for propagating uncertainty in the recipe
@@ -455,7 +455,7 @@ The primary approach to approximating the error in
 predicted cross sections will be to directly
 compare the predicted cross section evolutions
 with directly calculated cross section evolutions
-for a variety of intial material compositions that
+for a variety of initial material compositions that
 are not included in the set of data used to train
 the neural networks.  Theoretically, the training
 data itself is subject to uncertainty from its own
@@ -508,7 +508,7 @@ that define the reactor's behavior.
 \paragraph{Other errors:\\}
 
 The sources of uncertainty considered above are
-clearly not exhaustive. For exemple, as already
+clearly not exhaustive. For example, as already
 mentioned, the neural network will be trained on
 simulated data which are subject to many different
 error/uncertainty (nuclear data uncertainty,
