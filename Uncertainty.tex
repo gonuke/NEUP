@@ -211,6 +211,19 @@ of the Cycamore set of base archetypes.  In other
 cases, entirely new models will be introduced to
 enable more advanced uncertainty propagation.
 
+Since many important fuel cycle metrics, such as
+decay heat and radiotoxicity, are derived from the
+flow and composition of the resource objects,
+those metrics will need to be updated to be aware
+of the error/uncertainty estimates, propagating
+them into the metric evaluation and representing
+them in a useful way to users.  For the most part,
+this will require similar operations as are
+necessary for the propagation of the errors within
+the simulation.  However, visual representation of
+the final metric results may require additional
+development.
+
 \subsection{Task 2: Update Cycamore archetypes for simple uncertainty propagation}
 
 A set of standard archetypes are implemented and
@@ -351,7 +364,7 @@ the uncertainty in every input isotope, although
 in practice some of these can be ignored.
 
 \begin{align}
-\uncsq{N_{j,out}} = \sum_i \uncsq{N_{i,in}} \sigma_{i,j},
+\unc{N_{j,out}} = \sum_i \unc{N_{i,in}} \sigma_{i,j},
 \end{align}
 where $\sigma_{i,j}$ describes the relationship
 between the uncertainty in output isotope $j$ and
@@ -430,7 +443,7 @@ discharge of the fuel.  For a neural network
 predictor, ${\cal P}$, and an ODE solver, ${\cal S}$,
 
 \begin{align}
-  \vec{\Sigma}(t) &= {\cal P}\left( \vec{m}_{in}\right)\\
+  \vec{\Sigma}(t) &= {\cal P}^{\Sigma}\left( \vec{m}_{in}\right)\\
   \vec{m}_{out} &= {\cal S}\left( \vec{\Sigma}(t), \vec{m}_{in}\right)
 \end{align}
 
@@ -438,11 +451,11 @@ Two approaches will be considered for extending
 this neural network concept to uncertainty
 propagation.
 
-The first approach will develop a mechanism to
+The first approach will develop an operator to
 estimate the errors in the cross-sections, 
 ${\cal K}$, as a function of the initial composition:
 \begin{align}
-  \delta\vec{\Sigma}(t) (= \unc{{\cal P}\left( \vec{m}_{in}\right)}) = {\cal K}\left( \vec{m}_{in}\right)  
+  \delta\vec{\Sigma}(t)  = {\cal K}\left( \vec{m}_{in}\right)  \equiv  \unc{{\cal P}^\Sigma\left( \vec{m}_{in}\right)} \label{eq:NNSigmaError}
 \end{align}
 and extend the ODE solver to combine the
 uncertainty in the initial composition with the
@@ -475,28 +488,27 @@ parameters, \textit{e.g.} he burnup of the fuel at
 discharge.
 
 The second approach will attempt to use a new
-neural network predictor, ${\cal P^\prime}$, to
+neural network predictor, ${\cal P}^{\vec{m}}$, to
 directly predict the fuel composition evolution:
-\begin{align}
-  \vec{m}_{out} = {\cal P^\prime}\left( \vec{m}_{in}\right)
+\begin{align} \vec{m}_{out} = {\cal P}^{\vec{m}}\left( \vec{m}_{in}\right)
 \end{align}
 It is also necessary to estimate the error due to
 the neural network prediction:
 \begin{align}
-  \left(\unc{\vec{m}_{out}}\right)_{\cal P^\prime} ( = \unc{{\cal P^\prime}\left( \vec{m}_{in}\right)} )= {\cal K}_1^{\prime}(\vec{m}_{in}) \label{eq:NNModError}
+  \left(\unc{\vec{m}_{out}}\right)_{\cal P}^{\vec{m}}= {\cal K}_1^{{\vec{m}}}(\vec{m}_{in})  \equiv \unc{{\cal P}^{\vec{m}}\left( \vec{m}_{in}\right)} \label{eq:NNModError}
 \end{align}
 and the propagation of the initial uncertainty:
 \begin{align}
-  \left(\unc{\vec{m}_{out}}\right)_{\unc{\vec{m}_{in}}} = {\cal K}^{\prime}_2(\vec{m}_{in}, \unc{\vec{m}_{in}})
+  \left(\unc{\vec{m}_{out}}\right)_{\unc{\vec{m}_{in}}} = {\cal K}^{{\vec{m}}}_2(\vec{m}_{in}, \unc{\vec{m}_{in}})
 \end{align}
 
 The operator to estimate the uncertainty due to
 the neural network prediction, ${\cal
-  K}_1^{\prime}$, can be evaluated in the same way
+  K}_1^{{\vec{m}}}$, can be evaluated in the same way
 as for operator ${\cal K}$ described in
-Eq.\eqref{eq:NNModError}. The operator to estimate
+Eq.\eqref{eq:NNSigmaError}. The operator to estimate
 the propagation of the initial uncertainty,
-${\cal K}_2^{\prime}$ requires more investigation,
+${\cal K}_2^{{\vec{m}}}$ requires more investigation,
 but could be implemented either as a neural
 network itself, or with other techniques
 (\textit{e.g.} kriging).
@@ -553,7 +565,7 @@ the the initial criticality of MOX fuel in SFR
 extend it to conversion ratio evolution.
 
 \begin{align}
-  \rho = {\cal P^{\star}}\left( \vec{m}_{1},\vec{m}_{2}, \vec{\tau} \right)
+  \rho = {\cal P}^{\rho}\left( \vec{m}_{1},\vec{m}_{2}, \vec{\tau} \right)
 \end{align}
 
 Following the model described in \S
@@ -561,14 +573,12 @@ Following the model described in \S
 estimate the error introduced by the neural
 netowork prediction:
 \begin{align}
-  \left(\unc{\rho}\right)_{\cal P^\star} = {\cal K}_1^{\star}\left( \vec{m}_{1},\vec{m}_{2}, BU \right)
+  \left(\unc{\rho}\right)_{\cal P^\rho} = {\cal K}_1^{\rho}\left( \vec{m}_{1},\vec{m}_{2}, \vec{\tau} \right) \equiv \delta {\cal P}^\rho\left( \vec{m}_{1},\vec{m}_{2}, \vec{\tau} \right)
 \end{align}
-and separately, the propagation of the initial uncertainty:
+and separately, the propagation of the initial uncertainty and tolerance in the model parameters:
 \begin{align}
-  \left(\unc{\rho}\right)_{\unc{\vec{m}_{1}},\unc{\vec{m}_{2}},\unc{BU}} = {\cal K}^{\star}_2\left( \uncvector{\vec{m}_{1}},\uncvector{\vec{m}_{2}}, \uncvector{BU} \right)
+  \left(\unc{\rho}\right)_{\unc{\vec{m}_{1}},\unc{\vec{m}_{2}},\unc{\vec{\tau}}} = {\cal K}^{\rho}_2\left( \uncvector{\vec{m}_{1}},\uncvector{\vec{m}_{2}}, \uncvector{\vec{\tau}} \right)
 \end{align}
-
-Generally, the same appr
 
 Initially, this model will be developed for MOX
 fuel only, in LWR and SFR, used as both burners
@@ -578,29 +588,38 @@ burnup being a typical LWR target parameter and
 conversion ratio and initial reactivity used for
 SFRs.
 
-
 \subsection{Task 4: Demonstrate uncertainty propagation}
-During the realization of this work we would like
-to validate each step of the uncertainty
-propagation process. First, with a mid/early-term
-validation, after the enrichment facilities, the
-separation and the recipes reactor will be
-implemented, it will be possible to confirm the
-uncertainty is correctly propagated, using a brute
-force validation (with the "Total Monte Carlo"
-method). This validation will be continued with
-new archetypes will be implemented in CYCLUS...\\
-An other gaol we want to achieve, is an
-sensitivity analysis, allowing to determine the
-impact of the different
-uncertainty/error/tolerance on the final
-calculation uncertainty. This should allow to
-define precisely where the future effort should be
-focus to reduce those uncertainty sources
-accordingly to the object of the calculation and
-also to validate (or un-validate) the use of fuel
-cycle simulation tool for some specialized study
-(such as non-proliferation study...)\\
+
+Verification and demonstration of the uncertainty
+propagation will be performed in each stage of the
+project, with a series of test cases that build
+from the first task to the last.
+
+Testing of the capabilities added in Task 1 will
+include verification that the material
+modification operators manage uncertainty in the
+appropriate way and that the presence of
+uncertainty information does not impact the
+functioning of legacy archetypes that are unware
+of it.  It will also be necessary to test metrics
+so that function correctly with and without the
+presence of uncertainty.
+
+Throughout tasks 2 and 3, as new archetypes are
+enabled with the ability to track uncertainty, a
+Total Monte Carlo approach will be used to measure
+how well the uncertainty propagation has been
+modeled.  Under this approach, a large number of
+independent simulations will be performed, each
+with a different randomly selected set of
+parameters chosen from the uncertainty
+distributions of the input quantities.  The
+population of output quantities will be used to
+measure the resulting uncertainty and compared
+with the quantities calculated by the new
+archetypes.  Each archetype will be tested on its
+own before assembling larger problems.
+
 With all the necessary components in place, a
 series of demonstration simulations will be
 conducted using fuel cycles of increasing
@@ -611,54 +630,47 @@ uncertainty and identify metrics in which the
 presence uncertainty may impact fuel cycle
 analysis conclusions.
 
-\subsection{Task 5: Update fuel cycle metrics in Cymetric}
-Since many important fuel cycle metrics, such as
-decay heat and radiotoxicity, are derived from the
-flow and composition of the resource objects,
-those metrics will need to be updated to be aware
-of the error/uncertainty estimates, propagating
-them into the metric evaluation and representing
-them in a useful way to users.  For the most part,
-this will require similar operations as are
-necessary for the propagation of the errors within
-the simulation.  However, visual representation of
-the final metric results may require additional
-development.
-
 \section{Relevance of Proposed Research}
-This proposal aims to provide an important feature
-needed in the fuel cycle simulator.  Given the
-appropriate estimation of the error relative to
-any fuel cycle simulation, the simulator would be
-able to make decisions about fuel cycle transition
-like fuel reprocessing, or the launching of new
-technologies or types of reactors. Furthermore,
-the project will be one of the first of its kind
-to introducing error propagation in fuel cycle
-calculation, increasing the utility of the Cyclus
-kernel. Since the precision of fuel cycle tool
-have never been assessed, this work might the
-first step providing more confidence in the fuel
-cycle calculation. And even if this wok will be
-applied to the fuel cycle simulation tool CYCLUS,
-the concept should be a theoretically applicable
-on any agent based fuel cycle simulation
-tool.\\ 
-Additionally, new archetypes will be contributed
-to the Cyclus ecosystem, including not only error
-propagation but also different fuel fabrication
-methods, cross-section prediction models and a
-Bateman equation solver. These features will
-permit future comparison between the different
-fuel fabrication models and improve the user
-experience and confidence in the interpretations
-of Cyclus simulations.
+
+This proposal aims to add an important and novel
+feature to the field of fuel cycle simulation.
+Since the precision of fuel cycle simulators has
+never been assessed, this work might be a step
+towards providing more confidence in the fuel
+cycle simulation results.  
+
+One outcome of this capability is the ability to
+perform sensitivity studies that can indicate
+which input parameters have the biggest impact on
+the uncertainty of the output quantities of
+interest.
+
+And even if this wok
+will be applied to the fuel cycle simulation tool
+CYCLUS, the concept should be a theoretically
+applicable on any agent based fuel cycle
+simulation tool.\\ Additionally, new archetypes
+will be contributed to the Cyclus ecosystem,
+including not only error propagation but also
+different fuel fabrication methods, cross-section
+prediction models and a Bateman equation
+solver. These features will permit future
+comparison between the different fuel fabrication
+models and improve the user experience and
+confidence in the interpretations of Cyclus
+simulations.
 
 \pagebreak
 \section{Milestone Task Listing}
-This research project consist in four major tasks
-that could be conducted in parallel.  The first
-one will be very short ($<$ 6 month), dedicated to
+
+This research project consist of four major tasks
+that will conducted in parallel.
+\begin{tabular}{|c|c|c|c}
+Task  & 
+\end{tabular}
+
+  The first one
+will be very short ($<$ 6 month), dedicated to
 update CYCLUS and allow it to handle
 uncertainty. The second one should be the longer
 task (12 - 24 months) where the models will be
