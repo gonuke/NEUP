@@ -6,7 +6,7 @@ abstract.pdf: abstract.tex
 capabilities.pdf: capabilities.tex
 	pdflatex capabilities.tex
 
-narrative.pdf: narrative.tex timeline.pdf narrative.bib
+narrative.pdf: narrative.tex narrative.bib
 	pdflatex narrative.tex
 
 benefits_of_collaboration.pdf: benefits_of_collaboration.tex 
