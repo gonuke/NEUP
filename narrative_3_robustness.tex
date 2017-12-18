@@ -1,0 +1,102 @@
+
+\subsection{Robustness assessment}
+
+The second part of this project will be dedicated to the
+measurement/determination of the impact of different modeling choices on
+different output metrics as a function of the studied scenario.  In the early
+age of the nuclear fuel cycle simulation because of the limitation of the
+computational power, the capabilities of the fuel cycle simulation were limited
+and the subject to strong simplification. But, the refinement of the different
+models did grows with the available computers power. 
+
+The different actors of the fuel cycle community do not agree on the requirement
+to use the highest modeling fidelity. While the primary intuition supports
+always using the best modeling options, some experts argue that the different
+hypothesis and unknown of a prospective scenario are largely dominate the
+uncertainty on the output metrics; considering better modeling option is then a
+waste of time and effort.
+
+Nevertheless it is possible to pictures use cases where some higher level of
+refinement are required to achieve correct or better conclusion. For example, a
+simple description of the enrichment facility (a simple relation between the
+different assay with a SWU constrain) will be enough for the simulation of the
+historical a national fleet, a fuel cycle evaluation of the JCPOA agreement will
+require a fine description of the enrichment cascade\dots Moreover there is no
+scientific evaluation of the importance on the output metrics uncertainty of the
+modeling precision over the input errors and uncertainties.  The part of the
+project aims to evaluate the impact of the different modeling choices on the
+output metrics and compare them to the one of the input metrics uncertainties.
+
+The robustness part of the project will be divided into 3 phases, the experiment
+definitions, the experiment building, and the analysis of the experiments.
+
+
+\subsubsection{Experiment Definition}
+
+As fuel cycle simulation can be used to support many different types of
+decisions (facility siting, technology transitions, impacts of international
+trade agreements, etc), a set of different nuclear fuel cycle scenarios will be
+identified.
+
+Multiple consultation meetings with the different stakeholders: politics,
+industry, fco analyst and researchers. Those consultation will help to identify
+the types of decisions that could be supported by different fuel cycle
+calculation and the list of relevant output metrics for each applications. 
+
+Some examples include: availability/reduction of resources (thorium vs uranium
+vs plutonium), reduction of long term waste radio-toxicity, and minimization of
+human manipulation of activated material.
+
+In addition to the scenarios identified with those consultations, other nuclear
+fuel cycle applications will be considered, some examples includes: US (large
+heterogeneous fleet) and/or French (fleet undergoing transition to plutonium
+recycling) historical fleet, EG-like transition as well as, non-proliferation
+application such as Iran case.
+
+In this compilation of use scenarios, about five will be identified as ``most
+representative`` of the different nuclear fuel cycle usages and used as
+''reference scenarios`` for the rest of this study. In addition to those
+''reference scenarios'', set of output metrics will be identified for each use
+cases, with an associated acceptable tolerances, within decisions/conclusions
+can be made.
+
+
+\subsubsection{The experiments}
+
+This second task will be be split into two subtasks dedicated to robustness
+assessment, the first one to variations in modeling choices, the second one to
+input variations.  
+
+Each identified scenario will be modeled with a range of existing Cyclus
+facility models.  Previously funded efforts have resulted in a variety of
+reactor models: fleet-based recipe reactors [4], individual recipe reactors [5],
+and depletion-aware/capable reactors [6, 7, 8].  As the reactors become more
+sophisticated, it may also be necessary to invoke more sophisticated models for
+fuel fabrication that can respond to varying reactor fueling needs [7, 8]. The
+Cyclus framework makes it possible to shuffle the various modeling options, for
+example using a single depletion aware reactor with any fuel fabrication model,
+to explore the impact of a single modeling change while the rest of the
+simulation remains unchanged.  
+
+In addition to probing the impact of modeling choice, this work will also seek
+to understand how robust a given decision is to variations in the input
+assumptions for a given scenario.  A second round of analyses will be performed
+to establish the robustness of the output metrics to variation on the fuel cycle
+parameters such as cooling/reprocessing time, enrichment tails, facility
+throughput, as well as transition schedule (start date, speed\dots).
+
+Combined, those analyses will provide a way to rank different modeling choices
+and input variables by importance depending on the outcome of the fuel cycle
+simulations.
+
+
+\subsubsection{Experiment Analysis}
+
+The final task will be dedicated to the analysis and the compilation of the
+required modeling fidelity as well as the input parameters constrains required
+to successfully support the different decision making processes.
+
+Those analysis will provide guidance not only to the nuclear fuel cycle analysts
+regarding the necessary level of model fidelity that is required to support
+particular kinds of decision making, but also to fuel cycle researcher regarding
+the improvement needed on the differents modeling capabilities.

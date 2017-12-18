@@ -7,6 +7,7 @@
 % style
 \usepackage[letterpaper, margin=1in]{geometry}
 
+
 \usepackage[pdftex]{graphicx}
 \usepackage{url}
 \usepackage[pdftex]{xcolor}
@@ -70,75 +71,21 @@
 \noindent\textbf{Technical Workscope Identifier:}  \hspace{1.5in}
 \textbf{Time Frame:}
 
-\section{Motivation}
-Nuclear fuel cycle simulation (NFCS) tools have a large scope of applications,
-from the study of the behavior of a specific fuel type or reactor inside an
-existing nuclear fleet to the prospective analysis of a complete transition to
-advanced nuclear fuel cycle technologies. Unlike many simulation domains,
-rigorous validation against experimental results is not viable for this kind of
-simulation tool that incorporates aspects of human socio-political decision
-making.  Nevertheless, it is important to establish confidence in the quality of
-the results that are generated, with different degrees of confidence depending
-on the use case.  The only existing way to develop confidence in any NFCS tool
-is to compare with other similar tools or with simplified sets of historical
-data. For the former, the conclusion of such a comparison is often a list of why
-each software tool gives different results, but lacking quantitative information
-on the precision of any of the results. The latter only allows validation of
-existing concepts and has limited applicability to new fuel or reactor concepts
-with varying technology readiness levels (TRLs).
-
-There are a number of different tools used around the world to support decisions
-on nuclear fuel cycle options.  While some tools offer a rigorous treatment of
-the physics, they often require an experienced analyst to compute the results.
-The risk is to offer more modeling precisions than is warranted given the
-uncertainty in the inputs and related socio-political constraints. It might lead
-to an over-complicated simulation with a very complex analysis, and a false
-sense of certainty in the results. Furthermore, tool development/design
-philosophy can potentially influence simulation outcome of a fuel cycle
-analysis.
-\section{State of the Art}
+\input{narrative_1_motivation}
 
 \section{The project}
 
-\subsection{FCCI}
-This ultimate research goal is to establish a framework and
-collaboration/comparison tools for defining comparison problems in a way that is
-agnostic to the particular NFCS tool being testing and that facilitates
-comparison of the results in a constructive and revealing manner.  This will be
-demonstrated by defining an initial set of problems that any team can use to
-test their own NFCS tool and gain a deeper understanding of the implications of
-different development/modeling choices that are embedded in that tool. This will
-be carried out in collaboration with the broader NFCS community. This will be
-used as a showcase (through conferences contributions and scientific
-publications) to promote the FCCI activities among the fuel cycle community. 
-\subsection{Robustness assessment}
-The second art of this project will be dedicated to the
-measurement/determination of the impact of different modeling choices on
-different output metrics as a function of the studied scenario.  In the early
-age of the nuclear fuel cycle simulation because of the limitation of the
-computational power, the capabilities of the fuel cycle simulation were limited
-and the subject to strong simplification. But, the refinement of the different
-models did grows with the available computers power. 
+\input{narrative_2_fcci}
 
-The different actors of the fuel cycle community do not agree on the requirement
-to use the highest modeling fidelity. While the primary intuition supports
-always using the best modeling options, some experts argue that the different
-hypothesis and unknown of a prospective scenario are largely dominate the
-uncertainty on the output metrics; considering better modeling option is then a
-waste of time and effort.
+\input{narrative_3_robustness}
 
-Nevertheless it is possible to pictures use cases where some higher level of
-refinement are required to achieve correct or better conclusion. For example, a
-simple description of the enrichment facility (a simple relation between the
-different assay with a SWU constrain) will be enough for the simulation of the
-historical a national fleet, a fuel cycle evaluation of the JCPOA agreement will
-require a fine description of the enrichment cascade\dots
-Moreover there is no scientific evaluation of the importance on the output
-metrics uncertainty of the modeling precision over the input errors and
-uncertainties.
-The part of the project aims to evaluate the impact of the different modeling
-choices on the output metrics and compare them to the one of the input metrics
-uncertainties.
+
+
+
+
+
+
+
 
 
 \section{Quality Assurance \& Software Development Process}
