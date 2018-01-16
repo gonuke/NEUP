@@ -8,8 +8,10 @@ capabilities.pdf: capabilities.tex
 
 narrative.pdf: narrative.tex \
 	narrative_1_motivation.tex \
-	narrative_2_fcci.tex \
-	narrative_3_robustness.tex \
+	task_1_fcci.tex \
+	task_2_robustness.tex \
+    narrative_2_logical_path.tex \
+    narrative_3.tex \
 	narrative.bib
 	pdflatex narrative.tex
 	pdflatex narrative.tex
