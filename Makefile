@@ -6,13 +6,13 @@ abstract.pdf: abstract.tex
 capabilities.pdf: capabilities.tex
 	pdflatex capabilities.tex
 
-narrative.pdf: narrative.tex \
+narrative.pdf: acronyms.tex narrative.tex \
 	narrative_1_objective.tex \
-	narrative_1_motivation.tex \
+	narrative_2_scope.tex \
+    narrative_3_logical_path.tex\
 	task_1_fcci.tex \
 	task_2_robustness.tex \
-    narrative_2_logical_path.tex \
-    narrative_3.tex \
+    narrative_5.tex \
 	narrative.bib
 	pdflatex narrative.tex
 	pdflatex narrative.tex

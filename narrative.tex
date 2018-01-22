@@ -15,9 +15,9 @@
 \usepackage{enumitem}
 \usepackage{tabularx}
 \usepackage{todonotes}
-\usepackage[acronym]{glossaries}
 
-\newacronym{NFCS}{NFCS}{nuclear fuel cycle simulator}
+\usepackage[acronym]{glossaries}
+\input{acronyms}
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -67,9 +67,9 @@
 %----------------------------------------------------------------------------------------
 \begin{document}
 \begin{centering} Application Narrative for
-  DE-FOA-XXXXXXXXXXX\\
-  \textbf{\large Developing an Approach to Verification and Validation\\ for Nuclear Fuel Cycle Tools}\\
-  2018 CFA Narrative xxxxxxx\\
+  DE-FOA-0001772\\
+  \textbf{\large Developing an Approach to Verification and Validation\\ for Nuclear Fuel Cycle Simulation Tools}\\
+  CFA-18-15645 Narrative\\
 \end{centering}
 %\tableofcontents
 
@@ -81,13 +81,13 @@
 % Some context and general goal
 \input{narrative_1_objective}
 
-\input{narrative_1_motivation}
+\input{narrative_2_scope}
 
-\input{narrative_2_logical_path}
+\input{narrative_3_logical_path}
 
-
+%\input{narrative_4_
 % Timeline - Milestone - Deliverables 
-\input{narrative_3}
+\input{narrative_5}
 
 \section{Quality Assurance \& Software Development Process}
 

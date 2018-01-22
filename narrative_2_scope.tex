@@ -1,0 +1,216 @@
+\section{Proposed Scope}
+
+A wide array of \gls{NFCS} tools\cite{some,nfcs,tools} are used to study a
+variety of different types of problems, ranging from the impact of individual
+reactors or fuel types in an existing nuclear fleet\cite{new-technology-study}
+to the analysis of complete transitions to new advanced nuclear fuel
+cycles\cite{example-transition-scenario}.  Unlike most other simulation
+domains with nuclear energy applications, however, the notion of rigorous
+validation is not viable.  Because \gls{NFCS} tools are designed to consider
+speculative technologies in futures that incorporate socio-economic decision
+making, there exists no experimental basis against which to benchmark them.
+This leaves the \gls{NFCS} community with a challenge in establishing
+confidence in any individual result from any indvidual tool.  This work will
+address this challenge, aiming to provide a framework for developing
+confidence in both existing \gls{NFCS} tools, and any novel tools that may be
+introduced in the future.
+
+Software \gls{VnV} are well established and independent processes that are
+typically used to develop confidence in the models and algorithms that have
+been implemented in a simulation tool.  Verification is the process that tests
+whether or not each model has been implemented correctly, while validation is
+the process that tests whether or not the chosen model reflects the reality.
+The former process is largely a matter of software testing and comparison to
+analytical solutions.  The latter typically relies on comparison to
+experimental data.  Beyond just declaring a simulation tool as ``correct'',
+the validation process is useful to define the bounds of applicability of a
+given tool, recognizing that some simpler models may be sufficient to describe
+some types of real world systems, but not others.  Given the degree of
+uncertainty inherent in many of the data used to populate such analyses,
+determining the limits of any given model or tool may be less defined by the
+specific numerical answers than by the robustness of conclusions that are
+drawn from those answer.  
+
+While many aspects of software verification for \gls{NFCS} tools can be
+achieved with a comprehensive application of modern software testing methods,
+validation of the full specturm of capabilities is virtually impossible.  To
+date, two approaches have been explored: comparison with historical
+developments of specific national nuclear fleets, and comparisons across
+multiple tools of specific prospective technology transitions.
+
+Historical comparisons are best suited to demonstrate the ability of a
+\gls{NFCS} tool to track material evolutions through a system of facilities
+with well-defined deployment histories, and thus require a careful accounting
+of all material flows in that system.  Whether due to issues of national
+security or industrial strategy, comprehensive data about existing nuclear
+fleets is not widely available.  There are examples of specific countries
+using internally compiled information for validation of internally developed
+tools\cite{COSI6 - Coquelet}, but this information is not generally available
+as a community benchmark.
+
+However, validation against historical records is not sufficient to develop
+confidence in the primary use case of \gls{NFCS} tools: understanding the
+impacts of new fuel and/or reactor concepts during multi-decade (or
+multi-century) transitions in the future.  Such scenario studies attempt to
+model technologies with varying \glspl{TRL} through futures with uncertain
+socio-economic constraints.  The \gls{NFCS} community has engaged in a number
+of comparison studies in attempts to address this validation deficit\cite{IAEA
+  - Benchmark Study on Nuclear Fuel Cycle Transition Scenarios, MIT -
+  Guerin,Standardized verification of fuel cycle modeling -
+  B.Feng,some,previous,comparison,studies}. Some were designed expressly to
+compare different \gls{NFCS} tools and others were comparisons carried out in
+the course of seeking insight into specific scenarios of interest. While these
+exercises have been valuable to participants and have contributed to the
+development of their specific tools, they have not been effective at
+establishing a basis for wide-spread validation of \gls{NFCS} tools, as it
+common in other domains.
+
+The initial problem specification is often better suited to modeling by one
+tool than another.  Given the very high-dimensional decision space for
+modeling future nuclear fuel cycles, different tools often focus on different
+subsets of that decision space.  Therefore, any given problem specification
+may full specify a scenario for one tool but be missing important information
+for another tool.  In many cases, the problem is redefined iteratively to
+cover a subset of the decision space that is largely common to all tools.  As
+the scope of any problem is reduced, it provides a narrower benchmark.  After
+a number of such comparisons, there maybe a patchwork of problems that may be
+partly overlapping in some parts of the decision space and completely ignoring
+other parts.  This limits the utility of the set of problems in two ways:
+there are parts of decision space that are not validated, and little insight
+is gained regarding the domain of applicability of any given tool or its
+underlying models. \emph{This project will develop a set of problem
+  specifications that is designed to cover the decision space and completely
+  as possible, and to provide different levels of fidelity to probe the domain
+  of applicability of \gls{NFCS} tools.}
+
+Another shortcoming of previous comparison efforts is that they have not
+published the raw results of their analyses to enable future comparisons by
+new or updated tools.  The participants benefited at the time from access to
+each other's data and the ability to discuss discrepancies, small and large,
+and discuss their possible origins.  Summary reports are then written that
+include plots and some tables, but may not include enough data for another
+analyst to compare their own results.  Furthermore, while the problem
+specification may be described in such reports, the nuance with which each
+tool may treat different parts of the decision space may be lost.  This could
+be mitigated by publishing the complete input file for each tool.  \emph{This
+  project will publish complete input files and output files from each
+  participating \gls{NFCS} tool for use by future analysts.}
+
+Collaborative development of the various scenario specifications is important
+to ensure that the set of problems spans a sufficient fraction of the decision
+space, supports a breadth of modeling options, and covers types of problems of
+interest to the entire community.  This collaboration will also contribute to
+a rich and diverse set of data available for ongoing use by the community.
+
+Together, this set of problem specifications, specific implementations and
+consequent output data will provide a rich set of scenarios for use by current
+and future fuel cycle analysts to explore the nuances of this kind of
+simulation.  Importantly, the problems will exist as part of a progression,
+with increasing scope, fidelity and/or complexity.  As different teams/tools
+participate in scenarios throughout this progression, the degree of agreement
+and/or disagreement between the results will help to shed light on the
+robustness of the results to different degrees of modeling fidelity.  A
+collective outcome will be indications of what fidelity of model is necessary
+to reach robust conclusions for particular types of problems or conclusions.
+This will play an important role in developing overall confidence in the
+analysis of nuclear fuel cycle futures, both by establishing minimum
+fidelities for certain types of problems and by mitigating undue confidence in
+higher fidelity approaches when those approaches do not add robustness.
+
+%% \gls{NFCS} tools are used to study a broad range of scenarios, 
+%% from the impact of a specific fuel or reactor type within an 
+%% existing nuclear fleet to the prospective analysis of a complete transition to
+%% advanced nuclear fuel cycle technologies\cite{example-transition-scenario}.
+%% Unlike many simulation domains,
+%% rigorous validation against experimental results is not viable for this kind of
+%% simulation tool that combines speculative technologies with  aspects of human
+%% socio-political decision
+%% making. Nevertheless, it is important to establish confidence in the quality of
+%% the results that are generated, and understand how the degree to which that confidence depends
+%% on the use case. The primary existing ways to develop confidence in any \gls{NFCS} tool
+%% is to compare with other similar tools, or with simplified sets of historical
+%% data. In the former case, the conclusion of such a comparison often focuses on the
+%% differences between the specific tools, but lacks quantitative information
+%% on the precision of any of the individual results. The latter case only allows validation of
+%% existing concepts and has limited applicability to new fuel or reactor concepts
+%% with varying \glspl{TRL}.
+
+%% Software verification and validation are two independent processes that
+%% check that the software behaves as designed, and 
+%% check that its response is close to reality, respectively.  That is,
+%% has the model been implemented correctly \emph{versus} has the correct
+%% model been implemented.
+
+%% While many aspects of software verification can be achieved with a comprehensive application of 
+%% modern software testing methods, validation in nuclear fuel cycle
+%% simulation is almost impossible. Indeed, \gls{NFCS} tools aims to simulate, the
+%% historic or prospective, large nuclear fuel cycle of an entity (company, region,
+%% country, \ldots). For security and/or industrial strategic reasons, only small slices 
+%% of the data about existing nuclear fuel cycles is publicly available, if any.
+%% Some \gls{NFCS} tools, such as COSI developed by the CEA \cite{COSI6 - Coquelet}, have
+%% been validated on real data but rigorous validation is limited in the \gls{NFCS}
+%% community. Indeed, 
+%% validation on historical data does not cover a large spectrum of cases, as one of the
+%% primary
+%% applications of \gls{NFCS} tools is the simulation of prospective future scenario for
+%% which there is no historical data to establish confidence.
+
+%% Several inter-comparison studies between \gls{NFCS} tools have been
+%% performed\cite{IAEA - Benchmark Study on Nuclear Fuel Cycle Transition Scenarios, MIT - Guerin,some,previous,comparison,studies}. Because
+%% of their format and the wide variety of \gls{NFCS} tools, those studies had a
+%% modest impact on the ongoing development of \gls{NFCS} tools, despite some very interesting
+%% features and conclusions.  Those studies are generally comparison between large
+%% and complex transition scenarios whose complexities make it difficult to gain
+%% deep understanding of the \gls{NFCS} tools' working processes. Moreover, those studies are
+%% often led by one \gls{NFCS} tool development/using team, driving the specification of
+%% the benchmark such that it is not always well defined for other tools.
+%% These issues tend to limit the conclusions of such study, and make them particularly
+%% difficult to use as the basis for developing new algorithms and/or tools. Additionally,
+%% when published, it is common that either the definition
+%% of the problem or detailed representations of the solutions generated by the
+%% different tools are not publicly
+%% available. It is then challenging for analysts not involved in the original
+%% study to compare their own \gls{NFCS} tool with those results.
+
+%% Although not formally constructed as benchmark exercises, some simulation campaigns
+%% can also produce results for comparison purposes.  In the \gls{USDOE}['s]
+%% \gls{FCO} campaign,  multiple analysts
+%% using different \gls{NFCS} tools to simulate the same transition scenarios. The degree of
+%% freedom in the transition specification varies from one scenario to an other,
+%% which impacts the degree of agreement between the different calculations, but
+%% those campaigns generally allow a deep comparison on specific problem between
+%% several \gls{NFCS} tools \cite{Standardized verification of fuel cycle modeling -
+%% B.Feng}.  Even though such comparisons are very valuable for the different tools
+%% involved in the campaign, the added value for outsiders is very limited, as the
+%% detailed specifications and results of those calculations are not always
+%% publicly available. Moreover these studies have a very narrow focus on a few
+%% specific transitions, intrinsically limiting the scope of the cross-comparison between the
+%% \gls{NFCS} tools.
+
+
+
+%% There are a number of different tools used around the world to support decisions
+%% on nuclear fuel cycle options\cite{many,different,tools}.
+%% While some tools offer a rigorous treatment of
+%% the physics, they often require an experienced analyst to compute the results.
+%% The risk is to offer more modeling precisions than is warranted given the
+%% uncertainty in the inputs and related socio-political constraints. It might lead
+%% to an over-complicated simulation with a very complex analysis, and a false
+%% sense of certainty in the results. Furthermore, tool development/design
+%% philosophy can potentially influence simulation outcome of a fuel cycle
+%% analysis.
+
+%% The first part of this project will be dedicated to creating a framework that allows
+%% fuel cycle analysts to understand how specific modeling choices or tool designs
+%% affect the simulation outcomes. This framework will include a variety of
+%% problems defined to analyse a set of features and their range of implementations
+%% in the different \gls{NFCS} tools. It will allow a collaborative definition of
+%% benchmark problems, the evaluation of simulation outputs for these problems, and
+%% the cataloging of each participant’s contribution.
+
+%% The second part of this project will focus on linking modeling capability and
+%% real study needs, aiming to assess the impact of modeling precision across
+%% different facilities in the nuclear fuel cycle in order to determine the
+%% robustness of the conclusions to those variations in modeling precision.
+
+
