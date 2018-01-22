@@ -43,5 +43,8 @@ bib:
 	pdflatex narrative.tex
 	pdflatex narrative.tex
 
-clean:
-	rm -vf *.aux *.log *.blg *.bbl narrative.pdf abstract.pdf
+tidy:
+	rm -vf *.aux *.log *.blg *.bbl
+
+clean: tidy
+	rm -vf ${narrative} ${abstract} ${capabilities} ${benefits_of_collaboration}
