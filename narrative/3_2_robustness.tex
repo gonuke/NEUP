@@ -1,0 +1,105 @@
+
+\subsection{Robustness assessment}
+
+The second task of this project will be dedicated to the measurement of the
+robustness of different output metrics to different modeling choices as a
+function of the studied scenario.  In the early age of nuclear fuel cycle
+simulation, limitations of the computational infrastructure, both hardware and
+software, resulted in limitations to the scope, complexity and fidelity of the
+simulations.  Over the last decade, the software platforms for fuel cycle
+simulation have improved to permit more complex scenarios and take advantage
+of growing hardware capabilities.
+
+Currently, there can be disagreement within the community on the necessary
+fidelity to achieve a robust conclusion for some problems.  This is confounded
+by the non-overlapping features of different tools such that direct
+comparisons are difficult. As with many simulation communities, there is a
+natural tendency to steadily improve the modeling fidelity.  However, some
+experts argue that the uncertainty in the input data for a prospective
+scenario result in output uncertainties that render increased fidelity
+unnecessary, at best, and misleading, at worst.  If true, then the time and
+effort for improving fidelity can be unwarranted in many cases.
+
+Nevertheless it is possible to describe use cases where some higher level of
+refinement is required to achieve correct or adequate conclusions. For
+example, a simple description of the enrichment facility (as a simple relation
+between the different assay with a SWU constrain) will be enough for the
+simulation of the history of a national fleet, but a fuel cycle evaluation of
+the JCPOA agreement will require a more detailed model of the enrichment
+cascades. Moreover there is no scientific evaluation of the importance of the
+modeling precision versus the input errors and uncertainties on the output
+metrics uncertainty. This part of the project aims to evaluate the impact of
+the different modeling choices on the output metrics and compare them to that
+of the input metrics uncertainties.
+
+The robustness part of the project will be divided into 3 phases, the experiment
+definitions, the experiment building, and the analysis of the experiments.
+
+\subsubsection{Experiment Definition}
+
+As fuel cycle simulation can be used to support many different types of
+decisions (facility siting, technology transitions, impacts of international
+trade agreements, etc), a set of diverse nuclear fuel cycle scenarios will be
+identified through multiple consultations with different stakeholders:
+policy-makers, industry, and researchers.  Those consultations will help to
+identify the types of decisions that could be supported by different fuel
+cycle calculations and the list of relevant output metrics for each
+application.  Some examples include: availability/consumption of resources
+(thorium vs uranium vs plutonium), reduction of long term waste
+radiotoxicity, and minimization of human manipulation of radioactive material.
+
+In addition to the scenarios identified with those consultations, other
+nuclear fuel cycle applications will be considered, including historical
+records of US (large heterogeneous fleet) and/or French (fleet undergoing
+transition to plutonium recycling)\cite{CLASS group work on this} commercial
+nuclear fleets andd EG-like transition\cite{BoFeng}.
+
+In this compilation of use scenarios, some of them will be identified as
+``most representative'' of the different \gls{NFCS} use cases and used as
+``reference scenarios'' for the rest of this study. Sets of output metrics
+will also be identified, with associated acceptable tolerances, within which
+decisions/conclusions can be made. Each reference scenario will be
+investigated across all identified set of output metrics.
+
+These problems will also become part of the list of scenarios available in the
+\gls{FCCI} described in task 1.
+
+\subsubsection{The experiments}
+
+This second subtask will be further split into two components dedicated to
+robustness assessment, the first one for variations in modeling choice under
+constant input parameters, the second one for variations in the input
+parameters under constant modeling choice.
+
+Each identified scenario will be modeled with a range of existing Cyclus
+facility models.  Previously efforts have resulted in a variety of reactor
+models: fleet-based recipe reactors \cite{4}, individual recipe reactors
+\cite{5}, and depletion-aware/capable reactors \cite{6, 7, 8}.  As the reactors
+become more sophisticated, it may also be necessary to invoke more
+sophisticated models for fuel fabrication that can respond to varying reactor
+fueling needs \cite{7, 8}. The Cyclus framework makes it possible to shuffle the
+various modeling options, for example using a single depletion aware reactor
+with any fuel fabrication model, to explore the impact of a single modeling
+change while the rest of the simulation remains unchanged.
+
+In addition to probing the impact of modeling choice, this work will also seek
+to understand how robust a given decision is to variations in the input
+assumptions for a given scenario.  A second round of analyses will be performed
+to establish the robustness of the output metrics to variation on the fuel cycle
+parameters such as cooling/reprocessing time, enrichment tails, facility
+throughput, as well as transition schedule (start date, speed, \dots).
+
+Combined, these analyses will provide a way to rank different modeling choices
+and input variables by importance depending on the outcome of the fuel cycle
+simulations.
+
+\subsubsection{Experiment Analysis}
+
+The final subtask will be dedicated to the analysis and the compilation of the
+required modeling fidelity as well as the input parameters constraints required
+to successfully support the different decision making processes.
+
+Those analysis will provide guidance not only to the nuclear fuel cycle analysts
+regarding the necessary level of model fidelity that is required to support
+particular kinds of decision making, but also to fuel cycle researcher regarding
+the improvement needed on the differents modeling capabilities.

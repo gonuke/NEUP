@@ -1,0 +1,93 @@
+
+\subsection{\gls{FCCI}}
+
+This task will build a collaborative effort to specify problems that span the
+decision space of nuclear fuel cycle analysis, and develop tools that
+facilitate the cataloging and comparison of results that arise from simulating
+these problem specifications.  An important feature of the framework that
+results is that it be agnostic to any particular \gls{NFCS} tool.  The
+collaborative nature of this effort, including review from many parties, will
+help ensure this.  An initial set of problems will be used to develop and test
+the mechisms for collaborative development, with more complex problems
+emerging once those mechanisms have been demonstrated.  Any team can then use
+these problem specifications to gain a deeper understanding of the
+implications of different development/modeling choices that are embedded in
+their tool of choice.
+
+Participation will be solicited from an international community of developers
+and users of \gls{NFCS} tools.  Given the number and national variety of these
+partners, direct funding of their participation is beyond the scope of this
+project.  However, sincere expressions of interest from many parties have
+emerged during two recent workshops focused on this specific community.  Early
+successes will be used to showcase the effort at conferences and workshops to
+promote broader participation.
+
+%% establish a framework with collaboration tools  for
+%% defining comparison problems in a way that is agnostic to the particular \gls{NFCS}
+%% tool being testing and that facilitates comparison of the results in a
+%% constructive and revealing manner. This will be performed  by defining an
+%% initial set of problems that any team can use to test their own \gls{NFCS} tool and
+%% gain a deeper understanding of the implications of different
+%% development/modeling choices that are embedded in that tool. It will be carried
+%% out in collaboration with the broader \gls{NFCS} community. The first set of complete
+%% analysis will be used as a showcase (through conferences contributions and
+%% scientific publications) to promote the \gls{FCCI} activities among the fuel cycle
+%% community. 
+
+
+\subsubsection{Collaborative Framework for Problem Definition and Analysis} 
+
+While it can be straightforward to define a problem for any single \gls{NFCS} tool,
+different modeling approaches and assumptions across a set of tools makes it
+difficult to define those problems in a sufficiently generic manner.
+Furthermore, the set of output data produced by each tool is different both in
+the abstract (which data is generated) and the concrete (the format of that
+data). The success of an effort such as this lies in the ability for new
+participants to easily access the problem definition and then also easily
+compare their results to the previously generated and submitted results.
+
+This subtask will focus on developing and formalizing the infrastructure
+needed for effective collaboration, including a generalized ontology for
+defining canonical problem inputs and outputs, default relationships between
+different fidelities of analysis, mechanisms for proposing and refining new
+problem definitions, submission of output data sets from a particular tool,
+and web-based services to facilitate and automate the non-judgmental
+comparison of the submitted outputs[3], all within an online community.
+
+\subsubsection{Problem definition} 
+
+This subtask will be focused on the definition of new canonical problems that are
+useful for demonstrating fundamental behavior of \gls{NFCS} tools and/or
+highlighting behaviors that distinguish different methodologies from each
+other. A canonical definition of the different problems and exercises should
+avoid any bias related to the usage of a specific simulation tool and allow
+theoretically any tools (with any conceptual design) to participate by
+simulating the same problem. The ontology developed above will help to
+accomplish this goal. This will require working with the \gls{FCCI}
+collaboration to synthesize the different modeling verification needs, and
+conceptualize problems that satisfy these needs while allowing for deep
+analysis of potential differences due to modeling choices.  Experience from
+prior ad-hoc comparison efforts suggest that each problem’s definition may
+require several updates based on the feedback of the different analysts as
+their modeling progresses: reaching a canonical definition as an asymptotic
+process.
+
+\subsubsection{Fuel Cycle Simulations and Analysis} 
+
+This subtask will be dedicated to modeling the different problems of the
+\gls{FCCI}, from unit tests to the sensitivity analysis, using the Cyclus
+\gls{NFCS}[2] developed at the UW-Madison. The results of these simulations
+will be submitted, using the infrastructure developed in subtask 1.1, for
+analysis and comparison to submissions generated using other \gls{NFCS}
+tools. These results will also, therefore, be available to other participants
+as part of the comparison set for future submissions. The Cyclus framework
+includes multiple facility packages of different fidelity levels, and the
+ability to swap individual facility models within an otherwise constant fuel
+cycle scenario. Thus, Cyclus can contribute multiple submissions for each
+problem in the \gls{FCCI} framework, each using a different degree of
+fidelity. Therefore, the \gls{FCCI} framework will also serve as a way to
+assess the impacts of these different fidelities with the Cyclus ecosystem. As
+new problems are identified and defined in subtask 1.2, they will be completed
+under this subtask.
+
+
