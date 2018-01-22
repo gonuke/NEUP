@@ -1,41 +1,42 @@
 foaid=2018-CFA
 projectid=15645
+submit_dir=submission
 
-narrative=${foaid}-Narrative-${projectid}.pdf
-abstract=${foaid}-Abstract-${projectid}.pdf
-capabilities=${foaid}-Capabilities-${projectid}.pdf
-benefits_of_collaboration=${foaid}-Benefits-of-Collaboration-${projectid}.pdf
+narrative=${submit_dir}/${foaid}-Narrative-${projectid}.pdf
+abstract=${submit_dir}/${foaid}-Abstract-${projectid}.pdf
+capabilities=${submit_dir}/${foaid}-Capabilities-${projectid}.pdf
+benefits_of_collaboration=${submit_dir}/${foaid}-Benefits-of-Collaboration-${projectid}.pdf
 
 all: ${narrative} ${abstract} ${benefits_of_collaboration} ${capabilities}
 
-${abstract}: defs.tex abstract.tex
+${abstract}: include/defs.tex abstract.tex
 	pdflatex abstract.tex
 	pdflatex abstract.tex
-	mv abstract.pdf ${foaid}-Abstract-${projectid}.pdf
+	mv abstract.pdf $@
 
-${capabilities}: defs.tex capabilities.tex
+${capabilities}: include/defs.tex capabilities.tex
 	pdflatex capabilities.tex
 	pdflatex capabilities.tex
-	mv capabilities.pdf ${foaid}-Capabilities-${projectid}.pdf
+	mv capabilities.pdf $@
 
-${narrative}: acronyms.tex defs.tex narrative.tex \
-	narrative_1_objective.tex \
-	narrative_2_scope.tex \
-    narrative_3_logical_path.tex\
-	task_1_fcci.tex \
-	task_2_robustness.tex \
-    narrative_4.tex \
-    narrative_5.tex \
+${narrative}: include/acronyms.tex include/defs.tex narrative.tex \
+	narrative/1_objective.tex \
+	narrative/2_scope.tex \
+    narrative/3_logical_path.tex\
+	narrative/3_1_fcci.tex \
+	narrative/3_2_robustness.tex \
+    narrative/4.tex \
+    narrative/5.tex \
 	narrative.bib
 	pdflatex narrative.tex
 	pdflatex narrative.tex
 	pdflatex narrative.tex
-	mv narrative.pdf ${foaid}-Narrative-${projectid}.pdf
+	mv narrative.pdf $@
 
-${benefits_of_collaboration}: defs.tex benefits_of_collaboration.tex 
+${benefits_of_collaboration}: include/defs.tex benefits_of_collaboration.tex 
 	pdflatex benefits_of_collaboration.tex
 	pdflatex benefits_of_collaboration.tex
-	mv benefits_of_collaboration.pdf ${foaid}-Benefits-of-Collaboration-${projectid}.pdf
+	mv benefits_of_collaboration.pdf $@
 
 bib:
 	pdflatex narrative.tex               
