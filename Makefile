@@ -7,6 +7,7 @@ capabilities.pdf: capabilities.tex
 	pdflatex capabilities.tex
 
 narrative.pdf: narrative.tex \
+	narrative_1_objective.tex \
 	narrative_1_motivation.tex \
 	task_1_fcci.tex \
 	task_2_robustness.tex \
