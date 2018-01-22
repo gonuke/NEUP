@@ -9,6 +9,9 @@ benefits_of_collaboration=${submit_dir}/${foaid}-Benefits-of-Collaboration-${pro
 
 all: ${narrative} ${abstract} ${benefits_of_collaboration} ${capabilities}
 
+${submit_dir}:
+	mkdir ${submit_dir}
+
 ${abstract}: include/defs.tex abstract.tex
 	pdflatex abstract.tex
 	pdflatex abstract.tex
