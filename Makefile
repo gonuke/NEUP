@@ -2,7 +2,7 @@ foaid=2018-CFA
 projectid=15645
 submit_dir=submission
 
-narrative=${submit_dir}/${foaid}-Narrative-${projectid}.pdf
+narrative=${submit_dir}/${foaid}-Technical-Narrative-${projectid}.pdf
 abstract=${submit_dir}/${foaid}-Technical-Abstract-${projectid}.pdf
 capabilities=${submit_dir}/${foaid}-Capabilities-${projectid}.pdf
 benefits_of_collaboration=${submit_dir}/${foaid}-Benefits-of-Collaboration-${projectid}.pdf
