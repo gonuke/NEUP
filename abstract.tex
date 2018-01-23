@@ -12,6 +12,10 @@
 \usepackage{tabularx}
 \usepackage{multirow}
 \usepackage{fancyhdr}
+
+\usepackage[acronyms]{glossaries}
+\input{include/acronyms}
+
 \pagestyle{fancy}
 \fancyhf{}
 \chead{\includegraphics[width=2in]{neup_logo.png}}
@@ -66,4 +70,36 @@
 \noindent\rule{\textwidth}{1pt}\\
 
 \noindent\textbf{Abstract:} 
+
+The objective of this project is to develop an open and collaborative approach
+for establishing increased confidence in \gls{NFCS} tools. This approach will
+directly address verification by publishing jointly-developed problems with
+reference solutions.  It will indirectly address validation through a growing
+set of publicly available solutions to those problems contributed by
+developers of such tools.  Together, this approach will allow the nuclear
+fuel cycle community to develop a more nuanced understanding of the results
+produced by their tools and, in so doing, be better prepared to express
+confidence in those results when communicating results both within and without
+that community.
+
+This kind of comparison will also build knowledge and understanding about the
+differences between the various algorithms and models used by the many fuel
+cycle simulation tools. In particular, it is important to understand the
+circumstances under which the choice of algorithm and/or model influences the
+conclusions that one might draw from such a simulation. Such knowledge could
+not only help fuel cycle analysts to perform more pertinent and relevant
+studies, but ultimately to convince stakeholders to rely more on nuclear fuel
+cycle analysis in the decision making processes relative to nuclear
+technology.
+
+The development of this capability in an open and collaborative fashion will
+support innovation in this space, as it makes it possible for new entrants to
+immediately begin testing their tools against established solutions without
+waiting for a coordinated benchmarking effort.  Such coordinated efforts have
+occurred in the past, but their results are generally not published in a way
+that invites comparison by future analysts who were not part of the initial
+exercise.
+
+
+
 \end{document}
