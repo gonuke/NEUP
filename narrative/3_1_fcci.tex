@@ -52,7 +52,17 @@ defining canonical problem inputs and outputs, default relationships between
 different fidelities of analysis, mechanisms for proposing and refining new
 problem definitions, submission of output data sets from a particular tool,
 and web-based services to facilitate and automate the non-judgmental
-comparison of the submitted outputs[3], all within an online community.
+comparison of the submitted outputs\cite{scopatz-non-judgmental}, all within
+an online community.
+
+The infrastructure for sharing canonically defined problems and their
+solutions will result in a web-based set of capabilities, built as much as
+possible upon already-available web services.  Services such as
+Github\cite{github} and CircleCI\cite{circleci} are available to deliver
+content, track changes in problem specifications, log contributions from
+collaborators, and automatically (re)generate comparisons between contributed
+output datasets.
+
 
 \subsubsection{Problem definition} 
 
@@ -75,19 +85,18 @@ process.
 \subsubsection{Fuel Cycle Simulations and Analysis} 
 
 This subtask will be dedicated to modeling the different problems of the
-\gls{FCCI}, from unit tests to the sensitivity analysis, using the Cyclus
-\gls{NFCS}[2] developed at the UW-Madison. The results of these simulations
-will be submitted, using the infrastructure developed in subtask 1.1, for
-analysis and comparison to submissions generated using other \gls{NFCS}
-tools. These results will also, therefore, be available to other participants
-as part of the comparison set for future submissions. The Cyclus framework
-includes multiple facility packages of different fidelity levels, and the
-ability to swap individual facility models within an otherwise constant fuel
-cycle scenario. Thus, Cyclus can contribute multiple submissions for each
-problem in the \gls{FCCI} framework, each using a different degree of
-fidelity. Therefore, the \gls{FCCI} framework will also serve as a way to
-assess the impacts of these different fidelities with the Cyclus ecosystem. As
-new problems are identified and defined in subtask 1.2, they will be completed
-under this subtask.
+\gls{FCCI}, from unit tests to the sensitivity analysis, using Cyclus
+\gls{NFCS}\cite{CYCLUS}. The results of these simulations will be submitted,
+using the infrastructure developed in subtask 1.1, for analysis and comparison
+to submissions generated using other \gls{NFCS} tools. These results will
+also, therefore, be available to other participants as part of the comparison
+set for future submissions. The Cyclus framework includes multiple facility
+packages of different fidelity levels, and the ability to swap individual
+facility models within an otherwise constant fuel cycle scenario. Thus, Cyclus
+can contribute multiple submissions for each problem in the \gls{FCCI}
+framework, each using a different degree of fidelity. Therefore, the
+\gls{FCCI} framework will also serve as a way to assess the impacts of these
+different fidelities with the Cyclus ecosystem. As new problems are identified
+and defined in subtask 1.2, they will be completed under this subtask.
 
 
