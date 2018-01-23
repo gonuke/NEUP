@@ -32,8 +32,11 @@ metrics uncertainty. This part of the project aims to evaluate the impact of
 the different modeling choices on the output metrics and compare them to that
 of the input metrics uncertainties.
 
-The robustness part of the project will be divided into 3 phases, the experiment
-definitions, the experiment building, and the analysis of the experiments.
+After defining the scenarios that will form the basis of the experiments, two
+related and parallel subtasks will investigate different types of variations.
+The first one will test robustness for variations in modeling choice under
+constant input parameters, and the second one for variations in the input
+parameters under constant modeling choice.
 
 \subsubsection{Experiment Definition}
 
@@ -64,12 +67,7 @@ investigated across all identified set of output metrics.
 These problems will also become part of the list of scenarios available in the
 \gls{FCCI} described in task 1.
 
-\subsubsection{The experiments}
-
-This second subtask will be further split into two components dedicated to
-robustness assessment, the first one for variations in modeling choice under
-constant input parameters, the second one for variations in the input
-parameters under constant modeling choice.
+\subsubsection{Analysis of Robustness to Modeling Choices}
 
 Each identified scenario will be modeled with a range of existing Cyclus
 facility models.  Previously efforts have resulted in a variety of reactor
@@ -83,6 +81,14 @@ shuffle the various modeling options, for example using a single depletion aware
 reactor with any fuel fabrication model, to explore the impact of a single
 modeling change while the rest of the simulation remains unchanged.
 
+Based on the feedback from the stakeholder consultations, important metrics
+for each scenario will be carefully analyzed to determine the degree to which
+the modeling choice affected that metric.  Furthermore, it will be important
+to determine whether the change in that metric, if any, would result in
+substantially different conclusions and/or decisions based on that analysis.
+
+\subsubsection{Analysis of Robustness to Input Parameters}
+
 In addition to probing the impact of modeling choice, this work will also seek
 to understand how robust a given decision is to variations in the input
 assumptions for a given scenario.  A second round of analyses will be performed
@@ -92,15 +98,13 @@ throughput, as well as transition schedule (start date, speed, \dots).
 
 Combined, these analyses will provide a way to rank different modeling choices
 and input variables by importance depending on the outcome of the fuel cycle
-simulations.
+simulations.  In some cases, it will be possible to compare across variations
+in both modeling choice and input parameters, to determine if there are
+interactions between them.  That is, are there circumstances where the
+modeling choice makes the simulation more, or less, sensitive to variations in
+the input parameters.
 
-\subsubsection{Experiment Analysis}
-
-The final subtask will be dedicated to the analysis and the compilation of the
-required modeling fidelity as well as the input parameters constraints required
-to successfully support the different decision making processes.
-
-Those analysis will provide guidance not only to the nuclear fuel cycle analysts
+These analyses will provide guidance not only to the nuclear fuel cycle analysts
 regarding the necessary level of model fidelity that is required to support
 particular kinds of decision making, but also to fuel cycle researcher regarding
 the improvement needed on the different modeling capabilities.

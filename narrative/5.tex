@@ -1,24 +1,57 @@
 \section{Facilities}
 
+This project is entirely computational; the bulk of the work can be completed
+on desktop-class computers.  In some cases, there will be benefits to using
+cloud computing resources to complete a large set of independent fuel cycle
+analysis problems.  The lead institution has access to free private cloud
+computing resources on their campus, and experience with leveraging low-cost
+commercial cloud computing options.
+
+One of the deliverables of this project is a web-based framework for
+describing a set of benchmark-like problems and sharing the results of those
+problems contributed by many participants.  Freely available web services will
+be used to prototype this framework.  Such services are expected to be
+sufficient for the long term management of this framework, but if they are
+determined to be unsuitable during the course of this work, alternatives will
+not be developed within the time frame of this work.
+
 \section{Unique Challenges \& Mitigations}
+
+The biggest challenge will be in recruiting a sufficiently large set of
+collaborators to participate by performing the problems with the \gls{NFCS}
+tools of their choice.  The benefit and value of this effort depends on it
+being adopted at a large enough scale within the community to become a
+\emph{de facto} standard for demonstrating the capabilities of a \gls{NFCS}
+tool.  At previous TWoFCS workshops, the community has indicated strong
+support for this effort, but will need to participate voluntarily as this
+project cannot provide funds for participation.  This challenge will be
+mitigated by active participation in the program committees of the future
+TWoFCS meetings, thereby including dedicated sessions in those programs for
+discussion of the results of benchmark problems that exist in the \gls{FCCI}
+system, as well as an invited talk about the state of the infrastructure.
 
 \section{Quality Assurance \& Software Development Process}
 
 \textit{This project will comply with all Quality Assurance requirements, as
 described on the NEUP website.}
 
-This work will follow the Cyclus development model.  We will employ a variety of
-modern software project management tools: revision control, automated testing,
-automated and manual documentation, bug tracking. Related projects at are
-already managed under source code revision control system (git) that provides
-detailed tracking of all changes to the code base. A test suite has been
-developed and new tests will be added for each new capability. This test suite
-will be automatically executed with each proposed change in the revision control
-system to identify any flaws that may be introduced. Automated documentation
-tools are used in the source code to create a detailed reference for the
-interfaces and additional background documentation. Out-of-code detailed reports
-and publications will supplement the information on each new capability.
-Finally, a bug tracking system (GitHub issues) is deployed to help users and
-developers to understand known issues and to track their resolution as a
-developer community. As new capability is added, it will come under the same
-quality assurance practices as described here for the existing capabilities.
+This work will follow the Cyclus development model.  We will employ a variety
+of modern software project management tools: revision control, automated
+testing, automated and manual documentation, bug tracking. Related projects at
+are already managed under source code revision control system (git) that
+provides detailed tracking of all changes to the code base. A test suite has
+been developed and new tests will be added for each new capability. This test
+suite will be automatically executed with each proposed change in the revision
+control system to identify any flaws that may be introduced. Note that since
+any software developed under this project is not considred simulation software
+it will not be subject to a traditional \gls{VnV} process.  There will,
+however, be rigorous and regular testing, including continuous integration
+tests to ensure it is meeting its functional requirements. Automated
+documentation tools are used in the source code to create a detailed reference
+for the interfaces and additional background documentation. Out-of-code
+detailed reports and publications will supplement the information on each new
+capability.  Finally, a bug tracking system (GitHub issues) is deployed to
+help users and developers to understand known issues and to track their
+resolution as a developer community. As new capability is added, it will come
+under the same quality assurance practices as described here for the existing
+capabilities.
