@@ -3,11 +3,12 @@
 This project has two main tasks that, while conceptually related, do not
 require their schedules to be closely coordinated.  Some of the capability
 that is developed in the first task will be useful for conducting the second
-task, but it does not strictly depend on it.
+task, but it does not strictly depend on it.  A detailed list time line of
+milestones and deliverables in available in Table \ref{tab:schedule}.
 
-
-\begin{table}[!]
+\begin{table}[!bp]
   \begin{center}
+    \caption{Schedule of important milestones and deliverables.}\label{tab:schedule}
     \begin{tabular}{|c|p{0.42\textwidth}|c|p{0.3\textwidth}|}\hline\hline
       \textbf{Task} & \textbf{Milestone} & \textbf{Date$^*$} & \textbf{Deliverable} \\\hline\hline
       1.1 & \gls{FCCI} infrastructure - alpha &   & \multirow{3}{0.3\textwidth}{Report \& presentation at TWoFCS '19} \\
@@ -23,7 +24,7 @@ task, but it does not strictly depend on it.
       \hline\hline
       2.1 & Report on stakeholder consultations & 9 & \multirow{1}{0.3\textwidth}{Report \& presentation at TWoFCS '19} \\
           & & &\\
-      2.1 & Definintion of robustness scenarios & 12 & Annual Report\\
+      2.1 & Definition of robustness scenarios & 12 & Annual Report\\
       2.2 & Analysis of model variation & 24 & Annual Report\\
       2.3 & Analysis of input variations & 30 & Presentation at TWoFCS '21\\\hline
       2 & Guidance on appropriate model fidelity and input requirements & 36 & Final report\\
@@ -45,7 +46,7 @@ collaborators will begin at TWoFCS '18, scheduled for July 10-11, 2018.
 \subsection{Task 1: \gls{FCCI}}
 
 The deliverables for this task consist of three coordinated parts: (a) the
-infrastructure for specifying problems, sharing those specficiations and their
+infrastructure for specifying problems, sharing those specifications and their
 results, (b) a set of problem/scenario specifications, and (c) a database of
 solutions contributed from many partners.  While (b) and (c) can exist
 independent of (a) they will be shared with the \gls{NFCS} community in a
@@ -58,7 +59,9 @@ expanded in scope and/or depth of analysis, will be released with the
 depth, will be released with v1.0 of the infrastructure after 33 months.  This
 would be the final set of problems developed under this project, but as an
 active community collaboration, it is expected that additional problems may
-ultimately be submitted after this project ends.
+ultimately be submitted after this project ends. Each release of the
+infrastructure will be accompanied by documentation that will facilitate new
+contributions from new collaborators.
 
 At each stage, each problem will be fully documented using the infrastructure
 developed within this task.  Part of that infrastructure, therefore, is a
@@ -73,3 +76,15 @@ types of output metrics from those scenarios of highest importance in
 subsequent decision making.  This will be followed quickly by the definition
 of specific scenarios to use in the assessment of robustness.
 
+All of the problems used in this analysis will be published in the \gls{FCCI}
+infrastructure, in order to facilitate other groups repeating the analysis
+with other tools.  As such, each case will be fully documented in a public
+data repository.  If/when those scenarios are improved during analysis, the
+version control aspect of the \gls{FCCI} infrastructure will track any changes
+made to the problem.
+
+For each scenario of interest, a report will be created that documents the
+robustness of that scenario to different modeling choices and different input
+variations.  The simulations upon which these reports are based will be
+packaged outside of the \gls{FCCI} and published independently as data
+artifacts of this project.
